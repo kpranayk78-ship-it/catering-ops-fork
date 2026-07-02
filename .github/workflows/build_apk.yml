@@ -1,0 +1,67 @@
+name: Build APK
+
+on:
+  push:
+    branches:
+      - main
+      - sivaji
+      - pranay
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+          
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Create .env file
+        shell: bash
+        env:
+          ENV_DATA: ${{ secrets.ENV_FILE }}
+        run: |
+          mkdir -p apps/mobile_app/assets
+          if [ -n "$ENV_DATA" ]; then
+            echo "$ENV_DATA" > apps/mobile_app/assets/.env
+            echo "✅ Created .env from secrets"
+          else
+            echo "⚠️ Secret ENV_FILE not found, using example"
+            cp apps/mobile_app/assets/.env.example apps/mobile_app/assets/.env
+          fi
+          
+      - name: Verify .env exists
+        run: |
+          if [ -f "apps/mobile_app/assets/.env" ]; then
+            echo "✅ assets/.env is ready"
+            ls -l apps/mobile_app/assets/.env
+          else
+            echo "❌ ERROR: assets/.env is missing!"
+            exit 1
+          fi
+          
+      - name: Install dependencies
+        run: |
+          cd apps/mobile_app
+          flutter pub get
+          
+      - name: Build APK
+        run: |
+          cd apps/mobile_app
+          flutter build apk --release
+          
+      - name: Upload APK
+        uses: actions/upload-artifact@v4 # Upgraded to v4
+        with:
+          name: apk-release
+          path: apps/mobile_app/build/app/outputs/flutter-apk/app-release.apk
