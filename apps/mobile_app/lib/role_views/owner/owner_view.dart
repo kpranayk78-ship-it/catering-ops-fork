@@ -1,5 +1,6 @@
 import 'package:mobile_app/core/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'dart:ui';
 import 'package:flutter/services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -17,6 +18,7 @@ import '../shared/animated_notification_overlay.dart';
 import '../shared/expandable_notification_item.dart';
 import 'package:intl/intl.dart';
 import '../../features/orders/order_details_screen.dart';
+import '../../features/orders/create_order_screen.dart';
 
 class OwnerView extends StatefulWidget {
   const OwnerView({super.key});
@@ -595,179 +597,251 @@ class _OwnerViewState extends State<OwnerView> {
 
   Widget _buildDashboardTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.only(bottom: 120),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            'Welcome Back,',
-            style: TextStyle(
-              color: AppTheme.titleColor.withOpacity(0.6),
-              fontSize: 16,
-            ),
-          ),
-          Text(
-            _companyName ?? 'Dashboard',
-            style: const TextStyle(
-              color: AppTheme.titleColor,
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Owner: ${_ownerName ?? '...'}',
-            style: TextStyle(
-              color: AppTheme.titleColor.withOpacity(0.5),
-              fontSize: 13,
-            ),
-          ),
-          const SizedBox(height: 30),
-
-          _buildOrderList('On-Going', true, _onGoingOrders),
-          _buildOrderList('Up-Coming', false, _upcomingOrders),
-
-
-          // Inventory Action
-          InkWell(
-            onTap: () {
-              if (_companyId != null) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => InventoryListScreen(
-                      companyId: _companyId!,
-                      isOwner: true,
-                    ),
-                  ),
-                );
-              }
-            },
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    AppTheme.primaryAction.withOpacity(0.15),
-                    AppTheme.primaryAction.withOpacity(0.05),
-                  ],
-                ),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: AppTheme.primaryAction.withOpacity(0.2)),
+          Container(
+            padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
+            decoration: BoxDecoration(
+              gradient: AppTheme.subtleGradient,
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(32),
+                bottomRight: Radius.circular(32),
               ),
-              child: Row(
+              boxShadow: AppTheme.softShadow,
+            ),
+            child: SafeArea(
+              bottom: false,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: AppTheme.primaryAction.withOpacity(0.1),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.inventory_2_outlined,
-                      color: AppTheme.primaryAction,
-                      size: 24,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  const Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Manage Menu',
-                          style: TextStyle(
-                            color: AppTheme.titleColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Welcome Back,',
+                        style: TextStyle(
+                          color: AppTheme.titleColor.withOpacity(0.6),
+                          fontSize: 16,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Stack(
+                            children: [
+                              IconButton(
+                                onPressed: _showNotificationsSheet,
+                                icon: const Icon(Icons.notifications_none, color: AppTheme.titleColor),
+                              ),
+                              if (_unreadNotificationsCount > 0)
+                                Positioned(
+                                  right: 8,
+                                  top: 8,
+                                  child: Container(
+                                    padding: const EdgeInsets.all(2),
+                                    decoration: BoxDecoration(
+                                      color: AppTheme.errorRed,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    constraints: const BoxConstraints(minWidth: 14, minHeight: 14),
+                                    child: Text(
+                                      '$_unreadNotificationsCount',
+                                      style: const TextStyle(color: AppTheme.titleColor, fontSize: 8, fontWeight: FontWeight.bold),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ),
+                            ],
                           ),
-                        ),
-                        Text(
-                          'Track food items and recipes',
-                          style: TextStyle(color: AppTheme.labelColor, fontSize: 13),
-                        ),
-                      ],
+                          IconButton(
+                            onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsScreen(companyId: _companyId, companyName: _companyName, role: 'owner', fullName: _ownerName)));
+                            },
+                            icon: const Icon(Icons.settings_outlined, color: AppTheme.labelColor),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    _companyName ?? 'Dashboard',
+                    style: const TextStyle(
+                      color: AppTheme.titleColor,
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: -0.5,
                     ),
                   ),
-                  const Icon(
-                    Icons.arrow_forward_ios_rounded,
-                    color: AppTheme.borderColor,
-                    size: 16,
+                  const SizedBox(height: 8),
+                  Text(
+                    'Owner: ${_ownerName ?? '...'}',
+                    style: TextStyle(
+                      color: AppTheme.titleColor.withOpacity(0.5),
+                      fontSize: 13,
+                    ),
                   ),
                 ],
               ),
             ),
           ),
+          
+          Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _buildOrderList('On-Going', true, _onGoingOrders),
+                _buildOrderList('Up-Coming', false, _upcomingOrders),
+                
+                const SizedBox(height: 10),
 
-          const SizedBox(height: 30),
-
-          const SizedBox(height: 30),
-
-          // Manage Middlemen Action
-          InkWell(
-            onTap: () {
-              if (_companyId != null) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => KaathaScreen(companyId: _companyId!),
+                // Inventory Action
+                Container(
+                  decoration: BoxDecoration(
+                    boxShadow: AppTheme.softShadow,
+                    borderRadius: BorderRadius.circular(20),
                   ),
-                );
-              }
-            },
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    AppTheme.activeEmerald.withOpacity(0.15),
-                    AppTheme.activeEmerald.withOpacity(0.05),
-                  ],
-                ),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: AppTheme.activeEmerald.withOpacity(0.2)),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: AppTheme.activeEmerald.withOpacity(0.1),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.account_balance_wallet_outlined,
-                      color: AppTheme.activeEmerald,
-                      size: 24,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  const Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Manage Middlemen',
-                          style: TextStyle(
-                            color: AppTheme.titleColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(20),
+                    onTap: () {
+                      if (_companyId != null) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => InventoryListScreen(
+                              companyId: _companyId!,
+                              isOwner: true,
+                            ),
                           ),
-                        ),
-                        Text(
-                          'Khata ledger & middleman accounts',
-                          style: TextStyle(color: AppTheme.labelColor, fontSize: 13),
-                        ),
-                      ],
+                        );
+                      }
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: AppTheme.cardColor,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: AppTheme.borderColor),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: AppTheme.primaryAction.withOpacity(0.1),
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              Icons.inventory_2_outlined,
+                              color: AppTheme.primaryAction,
+                              size: 24,
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          const Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Manage Menu',
+                                  style: TextStyle(
+                                    color: AppTheme.titleColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                Text(
+                                  'Track food items and recipes',
+                                  style: TextStyle(color: AppTheme.labelColor, fontSize: 13),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            color: AppTheme.borderColor,
+                            size: 16,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  const Icon(
-                    Icons.arrow_forward_ios_rounded,
-                    color: AppTheme.borderColor,
-                    size: 16,
+                ),
+
+                const SizedBox(height: 20),
+
+                // Manage Middlemen Action
+                Container(
+                  decoration: BoxDecoration(
+                    boxShadow: AppTheme.softShadow,
+                    borderRadius: BorderRadius.circular(20),
                   ),
-                ],
-              ),
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(20),
+                    onTap: () {
+                      if (_companyId != null) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => KaathaScreen(companyId: _companyId!),
+                          ),
+                        );
+                      }
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: AppTheme.cardColor,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: AppTheme.borderColor),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: AppTheme.activeEmerald.withOpacity(0.1),
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              Icons.account_balance_wallet_outlined,
+                              color: AppTheme.activeEmerald,
+                              size: 24,
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          const Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Manage Middlemen',
+                                  style: TextStyle(
+                                    color: AppTheme.titleColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                Text(
+                                  'Khata ledger & middleman accounts',
+                                  style: TextStyle(color: AppTheme.labelColor, fontSize: 13),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            color: AppTheme.borderColor,
+                            size: 16,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -787,116 +861,124 @@ class _OwnerViewState extends State<OwnerView> {
     }
 
     return Scaffold(
+      extendBody: true,
       backgroundColor: AppTheme.background,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: const Text(
-          'Owner Dashboard',
-          style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.titleColor),
-        ),
-        automaticallyImplyLeading: false,
-        actions: [
-          Stack(
-            children: [
-              IconButton(
-                onPressed: _showNotificationsSheet,
-                icon: const Icon(Icons.notifications_none, color: AppTheme.titleColor),
-              ),
-              if (_unreadNotificationsCount > 0)
-                Positioned(
-                  right: 8,
-                  top: 8,
-                  child: Container(
-                    padding: const EdgeInsets.all(2),
-                    decoration: BoxDecoration(
-                      color: AppTheme.errorRed,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    constraints: const BoxConstraints(
-                      minWidth: 14,
-                      minHeight: 14,
-                    ),
-                    child: Text(
-                      '$_unreadNotificationsCount',
-                      style: const TextStyle(
-                        color: AppTheme.titleColor,
-                        fontSize: 8,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
-            ],
-          ),
-          IconButton(
-            onPressed: () {
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: _selectedIndex == 0 ? Padding(
+        padding: const EdgeInsets.only(bottom: 96),
+        child: FloatingActionButton.extended(
+          heroTag: 'dashboardCreateOrder',
+          backgroundColor: AppTheme.pendingAmber,
+          onPressed: () {
+            if (_companyId != null) {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => SettingsScreen(
-                    companyId: _companyId,
-                    companyName: _companyName,
-                    role: 'owner',
-                    fullName: _ownerName,
-                  ),
+                  builder: (context) => CreateOrderScreen(companyId: _companyId!),
                 ),
               );
-            },
-            icon: const Icon(Icons.settings_outlined, color: AppTheme.labelColor),
+            }
+          },
+          icon: const Icon(Icons.add, color: Colors.black),
+          label: const Text(
+            'New Order',
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          ),
+        ),
+      ) : null,
+      appBar: _selectedIndex == 0 ? null : AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: Text(
+          _selectedIndex == 1 ? 'Orders' : _selectedIndex == 2 ? 'Requests' : 'Staff',
+          style: const TextStyle(fontWeight: FontWeight.bold, color: AppTheme.titleColor),
+        ),
+        automaticallyImplyLeading: false,
+      ),
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: _selectedIndex == 0
+                ? _buildDashboardTab()
+                : _selectedIndex == 1
+                ? OrdersTab(companyId: _companyId ?? '')
+                : _selectedIndex == 2
+                ? JoinRequestsScreen(
+                    key: ValueKey(_pendingCount),
+                    onRequestHandled: _fetchRequestCount,
+                  )
+                : StaffManagementScreen(companyId: _companyId ?? ''),
+          ),
+          Positioned(
+            left: 20,
+            right: 20,
+            bottom: 24,
+            child: Container(
+              height: 72,
+              decoration: BoxDecoration(
+                color: AppTheme.cardColor,
+                borderRadius: BorderRadius.circular(32),
+                boxShadow: AppTheme.softShadow,
+                border: Border.all(
+                  color: AppTheme.borderColor,
+                  width: 1,
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _buildNavItem(0, Icons.dashboard_outlined, Icons.dashboard, 'Dashboard'),
+                  _buildNavItem(1, Icons.assignment_outlined, Icons.assignment, 'Orders'),
+                  _buildNavItem(2, Icons.person_add_outlined, Icons.person_add, 'Requests', badgeCount: _pendingCount),
+                  _buildNavItem(3, Icons.people_alt_outlined, Icons.people_alt, 'Staff'),
+                ],
+              ),
+            ),
           ),
         ],
       ),
-      body: _selectedIndex == 0
-          ? _buildDashboardTab()
-          : _selectedIndex == 1
-          ? OrdersTab(companyId: _companyId ?? '')
-          : _selectedIndex == 2
-          ? JoinRequestsScreen(
-              key: ValueKey(_pendingCount),
-              onRequestHandled: _fetchRequestCount,
-            )
-          : StaffManagementScreen(companyId: _companyId ?? ''),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: AppTheme.background,
-        selectedItemColor: AppTheme.pendingAmber,
-        unselectedItemColor: AppTheme.labelColor,
-        currentIndex: _selectedIndex,
-        onTap: (index) => setState(() => _selectedIndex = index),
-        type: BottomNavigationBarType.fixed,
-        items: [
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard_outlined),
-            activeIcon: Icon(Icons.dashboard),
-            label: 'Dashboard',
-          ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.assignment_outlined),
-            activeIcon: Icon(Icons.assignment),
-            label: 'Orders',
-          ),
-          BottomNavigationBarItem(
-            icon: Badge(
-              isLabelVisible: _pendingCount > 0,
-              label: Text('$_pendingCount'),
+    );
+  }
+
+  Widget _buildNavItem(int index, IconData icon, IconData activeIcon, String label, {int badgeCount = 0}) {
+    final isSelected = _selectedIndex == index;
+    return GestureDetector(
+      onTap: () => setState(() => _selectedIndex = index),
+      behavior: HitTestBehavior.opaque,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOutCubic,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        decoration: BoxDecoration(
+          color: isSelected ? AppTheme.titleColor.withOpacity(0.08) : Colors.transparent,
+          borderRadius: BorderRadius.circular(24),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Badge(
+              isLabelVisible: badgeCount > 0,
+              label: Text('$badgeCount'),
               backgroundColor: AppTheme.errorRed,
-              child: const Icon(Icons.person_add_outlined),
+              child: Icon(
+                isSelected ? activeIcon : icon,
+                color: isSelected ? AppTheme.primaryAction : AppTheme.labelColor,
+                size: 26,
+              ),
             ),
-            activeIcon: Badge(
-              isLabelVisible: _pendingCount > 0,
-              label: Text('$_pendingCount'),
-              backgroundColor: AppTheme.errorRed,
-              child: const Icon(Icons.person_add),
-            ),
-            label: 'Requests',
-          ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.people_alt_outlined),
-            activeIcon: Icon(Icons.people_alt),
-            label: 'Staff',
-          ),
-        ],
+            if (isSelected) ...[
+              const SizedBox(width: 8),
+              Text(
+                label,
+                style: const TextStyle(
+                  color: AppTheme.primaryAction,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+              ),
+            ]
+          ],
+        ),
       ),
     );
   }

@@ -186,13 +186,16 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
                 ],
               ],
             ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _showAddStaffDialog,
-        backgroundColor: AppTheme.pendingAmber,
-        icon: const Icon(Icons.person_add, color: Colors.black),
-        label: const Text(
-          'Add Staff',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 96),
+        child: FloatingActionButton.extended(
+          onPressed: _showAddStaffDialog,
+          backgroundColor: AppTheme.pendingAmber,
+          icon: const Icon(Icons.person_add, color: Colors.black),
+          label: const Text(
+            'Add Staff',
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          ),
         ),
       ),
     );

@@ -1592,21 +1592,24 @@ Please ensure timely delivery!
 
     return Scaffold(
       backgroundColor: Colors.transparent, // Background handled by parent View
-      floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: AppTheme.pendingAmber,
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  CreateOrderScreen(companyId: widget.companyId),
-            ),
-          );
-        },
-        icon: const Icon(Icons.add, color: Colors.black),
-        label: const Text(
-          'New Order',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 96),
+        child: FloatingActionButton.extended(
+          backgroundColor: AppTheme.pendingAmber,
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    CreateOrderScreen(companyId: widget.companyId),
+              ),
+            );
+          },
+          icon: const Icon(Icons.add, color: Colors.black),
+          label: const Text(
+            'New Order',
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          ),
         ),
       ),
       body: _isLoading

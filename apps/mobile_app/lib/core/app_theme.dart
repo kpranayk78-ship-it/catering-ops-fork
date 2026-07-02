@@ -21,6 +21,37 @@ class AppTheme {
   // Other helpful semantics based on theme
   static const Color errorRed = Color(0xFFEF4444);
 
+  // --- Premium UI Properties ---
+  static const Color glassBackground = Color(0x99FFFFFF); // 60% opacity white for glassmorphism
+  static const Color darkGlass = Color(0x66111827); // subtle dark glass
+  
+  static List<BoxShadow> get softShadow => [
+        BoxShadow(
+          color: titleColor.withOpacity(0.04),
+          blurRadius: 16,
+          offset: const Offset(0, 4),
+          spreadRadius: 0,
+        ),
+        BoxShadow(
+          color: titleColor.withOpacity(0.02),
+          blurRadius: 4,
+          offset: const Offset(0, 2),
+          spreadRadius: 0,
+        ),
+      ];
+
+  static LinearGradient get subtleGradient => const LinearGradient(
+        colors: [Color(0xFFF9FAFB), Color(0xFFF3F4F6)],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      );
+      
+  static LinearGradient get primaryGradient => const LinearGradient(
+        colors: [Color(0xFF3B82F6), Color(0xFF2563EB)], // Lighter to deeper blue
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      );
+
   static ThemeData get lightTheme {
     return ThemeData(
       brightness: Brightness.light,
