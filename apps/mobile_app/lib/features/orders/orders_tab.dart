@@ -10,6 +10,7 @@ import 'package:geolocator/geolocator.dart';
 import 'create_order_screen.dart';
 import 'bids_screen.dart';
 import '../../services/cache_service.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class OrdersTab extends StatefulWidget {
   final String companyId;
@@ -563,7 +564,12 @@ Please ensure timely delivery!
       _fetchBidsForOrder(order['id']);
     }
 
-    final isExpanded = _expandedOrderId == order['id'];
+    int progressionStage = 1;
+    if (deliveryStaffId != null) progressionStage = 2;
+    if (order['is_picked'] == true) progressionStage = 3;
+    if (isDelivered) progressionStage = 4;
+    double progressPercentage = progressionStage / 4.0;
+    final bool isExpanded = _expandedOrderId == order['id'];
 
     return Dismissible(
       key: Key(order['id']),
@@ -609,10 +615,12 @@ Please ensure timely delivery!
         padding: const EdgeInsets.only(right: 20),
         margin: const EdgeInsets.only(bottom: 16),
         decoration: BoxDecoration(
-          color: AppTheme.errorRed.withOpacity(0.8),
+          color: AppTheme.errorRed,
           borderRadius: BorderRadius.circular(20),
         ),
-        child: const Icon(Icons.delete, color: AppTheme.titleColor, size: 32),
+        child: const Icon(Icons.delete, color: AppTheme.titleColor, size: 32)
+            .animate(onPlay: (controller) => controller.repeat(reverse: true))
+            .scale(begin: const Offset(1, 1), end: const Offset(1.2, 1.2), duration: 800.ms),
       ),
       child: GestureDetector(
         onTap: () {
@@ -625,46 +633,65 @@ Please ensure timely delivery!
           decoration: BoxDecoration(
             color: AppTheme.cardColor,
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(
-              color: isDelivered
-                  ? AppTheme.activeEmerald.withOpacity(0.6)
-                  : isExpanded
-                  ? AppTheme.pendingAmber.withOpacity(0.5)
-                  : (deliveryStaffId == null && !isDeliveryOpen)
-                  ? AppTheme.errorRed.withOpacity(0.8)
-                  : AppTheme.borderColor,
-              width: isDelivered
-                  ? 1.5
-                  : (deliveryStaffId == null && !isDeliveryOpen)
-                  ? 1.5
-                  : 1.0,
-            ),
-            boxShadow: isDelivered
-                ? [
-                    BoxShadow(
-                      color: AppTheme.activeEmerald.withOpacity(0.2),
-                      blurRadius: 18,
-                      spreadRadius: 1,
-                    ),
-                  ]
-                : (deliveryStaffId == null && !isDeliveryOpen)
-                ? [
-                    BoxShadow(
-                      color: AppTheme.errorRed.withOpacity(0.35),
-                      blurRadius: 16,
-                      spreadRadius: 1,
-                    ),
-                  ]
-                : null,
+            border: Border.all(color: AppTheme.borderColor),
+            boxShadow: AppTheme.softShadow,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  left: BorderSide(
+                    color: isDelivered
+                        ? AppTheme.activeEmerald
+                        : (deliveryStaffId == null && !isDeliveryOpen)
+                            ? AppTheme.errorRed
+                            : Colors.transparent,
+                    width: (isDelivered || (deliveryStaffId == null && !isDeliveryOpen)) ? 6.0 : 0.0,
+                  ),
+                ),
+              ),
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          return AnimatedContainer(
+                            duration: const Duration(milliseconds: 400),
+                            curve: Curves.easeOutCubic,
+                            margin: isExpanded
+                                ? const EdgeInsets.only(top: 10, left: 16, right: 16)
+                                : EdgeInsets.zero,
+                            height: isExpanded ? 4.0 : constraints.maxHeight,
+                            width: isExpanded
+                                ? (constraints.maxWidth - 32) * progressPercentage
+                                : constraints.maxWidth * progressPercentage,
+                            decoration: BoxDecoration(
+                              color: AppTheme.activeEmerald.withOpacity(isExpanded ? 1.0 : 0.15),
+                              borderRadius: isExpanded
+                                  ? BorderRadius.circular(4)
+                                  : BorderRadius.only(
+                                      topLeft: const Radius.circular(20),
+                                      topRight: progressPercentage >= 1.0 ? const Radius.circular(20) : Radius.zero,
+                                      bottomLeft: const Radius.circular(20),
+                                      bottomRight: progressPercentage >= 1.0 ? const Radius.circular(20) : Radius.zero,
+                                    ),
+                            ),
+                          );
+                        }
+                      ),
+                    ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
               // Header Section (Always Visible)
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: AppTheme.background,
+                  color: Colors.transparent,
                   borderRadius: BorderRadius.vertical(
                     top: const Radius.circular(20),
                     bottom: isExpanded
@@ -1572,7 +1599,11 @@ Please ensure timely delivery!
                     : CrossFadeState.showFirst,
                 duration: const Duration(milliseconds: 200),
               ),
-            ],
+                  ],
+                ), // End Column
+              ], // End Stack children
+            ), // End Stack
+            ),
           ),
         ),
       ),

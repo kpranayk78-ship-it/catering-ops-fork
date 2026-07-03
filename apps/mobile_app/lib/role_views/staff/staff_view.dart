@@ -1654,6 +1654,20 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
     }
   }
 
+  Future<void> _markAsPicked(Map<String, dynamic> order) async {
+    try {
+      await supabase
+          .from('orders')
+          .update({'is_picked': true})
+          .eq('id', order['id']);
+      _showToast('Order Picked! 🚚', AppTheme.activeEmerald);
+      _fetchAssignedOrders();
+    } catch (e) {
+      _showToast('Error marking as picked: $e', AppTheme.errorRed);
+    }
+  }
+
+
   Future<void> _confirmDelivery(Map<String, dynamic> order) async {
     final clientName = order['client_name'] ?? 'Customer';
     final bytes = await showDialog<dynamic>(
@@ -1911,6 +1925,57 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
               );
             }),
             const SizedBox(height: 12),
+            if (order['is_picked'] != true && order['delivery_signature'] == null)
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: () => _markAsPicked(order),
+                  icon: const Icon(
+                    Icons.local_shipping_outlined,
+                    color: Colors.black87,
+                    size: 18,
+                  ),
+                  label: const Text(
+                    'Mark Order Picked 🚚',
+                    style: TextStyle(
+                      color: Colors.black87,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppTheme.pendingAmber,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    elevation: 0,
+                  ),
+                ),
+              ),
+            if (order['is_picked'] == true && order['delivery_signature'] == null)
+              SizedBox(
+                width: double.infinity,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  decoration: BoxDecoration(
+                    color: AppTheme.activeEmerald.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: AppTheme.activeEmerald.withOpacity(0.5)),
+                  ),
+                  child: const Center(
+                    child: Text(
+                      '🚚 Order Picked Up',
+                      style: TextStyle(
+                        color: AppTheme.activeEmerald,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            const SizedBox(height: 8),
             if (order['delivery_signature'] == null)
               SizedBox(
                 width: double.infinity,

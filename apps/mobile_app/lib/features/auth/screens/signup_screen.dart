@@ -96,23 +96,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     try {
       final supabase = Supabase.instance.client;
 
-      // Check if phone number is already registered
-      try {
-        final bool phoneExists = await supabase.rpc('check_phone_exists', params: {'p_phone': phone});
-        if (phoneExists) {
-          setState(() {
-            _phoneError = 'This phone number is already registered';
-            _loading = false;
-          });
-          return;
-        }
-      } catch (e) {
-        debugPrint('Phone check failed (DB migration might be missing): $e');
-        setState(() => _loading = false);
-        _toast('Database error! Did you run 22_check_phone_exists.sql?');
-        return;
-      }
-
       final signupEmail = email.isEmpty ? '$phone@catering.app' : email;
 
       final res = await supabase.auth.signUp(
@@ -200,11 +183,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         width: double.infinity,
         height: double.infinity,
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [AppTheme.background, Color(0xFF16213E), Color(0xFF0F3460)],
-          ),
+          color: AppTheme.background,
         ),
         child: SafeArea(
           child: SingleChildScrollView(
@@ -242,8 +221,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 Container(
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
-                    color: AppTheme.titleColor.withOpacity(0.05),
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(24),
+                    boxShadow: AppTheme.softShadow,
                     border: Border.all(color: AppTheme.borderColor),
                   ),
                   child: Column(
@@ -349,19 +329,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
       style: const TextStyle(color: AppTheme.titleColor),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: const TextStyle(color: Colors.white60, fontSize: 13),
+        labelStyle: const TextStyle(color: AppTheme.labelColor, fontSize: 13),
         errorText: errorText,
         errorStyle: const TextStyle(color: AppTheme.errorRed),
-        prefixIcon: Icon(icon, color: Colors.white60, size: 20),
+        prefixIcon: Icon(icon, color: AppTheme.labelColor, size: 20),
         filled: true,
-        fillColor: AppTheme.titleColor.withOpacity(0.05),
+        fillColor: AppTheme.background,
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
           borderSide: const BorderSide(color: AppTheme.borderColor),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: AppTheme.pendingAmber),
+          borderSide: const BorderSide(color: AppTheme.pendingAmber, width: 2),
         ),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 20,
@@ -378,13 +358,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
       child: ElevatedButton(
         onPressed: _loading ? null : _signUp,
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppTheme.pendingAmber,
-          foregroundColor: AppTheme.titleColor,
+          backgroundColor: AppTheme.titleColor,
+          foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
-          elevation: 8,
-          shadowColor: AppTheme.pendingAmber.withOpacity(0.4),
+          elevation: 4,
+          shadowColor: AppTheme.titleColor.withOpacity(0.2),
         ),
         child: _loading
             ? const SizedBox(
@@ -392,7 +372,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 width: 24,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
-                  color: AppTheme.titleColor,
+                  color: Colors.white,
                 ),
               )
             : const Text(
@@ -428,11 +408,12 @@ class _RoleCard extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
           color: isSelected
-              ? AppTheme.pendingAmber.withOpacity(0.2)
-              : AppTheme.titleColor.withOpacity(0.05),
+              ? AppTheme.primaryAction.withOpacity(0.08)
+              : Colors.white,
           borderRadius: BorderRadius.circular(16),
+          boxShadow: isSelected ? [] : AppTheme.softShadow,
           border: Border.all(
-            color: isSelected ? AppTheme.pendingAmber : AppTheme.borderColor,
+            color: isSelected ? AppTheme.primaryAction : AppTheme.borderColor,
             width: 2,
           ),
         ),
@@ -440,7 +421,7 @@ class _RoleCard extends StatelessWidget {
           child: Text(
             title,
             style: TextStyle(
-              color: isSelected ? AppTheme.pendingAmber : AppTheme.labelColor,
+              color: isSelected ? AppTheme.primaryAction : AppTheme.labelColor,
               fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
               fontSize: 13,
             ),

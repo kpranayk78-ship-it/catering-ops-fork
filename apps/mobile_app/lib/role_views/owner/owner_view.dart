@@ -595,8 +595,9 @@ class _OwnerViewState extends State<OwnerView> {
 
 
 
-  Widget _buildDashboardTab() {
+  Widget _buildDashboardTab({Key? key}) {
     return SingleChildScrollView(
+      key: key,
       padding: const EdgeInsets.only(bottom: 120),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -864,28 +865,37 @@ class _OwnerViewState extends State<OwnerView> {
       extendBody: true,
       backgroundColor: AppTheme.background,
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: _selectedIndex == 0 ? Padding(
-        padding: const EdgeInsets.only(bottom: 96),
-        child: FloatingActionButton.extended(
-          heroTag: 'dashboardCreateOrder',
-          backgroundColor: AppTheme.pendingAmber,
-          onPressed: () {
-            if (_companyId != null) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => CreateOrderScreen(companyId: _companyId!),
-                ),
-              );
-            }
-          },
-          icon: const Icon(Icons.add, color: Colors.black),
-          label: const Text(
-            'New Order',
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+      floatingActionButton: AnimatedScale(
+        scale: _selectedIndex == 0 ? 1.0 : 0.0,
+        duration: const Duration(milliseconds: 250),
+        curve: Curves.easeOutBack,
+        child: AnimatedOpacity(
+          opacity: _selectedIndex == 0 ? 1.0 : 0.0,
+          duration: const Duration(milliseconds: 200),
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 96),
+            child: FloatingActionButton.extended(
+              heroTag: 'dashboardCreateOrder',
+              backgroundColor: AppTheme.pendingAmber,
+              onPressed: () {
+                if (_companyId != null) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CreateOrderScreen(companyId: _companyId!),
+                    ),
+                  );
+                }
+              },
+              icon: const Icon(Icons.add, color: Colors.black),
+              label: const Text(
+                'New Order',
+                style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              ),
+            ),
           ),
         ),
-      ) : null,
+      ),
       appBar: _selectedIndex == 0 ? null : AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -898,16 +908,31 @@ class _OwnerViewState extends State<OwnerView> {
       body: Stack(
         children: [
           Positioned.fill(
-            child: _selectedIndex == 0
-                ? _buildDashboardTab()
-                : _selectedIndex == 1
-                ? OrdersTab(companyId: _companyId ?? '')
-                : _selectedIndex == 2
-                ? JoinRequestsScreen(
-                    key: ValueKey(_pendingCount),
-                    onRequestHandled: _fetchRequestCount,
-                  )
-                : StaffManagementScreen(companyId: _companyId ?? ''),
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              transitionBuilder: (Widget child, Animation<double> animation) {
+                return FadeTransition(
+                  opacity: animation,
+                  child: SlideTransition(
+                    position: Tween<Offset>(
+                      begin: const Offset(0.0, 0.02),
+                      end: Offset.zero,
+                    ).animate(animation),
+                    child: child,
+                  ),
+                );
+              },
+              child: _selectedIndex == 0
+                  ? _buildDashboardTab(key: const ValueKey('dashboard'))
+                  : _selectedIndex == 1
+                  ? OrdersTab(key: const ValueKey('orders'), companyId: _companyId ?? '')
+                  : _selectedIndex == 2
+                  ? JoinRequestsScreen(
+                      key: ValueKey('requests_$_pendingCount'),
+                      onRequestHandled: _fetchRequestCount,
+                    )
+                  : StaffManagementScreen(key: const ValueKey('staff'), companyId: _companyId ?? ''),
+            ),
           ),
           Positioned(
             left: 20,
@@ -924,13 +949,36 @@ class _OwnerViewState extends State<OwnerView> {
                   width: 1,
                 ),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              child: Stack(
+                alignment: Alignment.center,
                 children: [
-                  _buildNavItem(0, Icons.dashboard_outlined, Icons.dashboard, 'Dashboard'),
-                  _buildNavItem(1, Icons.assignment_outlined, Icons.assignment, 'Orders'),
-                  _buildNavItem(2, Icons.person_add_outlined, Icons.person_add, 'Requests', badgeCount: _pendingCount),
-                  _buildNavItem(3, Icons.people_alt_outlined, Icons.people_alt, 'Staff'),
+                  AnimatedAlign(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeOutCubic,
+                    alignment: Alignment(-1.0 + (_selectedIndex * (2.0 / 3.0)), 0),
+                    child: FractionallySizedBox(
+                      widthFactor: 0.25,
+                      child: Center(
+                        child: Container(
+                          height: 52,
+                          margin: const EdgeInsets.symmetric(horizontal: 12),
+                          decoration: BoxDecoration(
+                            color: AppTheme.titleColor.withOpacity(0.08),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(child: _buildNavItem(0, Icons.dashboard_outlined, Icons.dashboard, 'Dashboard')),
+                      Expanded(child: _buildNavItem(1, Icons.assignment_outlined, Icons.assignment, 'Orders')),
+                      Expanded(child: _buildNavItem(2, Icons.person_add_outlined, Icons.person_add, 'Requests', badgeCount: _pendingCount)),
+                      Expanded(child: _buildNavItem(3, Icons.people_alt_outlined, Icons.people_alt, 'Staff')),
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -942,41 +990,57 @@ class _OwnerViewState extends State<OwnerView> {
 
   Widget _buildNavItem(int index, IconData icon, IconData activeIcon, String label, {int badgeCount = 0}) {
     final isSelected = _selectedIndex == index;
-    return GestureDetector(
-      onTap: () => setState(() => _selectedIndex = index),
-      behavior: HitTestBehavior.opaque,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeOutCubic,
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        decoration: BoxDecoration(
-          color: isSelected ? AppTheme.titleColor.withOpacity(0.08) : Colors.transparent,
-          borderRadius: BorderRadius.circular(24),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Badge(
-              isLabelVisible: badgeCount > 0,
+
+    Widget buildIcon() {
+      return badgeCount > 0
+          ? Badge(
               label: Text('$badgeCount'),
               backgroundColor: AppTheme.errorRed,
               child: Icon(
                 isSelected ? activeIcon : icon,
                 color: isSelected ? AppTheme.primaryAction : AppTheme.labelColor,
-                size: 26,
+                size: 24,
               ),
+            )
+          : Icon(
+              isSelected ? activeIcon : icon,
+              color: isSelected ? AppTheme.primaryAction : AppTheme.labelColor,
+              size: 24,
+            );
+    }
+
+    return GestureDetector(
+      onTap: () => setState(() => _selectedIndex = index),
+      behavior: HitTestBehavior.opaque,
+      child: Container(
+        height: 52,
+        color: Colors.transparent,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            AnimatedAlign(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeOutCubic,
+              alignment: isSelected ? const Alignment(0, -0.6) : const Alignment(0, 0.0),
+              child: buildIcon(),
             ),
-            if (isSelected) ...[
-              const SizedBox(width: 8),
-              Text(
-                label,
-                style: const TextStyle(
-                  color: AppTheme.primaryAction,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
+            AnimatedAlign(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeOutCubic,
+              alignment: isSelected ? const Alignment(0, 0.8) : const Alignment(0, 1.5),
+              child: AnimatedOpacity(
+                duration: const Duration(milliseconds: 200),
+                opacity: isSelected ? 1.0 : 0.0,
+                child: Text(
+                  label,
+                  style: const TextStyle(
+                    color: AppTheme.primaryAction,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 11,
+                  ),
                 ),
               ),
-            ]
+            ),
           ],
         ),
       ),

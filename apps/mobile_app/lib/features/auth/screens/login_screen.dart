@@ -111,11 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
         width: double.infinity,
         height: double.infinity,
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [AppTheme.background, Color(0xFF16213E), Color(0xFF0F3460)],
-          ),
+          color: AppTheme.background,
         ),
         child: SafeArea(
           child: SingleChildScrollView(
@@ -128,8 +124,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: AppTheme.titleColor.withOpacity(0.05),
+                    color: Colors.white,
                     shape: BoxShape.circle,
+                    boxShadow: AppTheme.softShadow,
                     border: Border.all(color: AppTheme.borderColor),
                   ),
                   child: const Icon(
@@ -158,8 +155,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 Container(
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
-                    color: AppTheme.titleColor.withOpacity(0.05),
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(24),
+                    boxShadow: AppTheme.softShadow,
                     border: Border.all(color: AppTheme.borderColor),
                   ),
                   child: Column(
@@ -243,17 +241,17 @@ class _LoginScreenState extends State<LoginScreen> {
       style: const TextStyle(color: AppTheme.titleColor),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: const TextStyle(color: Colors.white60),
-        prefixIcon: Icon(icon, color: Colors.white60),
+        labelStyle: const TextStyle(color: AppTheme.labelColor),
+        prefixIcon: Icon(icon, color: AppTheme.labelColor),
         filled: true,
-        fillColor: AppTheme.titleColor.withOpacity(0.05),
+        fillColor: AppTheme.background,
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
           borderSide: const BorderSide(color: AppTheme.borderColor),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: AppTheme.pendingAmber),
+          borderSide: const BorderSide(color: AppTheme.pendingAmber, width: 2),
         ),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 20,
@@ -270,13 +268,13 @@ class _LoginScreenState extends State<LoginScreen> {
       child: ElevatedButton(
         onPressed: _loading ? null : _login,
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppTheme.pendingAmber,
-          foregroundColor: AppTheme.titleColor,
+          backgroundColor: AppTheme.titleColor,
+          foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
-          elevation: 8,
-          shadowColor: AppTheme.pendingAmber.withOpacity(0.4),
+          elevation: 4,
+          shadowColor: AppTheme.titleColor.withOpacity(0.2),
         ),
         child: _loading
             ? const SizedBox(
@@ -284,7 +282,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 width: 24,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
-                  color: AppTheme.titleColor,
+                  color: Colors.white,
                 ),
               )
             : const Text(
