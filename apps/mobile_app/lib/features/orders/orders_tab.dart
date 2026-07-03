@@ -28,6 +28,7 @@ class _OrdersTabState extends State<OrdersTab> {
   String _currentFilter =
       'all'; // 'all', 'upcoming', 'completed', 'pending_payment'
   String? _expandedOrderId;
+  final Map<String, double> _dragProgresses = {};
   // Cache of bids per order: orderId -> list of bids
   final Map<String, List<Map<String, dynamic>>> _bidsCache = {};
   RealtimeChannel? _bidsSubscription;
@@ -570,6 +571,7 @@ Please ensure timely delivery!
     if (isDelivered) progressionStage = 4;
     double progressPercentage = progressionStage / 4.0;
     final bool isExpanded = _expandedOrderId == order['id'];
+    double dragProgress = _dragProgresses[order['id']] ?? 0.0;
 
     return Dismissible(
       key: Key(order['id']),
@@ -609,7 +611,17 @@ Please ensure timely delivery!
           ),
         );
       },
-      onDismissed: (direction) => _deleteOrder(order['id']),
+      onUpdate: (details) {
+        setState(() {
+          _dragProgresses[order['id']] = details.progress;
+        });
+      },
+      onDismissed: (direction) {
+        setState(() {
+          _dragProgresses.remove(order['id']);
+        });
+        _deleteOrder(order['id']);
+      },
       background: Container(
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.only(right: 20),
@@ -618,9 +630,7 @@ Please ensure timely delivery!
           color: AppTheme.errorRed,
           borderRadius: BorderRadius.circular(20),
         ),
-        child: const Icon(Icons.delete, color: AppTheme.titleColor, size: 32)
-            .animate(onPlay: (controller) => controller.repeat(reverse: true))
-            .scale(begin: const Offset(1, 1), end: const Offset(1.2, 1.2), duration: 800.ms),
+        child: _buildAnimatedTrashIcon(dragProgress),
       ),
       child: GestureDetector(
         onTap: () {
@@ -2195,6 +2205,36 @@ Please ensure timely delivery!
           },
         );
       },
+    );
+  }
+  Widget _buildAnimatedTrashIcon(double progress) {
+    double lidOpen = (progress * 2.5).clamp(0.0, 1.0);
+    
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Transform.rotate(
+          angle: lidOpen * 0.8, // Opens by rotating 
+          alignment: Alignment.bottomRight, // Hinging at the right corner
+          child: Transform.translate(
+            offset: Offset(0, -lidOpen * 2), // Lifts slightly up
+            child: ClipRect(
+              child: Align(
+                alignment: Alignment.topCenter,
+                heightFactor: 0.3, // Top 30% is the lid
+                child: const Icon(Icons.delete, color: AppTheme.titleColor, size: 32),
+              ),
+            ),
+          ),
+        ),
+        ClipRect(
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            heightFactor: 0.7, // Bottom 70% is the bin body
+            child: const Icon(Icons.delete, color: AppTheme.titleColor, size: 32),
+          ),
+        ),
+      ],
     );
   }
 }
