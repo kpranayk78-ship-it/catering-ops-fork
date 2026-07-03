@@ -15,7 +15,7 @@ import '../shared/animated_notification_overlay.dart';
 import '../shared/expandable_notification_item.dart';
 
 class StaffView extends StatefulWidget {
-  const StaffView({super.key});
+  StaffView({super.key});
 
   @override
   State<StaffView> createState() => _StaffViewState();
@@ -186,7 +186,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
     try {
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.medium,
-        timeLimit: const Duration(seconds: 10),
+        timeLimit: Duration(seconds: 10),
       );
       
       await supabase.from('profiles').update({
@@ -204,7 +204,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
   void _startLocationUpdates() {
     _locationTimer?.cancel();
     // Update every 5 minutes if app is in foreground and there are orders
-    _locationTimer = Timer.periodic(const Duration(minutes: 5), (_) => _updateStaffLocationInDB());
+    _locationTimer = Timer.periodic(Duration(minutes: 5), (_) => _updateStaffLocationInDB());
     // Trigger initial update
     _updateStaffLocationInDB();
   }
@@ -220,7 +220,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
     // inside _fetchStaffProfile() after _companyId is available.
     _fetchNotificationsCount();
     _setupNotificationRealtime();
-    _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    _countdownTimer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (mounted) setState(() {});
     });
   }
@@ -304,27 +304,27 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
     showModalBottomSheet(
       context: context,
       backgroundColor: AppTheme.background,
-      shape: const RoundedRectangleBorder(
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (context) => Container(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.all(20),
         child: Column(
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
+                Text(
                   'Notifications',
                   style: TextStyle(color: AppTheme.titleColor, fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 IconButton(
                   onPressed: () => Navigator.pop(context),
-                  icon: const Icon(Icons.close, color: AppTheme.labelColor),
+                  icon: Icon(Icons.close, color: AppTheme.labelColor),
                 ),
               ],
             ),
-            const Divider(color: AppTheme.borderColor),
+            Divider(color: AppTheme.borderColor),
             Expanded(
               child: FutureBuilder<List<Map<String, dynamic>>>(
                 future: supabase
@@ -335,11 +335,11 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                     .limit(20),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
+                    return Center(child: CircularProgressIndicator());
                   }
                   final notifications = snapshot.data ?? [];
                   if (notifications.isEmpty) {
-                    return const Center(
+                    return Center(
                       child: Text('No notifications', style: TextStyle(color: AppTheme.labelColor)),
                     );
                   }
@@ -469,7 +469,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
           ),
           callback: (payload) async {
             // Small delay to let DB trigger finish updating profile
-            await Future.delayed(const Duration(milliseconds: 800));
+            await Future.delayed(Duration(milliseconds: 800));
             _fetchRequestStatus();
             _fetchStaffProfile();
           },
@@ -623,11 +623,11 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
           borderRadius: BorderRadius.circular(16),
           side: BorderSide(color: AppTheme.titleColor.withOpacity(0.1)),
         ),
-        title: const Text(
+        title: Text(
           'Notice',
           style: TextStyle(color: AppTheme.titleColor, fontWeight: FontWeight.bold),
         ),
-        content: const Text(
+        content: Text(
           'You have been removed from the company. Please contact your owner for more information.',
           style: TextStyle(color: AppTheme.labelColor),
         ),
@@ -649,7 +649,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            child: const Text(
+            child: Text(
               'OK',
               style: TextStyle(
                 color: AppTheme.titleColor,
@@ -666,7 +666,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return const Scaffold(
+      return Scaffold(
         backgroundColor: AppTheme.background,
         body: Center(
           child: CircularProgressIndicator(color: AppTheme.pendingAmber),
@@ -701,7 +701,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                 _fetchRequestStatus();
               } catch (_) {}
             },
-            icon: const Icon(Icons.cancel_outlined, color: AppTheme.labelColor),
+            icon: Icon(Icons.cancel_outlined, color: AppTheme.labelColor),
           ),
           IconButton(
             onPressed: () {
@@ -715,7 +715,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                 ),
               );
             },
-            icon: const Icon(Icons.settings_outlined, color: AppTheme.labelColor),
+            icon: Icon(Icons.settings_outlined, color: AppTheme.labelColor),
           ),
         ],
       ),
@@ -727,24 +727,24 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
         color: AppTheme.pendingAmber,
         backgroundColor: AppTheme.background,
         child: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
+          physics: AlwaysScrollableScrollPhysics(),
           child: Container(
             constraints: BoxConstraints(
               minHeight: MediaQuery.of(context).size.height - 100,
             ),
             child: Center(
               child: Padding(
-                padding: const EdgeInsets.all(32),
+                padding: EdgeInsets.all(32),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.hourglass_empty_rounded,
                       size: 80,
                       color: AppTheme.pendingAmber,
                     ),
-                    const SizedBox(height: 32),
-                    const Text(
+                    SizedBox(height: 32),
+                    Text(
                       'Request Pending',
                       style: TextStyle(
                         color: AppTheme.titleColor,
@@ -752,7 +752,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16),
                     Text(
                       'Your request to join "$companyName" is waiting for approval.',
                       textAlign: TextAlign.center,
@@ -761,8 +761,8 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                         fontSize: 16,
                       ),
                     ),
-                    const SizedBox(height: 48),
-                    const CircularProgressIndicator(color: AppTheme.pendingAmber),
+                    SizedBox(height: 48),
+                    CircularProgressIndicator(color: AppTheme.pendingAmber),
                   ],
                 ),
               ),
@@ -793,7 +793,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                 ),
               );
             },
-            icon: const Icon(Icons.settings_outlined, color: AppTheme.labelColor),
+            icon: Icon(Icons.settings_outlined, color: AppTheme.labelColor),
           ),
         ],
       ),
@@ -806,25 +806,25 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
         backgroundColor: AppTheme.background,
         child: Center(
           child: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.all(32),
+            physics: AlwaysScrollableScrollPhysics(),
+            padding: EdgeInsets.all(32),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  padding: const EdgeInsets.all(20),
+                  padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: AppTheme.pendingAmber.withOpacity(0.1),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.business_center,
                     size: 60,
                     color: AppTheme.pendingAmber,
                   ),
                 ),
-                const SizedBox(height: 32),
-                const Text(
+                SizedBox(height: 32),
+                Text(
                   'Join Your Team',
                   style: TextStyle(
                     color: AppTheme.titleColor,
@@ -832,7 +832,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: 12),
                 Text(
                   'Enter the Company ID provided by your owner to access the dashboard.',
                   textAlign: TextAlign.center,
@@ -841,19 +841,19 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                     fontSize: 14,
                   ),
                 ),
-                const SizedBox(height: 48),
+                SizedBox(height: 48),
                 TextField(
                   controller: _companyCodeCtrl,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: AppTheme.titleColor,
                     fontFamily: 'monospace',
                   ),
                   decoration: InputDecoration(
                     labelText: 'Company ID',
-                    labelStyle: const TextStyle(color: AppTheme.labelColor),
+                    labelStyle: TextStyle(color: AppTheme.labelColor),
                     filled: true,
                     fillColor: AppTheme.titleColor.withOpacity(0.05),
-                    prefixIcon: const Icon(
+                    prefixIcon: Icon(
                       Icons.vpn_key_outlined,
                       color: AppTheme.pendingAmber,
                     ),
@@ -863,11 +863,11 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
-                      borderSide: const BorderSide(color: AppTheme.pendingAmber),
+                      borderSide: BorderSide(color: AppTheme.pendingAmber),
                     ),
                   ),
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: 24),
                 SizedBox(
                   width: double.infinity,
                   height: 55,
@@ -880,7 +880,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                       ),
                     ),
                     child: _submittingCode
-                        ? const SizedBox(
+                        ? SizedBox(
                             height: 24,
                             width: 24,
                             child: CircularProgressIndicator(
@@ -888,7 +888,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                               strokeWidth: 2,
                             ),
                           )
-                        : const Text(
+                        : Text(
                             'JOIN COMPANY',
                             style: TextStyle(
                               color: AppTheme.titleColor,
@@ -912,7 +912,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Text(
+        title: Text(
           'Staff Dashboard',
           style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.titleColor),
         ),
@@ -922,25 +922,25 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
             children: [
               IconButton(
                 onPressed: _showNotificationsSheet,
-                icon: const Icon(Icons.notifications_outlined, color: AppTheme.labelColor),
+                icon: Icon(Icons.notifications_outlined, color: AppTheme.labelColor),
               ),
               if (_unreadNotificationsCount > 0)
                 Positioned(
                   right: 8,
                   top: 8,
                   child: Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: const BoxDecoration(
+                    padding: EdgeInsets.all(4),
+                    decoration: BoxDecoration(
                       color: AppTheme.errorRed,
                       shape: BoxShape.circle,
                     ),
-                    constraints: const BoxConstraints(
+                    constraints: BoxConstraints(
                       minWidth: 16,
                       minHeight: 16,
                     ),
                     child: Text(
                       '$_unreadNotificationsCount',
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: AppTheme.titleColor,
                         fontSize: 8,
                         fontWeight: FontWeight.bold,
@@ -965,12 +965,12 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                 ),
               );
             },
-            icon: const Icon(Icons.settings_outlined, color: AppTheme.labelColor),
+            icon: Icon(Icons.settings_outlined, color: AppTheme.labelColor),
           ),
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
+        padding: EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -983,15 +983,15 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
             ),
             Text(
               _staffName ?? 'Colleague',
-              style: const TextStyle(
+              style: TextStyle(
                 color: AppTheme.titleColor,
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 40),
+            SizedBox(height: 40),
             Container(
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: AppTheme.activeEmerald.withOpacity(0.05),
                 borderRadius: BorderRadius.circular(20),
@@ -999,17 +999,17 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
               ),
               child: Row(
                 children: [
-                  const Icon(
+                  Icon(
                     Icons.check_circle,
                     color: AppTheme.activeEmerald,
                     size: 28,
                   ),
-                  const SizedBox(width: 16),
+                  SizedBox(width: 16),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           'Connected to Team',
                           style: TextStyle(
                             color: AppTheme.titleColor,
@@ -1032,7 +1032,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                 ],
               ),
             ),
-            const SizedBox(height: 30),
+            SizedBox(height: 30),
 
             // Inventory Action
             InkWell(
@@ -1050,7 +1050,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                 }
               },
               child: Container(
-                padding: const EdgeInsets.all(20),
+                padding: EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
@@ -1064,19 +1064,19 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                 child: Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(12),
+                      padding: EdgeInsets.all(12),
                       decoration: BoxDecoration(
                         color: AppTheme.primaryAction.withOpacity(0.1),
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.inventory_2_outlined,
                         color: AppTheme.primaryAction,
                         size: 24,
                       ),
                     ),
-                    const SizedBox(width: 16),
-                    const Expanded(
+                    SizedBox(width: 16),
+                    Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -1098,7 +1098,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                         ],
                       ),
                     ),
-                    const Icon(
+                    Icon(
                       Icons.arrow_forward_ios_rounded,
                       color: AppTheme.borderColor,
                       size: 16,
@@ -1108,14 +1108,14 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
               ),
             ),
 
-            const SizedBox(height: 30),
-            const SizedBox(height: 30),
+            SizedBox(height: 30),
+            SizedBox(height: 30),
             _buildAvailableToClaim(),
-            const SizedBox(height: 30),
+            SizedBox(height: 30),
             _buildUpcomingEvents(),
-            const SizedBox(height: 40),
+            SizedBox(height: 40),
             
-            const SizedBox(height: 60),
+            SizedBox(height: 60),
           ],
         ),
       ),
@@ -1127,8 +1127,9 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
         .where((o) => !_dismissedOrders.contains(o['id']))
         .toList();
 
-    if (visibleOpenOrders.isEmpty && !_loadingAssignedOrders)
-      return const SizedBox.shrink();
+    if (visibleOpenOrders.isEmpty && !_loadingAssignedOrders) {
+      return SizedBox.shrink();
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1136,7 +1137,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
+            Text(
               'Available to Claim',
               style: TextStyle(
                 color: AppTheme.titleColor,
@@ -1145,7 +1146,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
               ),
             ),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               decoration: BoxDecoration(
                 color: Colors.purpleAccent.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(12),
@@ -1153,7 +1154,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
               ),
               child: Text(
                 '${visibleOpenOrders.length} OPEN',
-                style: const TextStyle(
+                style: TextStyle(
                   color: Colors.purpleAccent,
                   fontSize: 10,
                   fontWeight: FontWeight.bold,
@@ -1162,15 +1163,15 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
             ),
           ],
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: 16),
         if (_loadingAssignedOrders)
-          const Center(
+          Center(
             child: CircularProgressIndicator(color: AppTheme.pendingAmber),
           )
         else
           ListView.builder(
             shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
+            physics: NeverScrollableScrollPhysics(),
             itemCount: visibleOpenOrders.length,
             itemBuilder: (context, index) {
               final order = visibleOpenOrders[index];
@@ -1194,8 +1195,8 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
     final bidController = _bidControllerFor(order['id']);
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
+      margin: EdgeInsets.only(bottom: 12),
+      padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.purpleAccent.withOpacity(0.05),
         borderRadius: BorderRadius.circular(16),
@@ -1210,15 +1211,15 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
               Expanded(
                 child: Text(
                   clientName,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: AppTheme.titleColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
                 ),
               ),
-              const Icon(Icons.flash_on, color: Colors.purpleAccent, size: 18),
-              const SizedBox(width: 8),
+              Icon(Icons.flash_on, color: Colors.purpleAccent, size: 18),
+              SizedBox(width: 8),
               InkWell(
                 onTap: () {
                   setState(() {
@@ -1226,12 +1227,12 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                   });
                 },
                 child: Container(
-                  padding: const EdgeInsets.all(4),
+                  padding: EdgeInsets.all(4),
                   decoration: BoxDecoration(
                     color: AppTheme.titleColor.withOpacity(0.05),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.close,
                     color: AppTheme.labelColor,
                     size: 16,
@@ -1240,25 +1241,25 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           Row(
             children: [
-              const Icon(Icons.calendar_today, color: AppTheme.labelColor, size: 14),
-              const SizedBox(width: 8),
+              Icon(Icons.calendar_today, color: AppTheme.labelColor, size: 14),
+              SizedBox(width: 8),
               Text(
                 displayDate,
-                style: const TextStyle(color: AppTheme.labelColor, fontSize: 13),
+                style: TextStyle(color: AppTheme.labelColor, fontSize: 13),
               ),
             ],
           ),
           if (order['venue_address'] != null && order['venue_address'].toString().trim().isNotEmpty) ...[
-            const SizedBox(height: 12),
+            SizedBox(height: 12),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
                 onPressed: () => _openMaps(order['venue_address']),
-                icon: const Icon(Icons.directions, size: 18),
-                label: const Text(
+                icon: Icon(Icons.directions, size: 18),
+                label: Text(
                   'Get Directions',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
@@ -1266,7 +1267,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                   backgroundColor: AppTheme.primaryAction.withOpacity(0.2),
                   foregroundColor: AppTheme.primaryAction,
                   elevation: 0,
-                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  padding: EdgeInsets.symmetric(vertical: 10),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                     side: BorderSide(color: AppTheme.primaryAction.withOpacity(0.5)),
@@ -1275,9 +1276,9 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
               ),
             ),
           ],
-          const SizedBox(height: 12),
+          SizedBox(height: 12),
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: EdgeInsets.all(12),
             decoration: BoxDecoration(
               color: Colors.black.withOpacity(0.2),
               borderRadius: BorderRadius.circular(12),
@@ -1287,13 +1288,13 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
+                    Text(
                       'Base Fare:',
                       style: TextStyle(color: AppTheme.labelColor, fontSize: 12),
                     ),
                     Text(
                       '₹$baseFare',
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: AppTheme.activeEmerald,
                         fontWeight: FontWeight.bold,
                       ),
@@ -1301,11 +1302,11 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                   ],
                 ),
                 if (biddingEndsAt != null) ...[
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
+                      Text(
                         'Ends In:',
                         style: TextStyle(color: AppTheme.labelColor, fontSize: 12),
                       ),
@@ -1321,14 +1322,14 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                                 });
                               }
                             });
-                            return const SizedBox.shrink();
+                            return SizedBox.shrink();
                           }
                           final diff = biddingEndsAt.difference(now);
                           return Text(
                             diff.inSeconds < 60
                                 ? '${diff.inSeconds}s'
                                 : '${diff.inMinutes}m ${diff.inSeconds % 60}s',
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: AppTheme.pendingAmber,
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
@@ -1342,16 +1343,16 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
               ],
             ),
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: 12),
           if (biddingEndsAt == null)
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
                 onPressed: () => _claimDirectDelivery(order['id']),
-                icon: const Icon(Icons.bolt, color: Colors.black87),
+                icon: Icon(Icons.bolt, color: Colors.black87),
                 label: Text(
                   'Fast Claim for ₹${baseFare.toStringAsFixed(0)}',
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.black87,
                     fontWeight: FontWeight.bold,
                   ),
@@ -1361,7 +1362,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  padding: EdgeInsets.symmetric(vertical: 16),
                 ),
               ),
             )
@@ -1387,7 +1388,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                       child: TextField(
                         controller: bidController,
                         keyboardType: TextInputType.number,
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: AppTheme.titleColor,
                           fontSize: 14,
                         ),
@@ -1399,7 +1400,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                           ),
                           filled: true,
                           fillColor: AppTheme.titleColor.withOpacity(0.05),
-                          contentPadding: const EdgeInsets.symmetric(
+                          contentPadding: EdgeInsets.symmetric(
                             horizontal: 12,
                             vertical: 8,
                           ),
@@ -1410,7 +1411,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 8),
+                    SizedBox(width: 8),
                     ElevatedButton(
                       onPressed: () =>
                           _placeBid(order['id'], bidController.text, baseFare),
@@ -1419,12 +1420,12 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        padding: const EdgeInsets.symmetric(
+                        padding: EdgeInsets.symmetric(
                           horizontal: 16,
                           vertical: 12,
                         ),
                       ),
-                      child: const Text(
+                      child: Text(
                         'BID',
                         style: TextStyle(
                           color: AppTheme.titleColor,
@@ -1441,7 +1442,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(
+                    padding: EdgeInsets.symmetric(
                       horizontal: 12,
                       vertical: 8,
                     ),
@@ -1454,15 +1455,15 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                     ),
                     child: Row(
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.check_circle_outline,
                           color: AppTheme.activeEmerald,
                           size: 16,
                         ),
-                        const SizedBox(width: 8),
+                        SizedBox(width: 8),
                         Text(
                           'Your bid: ₹${existingBid.toStringAsFixed(0)}',
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: AppTheme.activeEmerald,
                             fontWeight: FontWeight.bold,
                             fontSize: 14,
@@ -1471,14 +1472,14 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8),
                   Row(
                     children: [
                       Expanded(
                         child: TextField(
                           controller: bidController,
                           keyboardType: TextInputType.number,
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: AppTheme.titleColor,
                             fontSize: 14,
                           ),
@@ -1490,7 +1491,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                             ),
                             filled: true,
                             fillColor: AppTheme.titleColor.withOpacity(0.05),
-                            contentPadding: const EdgeInsets.symmetric(
+                            contentPadding: EdgeInsets.symmetric(
                               horizontal: 12,
                               vertical: 8,
                             ),
@@ -1501,7 +1502,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      SizedBox(width: 8),
                       ElevatedButton(
                         onPressed: () => _placeBid(
                           order['id'],
@@ -1513,12 +1514,12 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          padding: const EdgeInsets.symmetric(
+                          padding: EdgeInsets.symmetric(
                             horizontal: 12,
                             vertical: 12,
                           ),
                         ),
-                        child: const Text(
+                        child: Text(
                           'UPDATE',
                           style: TextStyle(
                             color: AppTheme.titleColor,
@@ -1527,7 +1528,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      SizedBox(width: 8),
                       ElevatedButton(
                         onPressed: () => _revokeBid(order['id']),
                         style: ElevatedButton.styleFrom(
@@ -1535,12 +1536,12 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          padding: const EdgeInsets.symmetric(
+                          padding: EdgeInsets.symmetric(
                             horizontal: 12,
                             vertical: 12,
                           ),
                         ),
-                        child: const Text(
+                        child: Text(
                           'REVOKE',
                           style: TextStyle(
                             color: AppTheme.titleColor,
@@ -1717,7 +1718,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'Your Assigned Deliveries',
           style: TextStyle(
             color: AppTheme.titleColor,
@@ -1725,15 +1726,15 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: 16),
         if (_loadingAssignedOrders)
-          const Center(
+          Center(
             child: CircularProgressIndicator(color: AppTheme.pendingAmber),
           )
         else if (_assignedOrders.isEmpty)
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(40),
+            padding: EdgeInsets.all(40),
             decoration: BoxDecoration(
               color: AppTheme.pendingAmber.withOpacity(0.02),
               borderRadius: BorderRadius.circular(24),
@@ -1750,7 +1751,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                     color: AppTheme.pendingAmber.withOpacity(0.2),
                     size: 48,
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16),
                   Text(
                     'No deliveries assigned to you right now.',
                     textAlign: TextAlign.center,
@@ -1763,7 +1764,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
         else
           ListView.builder(
             shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
+            physics: NeverScrollableScrollPhysics(),
             itemCount: _assignedOrders.length,
             itemBuilder: (context, index) {
               final order = _assignedOrders[index];
@@ -1783,8 +1784,8 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
     final double? fare = (order['delivery_fare'] as num?)?.toDouble();
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
+      margin: EdgeInsets.only(bottom: 12),
+      padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppTheme.titleColor.withOpacity(0.03),
         borderRadius: BorderRadius.circular(16),
@@ -1799,7 +1800,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
               Expanded(
                 child: Text(
                   clientName,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: AppTheme.titleColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
@@ -1809,14 +1810,14 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
               if (fare != null)
                 Text(
                   '₹$fare',
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: AppTheme.activeEmerald,
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
                 ),
               Container(
-                padding: const EdgeInsets.symmetric(
+                padding: EdgeInsets.symmetric(
                   horizontal: 10,
                   vertical: 4,
                 ),
@@ -1839,27 +1840,27 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           Row(
             children: [
-              const Icon(Icons.calendar_today, color: AppTheme.labelColor, size: 14),
-              const SizedBox(width: 8),
+              Icon(Icons.calendar_today, color: AppTheme.labelColor, size: 14),
+              SizedBox(width: 8),
               Text(
                 displayDate,
-                style: const TextStyle(color: AppTheme.labelColor, fontSize: 13),
+                style: TextStyle(color: AppTheme.labelColor, fontSize: 13),
               ),
             ],
           ),
           if (order['order_status'] != 'completed') ...[
             if (order['venue_address'] != null &&
                 order['venue_address'].toString().trim().isNotEmpty) ...[
-              const SizedBox(height: 12),
+              SizedBox(height: 12),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
                   onPressed: () => _openMaps(order['venue_address']),
-                  icon: const Icon(Icons.directions, size: 18),
-                  label: const Text(
+                  icon: Icon(Icons.directions, size: 18),
+                  label: Text(
                     'Get Directions',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
@@ -1867,7 +1868,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                     backgroundColor: AppTheme.primaryAction.withOpacity(0.2),
                     foregroundColor: AppTheme.primaryAction,
                     elevation: 0,
-                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    padding: EdgeInsets.symmetric(vertical: 10),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                       side: BorderSide(
@@ -1879,14 +1880,14 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
             ],
             if (order['middleman_tag'] != null &&
                 order['middleman_tag'].toString().contains('(')) ...[
-              const SizedBox(height: 12),
+              SizedBox(height: 12),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
                   onPressed: () =>
                       _shareLocationWithMiddleman(order['middleman_tag']),
-                  icon: const Icon(Icons.share_location, size: 18),
-                  label: const Text(
+                  icon: Icon(Icons.share_location, size: 18),
+                  label: Text(
                     'Share My Location with Middleman',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
@@ -1894,7 +1895,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                     backgroundColor: AppTheme.activeEmerald.withOpacity(0.2),
                     foregroundColor: AppTheme.activeEmerald,
                     elevation: 0,
-                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    padding: EdgeInsets.symmetric(vertical: 10),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                       side: BorderSide(
@@ -1904,38 +1905,38 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                 ),
               ),
             ],
-            const SizedBox(height: 12),
-            const Divider(color: AppTheme.borderColor),
-            const SizedBox(height: 8),
-            const Text(
+            SizedBox(height: 12),
+            Divider(color: AppTheme.borderColor),
+            SizedBox(height: 8),
+            Text(
               'Order Items:',
               style: TextStyle(color: AppTheme.labelColor, fontSize: 12),
             ),
-            const SizedBox(height: 4),
+            SizedBox(height: 4),
             ...(order['menu_items'] as List? ?? []).map((item) {
               return Row(
                 children: [
-                  const Text('• ',
+                  Text('• ',
                       style: TextStyle(color: AppTheme.pendingAmber)),
                   Text(
                     '${item['quantity']}x ${item['name']}',
-                    style: const TextStyle(color: AppTheme.labelColor, fontSize: 13),
+                    style: TextStyle(color: AppTheme.labelColor, fontSize: 13),
                   ),
                 ],
               );
             }),
-            const SizedBox(height: 12),
+            SizedBox(height: 12),
             if (order['is_picked'] != true && order['delivery_signature'] == null)
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
                   onPressed: () => _markAsPicked(order),
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.local_shipping_outlined,
                     color: Colors.black87,
                     size: 18,
                   ),
-                  label: const Text(
+                  label: Text(
                     'Mark Order Picked 🚚',
                     style: TextStyle(
                       color: Colors.black87,
@@ -1948,7 +1949,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    padding: EdgeInsets.symmetric(vertical: 12),
                     elevation: 0,
                   ),
                 ),
@@ -1957,13 +1958,13 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
               SizedBox(
                 width: double.infinity,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  padding: EdgeInsets.symmetric(vertical: 12),
                   decoration: BoxDecoration(
                     color: AppTheme.activeEmerald.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(color: AppTheme.activeEmerald.withOpacity(0.5)),
                   ),
-                  child: const Center(
+                  child: Center(
                     child: Text(
                       '🚚 Order Picked Up',
                       style: TextStyle(
@@ -1975,18 +1976,18 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                   ),
                 ),
               ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
             if (order['delivery_signature'] == null)
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
                   onPressed: () => _confirmDelivery(order),
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.draw_outlined,
                     color: Colors.black87,
                     size: 18,
                   ),
-                  label: const Text(
+                  label: Text(
                     'Order Delivered (Get Signature)',
                     style: TextStyle(
                       color: Colors.black87,
@@ -1999,7 +2000,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    padding: EdgeInsets.symmetric(vertical: 12),
                     elevation: 0,
                   ),
                 ),
@@ -2016,7 +2017,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
 
     // 1. Try Loading from Cache
     final cachedAssigned = CacheService.get('assigned_orders_${user.id}');
-    final cachedOpen = _companyId != null ? CacheService.get('open_orders_${_companyId}') : null;
+    final cachedOpen = _companyId != null ? CacheService.get('open_orders_$_companyId') : null;
     
     if (mounted) {
       setState(() {
@@ -2077,7 +2078,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
         // 2. Save to Cache
         CacheService.save('assigned_orders_${user.id}', assignedList);
         if (_companyId != null) {
-          CacheService.save('open_orders_${_companyId}', resOpen);
+          CacheService.save('open_orders_$_companyId', resOpen);
         }
       }
     } catch (e) {
@@ -2110,7 +2111,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
               _audioPlayer.play(AssetSource('sounds/notification.mp3'));
               if (mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
+                  SnackBar(
                     content: Row(
                       children: [
                         Icon(
@@ -2164,18 +2165,18 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                     SnackBar(
                       content: Row(
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.emoji_events,
                             color: Colors.amber,
                             size: 20,
                           ),
-                          const SizedBox(width: 10),
+                          SizedBox(width: 10),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                const Text(
+                                Text(
                                   'You got the delivery! 🎉',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
@@ -2184,7 +2185,7 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                                 ),
                                 Text(
                                   '$clientName  •  ₹$fare  •  $dateStr',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: AppTheme.labelColor,
                                     fontSize: 12,
                                   ),
@@ -2194,8 +2195,8 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                           ),
                         ],
                       ),
-                      backgroundColor: const Color(0xFF1B5E20),
-                      duration: const Duration(seconds: 7),
+                      backgroundColor: Color(0xFF1B5E20),
+                      duration: Duration(seconds: 7),
                       behavior: SnackBarBehavior.floating,
                     ),
                   );
@@ -2207,22 +2208,22 @@ class _StaffViewState extends State<StaffView> with WidgetsBindingObserver {
                     SnackBar(
                       content: Row(
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.cancel_outlined,
                             color: AppTheme.labelColor,
                             size: 18,
                           ),
-                          const SizedBox(width: 8),
+                          SizedBox(width: 8),
                           Expanded(
                             child: Text(
                               'Auction for "$clientName" ended — you were not selected.',
-                              style: const TextStyle(color: AppTheme.labelColor),
+                              style: TextStyle(color: AppTheme.labelColor),
                             ),
                           ),
                         ],
                       ),
-                      backgroundColor: const Color(0xFF37474F),
-                      duration: const Duration(seconds: 5),
+                      backgroundColor: Color(0xFF37474F),
+                      duration: Duration(seconds: 5),
                       behavior: SnackBarBehavior.floating,
                     ),
                   );

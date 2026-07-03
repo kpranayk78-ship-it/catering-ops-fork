@@ -13,7 +13,7 @@ import '../../services/notification_service.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 class OwnerView extends StatefulWidget {
-  const OwnerView({super.key});
+  OwnerView({super.key});
 
   @override
   State<OwnerView> createState() => _OwnerViewState();
@@ -145,7 +145,7 @@ class _OwnerViewState extends State<OwnerView> {
         context: context,
         builder: (context) => AlertDialog(
           backgroundColor: AppTheme.background,
-          title: const Text('Share Location With...', style: TextStyle(color: AppTheme.titleColor)),
+          title: Text('Share Location With...', style: TextStyle(color: AppTheme.titleColor)),
           content: SizedBox(
             width: double.maxFinite,
             child: ListView.builder(
@@ -154,8 +154,8 @@ class _OwnerViewState extends State<OwnerView> {
               itemBuilder: (context, index) {
                 final mid = middleMen[index];
                 return ListTile(
-                  title: Text(mid['name'] ?? '', style: const TextStyle(color: AppTheme.titleColor)),
-                  subtitle: Text(mid['phone_number'] ?? '', style: const TextStyle(color: AppTheme.labelColor)),
+                  title: Text(mid['name'] ?? '', style: TextStyle(color: AppTheme.titleColor)),
+                  subtitle: Text(mid['phone_number'] ?? '', style: TextStyle(color: AppTheme.labelColor)),
                   onTap: () => Navigator.pop(context, mid),
                 );
               },
@@ -310,7 +310,7 @@ class _OwnerViewState extends State<OwnerView> {
         await Clipboard.setData(ClipboardData(text: _companyId!));
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
+            SnackBar(
               content: Text('Company ID copied to clipboard!'),
               backgroundColor: AppTheme.pendingAmber,
             ),
@@ -319,7 +319,7 @@ class _OwnerViewState extends State<OwnerView> {
       } catch (e) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
+            SnackBar(
               content: Text(
                 'Browser blocked auto-copy. Please long-press the ID to copy!',
               ),
@@ -334,7 +334,7 @@ class _OwnerViewState extends State<OwnerView> {
 
   Widget _buildDashboardTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -347,13 +347,13 @@ class _OwnerViewState extends State<OwnerView> {
           ),
           Text(
             _companyName ?? 'Dashboard',
-            style: const TextStyle(
+            style: TextStyle(
               color: AppTheme.titleColor,
               fontSize: 28,
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           Text(
             'Owner: ${_ownerName ?? '...'}',
             style: TextStyle(
@@ -361,11 +361,11 @@ class _OwnerViewState extends State<OwnerView> {
               fontSize: 13,
             ),
           ),
-          const SizedBox(height: 30),
+          SizedBox(height: 30),
 
           if (_activeDelivery != null) ...[
             Container(
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: AppTheme.pendingAmber.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(20),
@@ -376,9 +376,9 @@ class _OwnerViewState extends State<OwnerView> {
                 children: [
                    Row(
                     children: [
-                      const Icon(Icons.local_shipping, color: AppTheme.pendingAmber, size: 20),
-                      const SizedBox(width: 8),
-                      const Text(
+                      Icon(Icons.local_shipping, color: AppTheme.pendingAmber, size: 20),
+                      SizedBox(width: 8),
+                      Text(
                         'ACTIVE DELIVERY',
                         style: TextStyle(
                           color: AppTheme.pendingAmber,
@@ -387,48 +387,48 @@ class _OwnerViewState extends State<OwnerView> {
                           letterSpacing: 1.2,
                         ),
                       ),
-                      const Spacer(),
+                      Spacer(),
                       IconButton(
-                        icon: const Icon(Icons.refresh, color: AppTheme.pendingAmber, size: 16),
+                        icon: Icon(Icons.refresh, color: AppTheme.pendingAmber, size: 16),
                         onPressed: _fetchActiveDelivery,
                         padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(),
+                        constraints: BoxConstraints(),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
                   Text(
                     'Client: ${_activeDelivery!['client_name']}',
-                    style: const TextStyle(color: AppTheme.titleColor, fontWeight: FontWeight.bold),
+                    style: TextStyle(color: AppTheme.titleColor, fontWeight: FontWeight.bold),
                   ),
                   Text(
                     'Staff: ${_activeDelivery!['profiles']?['full_name'] ?? 'Assigning...'}',
                     style: TextStyle(color: AppTheme.titleColor.withOpacity(0.7), fontSize: 13),
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16),
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton.icon(
                       onPressed: () => _shareStaffLocation(_activeDelivery!),
-                      icon: const Icon(Icons.share_location, size: 18),
-                      label: const Text('Share Staff Location'),
+                      icon: Icon(Icons.share_location, size: 18),
+                      label: Text('Share Staff Location'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppTheme.pendingAmber,
                         foregroundColor: Colors.black87,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        padding: EdgeInsets.symmetric(vertical: 12),
                       ),
                     ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: 24),
           ],
 
           // Company ID Card (The "Copy" section)
           Container(
-            padding: const EdgeInsets.all(24),
+            padding: EdgeInsets.all(24),
             decoration: BoxDecoration(
               color: AppTheme.titleColor.withOpacity(0.05),
               borderRadius: BorderRadius.circular(24),
@@ -439,12 +439,12 @@ class _OwnerViewState extends State<OwnerView> {
               children: [
                 Row(
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.business,
                       color: AppTheme.pendingAmber,
                       size: 20,
                     ),
-                    const SizedBox(width: 8),
+                    SizedBox(width: 8),
                     Text(
                       'MY COMPANY ID',
                       style: TextStyle(
@@ -456,9 +456,9 @@ class _OwnerViewState extends State<OwnerView> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 Container(
-                  padding: const EdgeInsets.symmetric(
+                  padding: EdgeInsets.symmetric(
                     horizontal: 16,
                     vertical: 16,
                   ),
@@ -473,7 +473,7 @@ class _OwnerViewState extends State<OwnerView> {
                           !_showId && _companyId != null
                               ? '•' * 12
                               : (_companyId ?? 'Generating...'),
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: AppTheme.labelColor,
                             fontFamily: 'monospace',
                             fontSize: 14,
@@ -482,7 +482,7 @@ class _OwnerViewState extends State<OwnerView> {
                           maxLines: 1,
                         ),
                       ),
-                      const SizedBox(width: 10),
+                      SizedBox(width: 10),
                       IconButton(
                         icon: Icon(
                           _showId
@@ -493,18 +493,18 @@ class _OwnerViewState extends State<OwnerView> {
                         ),
                         onPressed: () => setState(() => _showId = !_showId),
                         padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(),
+                        constraints: BoxConstraints(),
                       ),
-                      const SizedBox(width: 15),
+                      SizedBox(width: 15),
                       InkWell(
                         onTap: _copyCompanyId,
                         child: Container(
-                          padding: const EdgeInsets.all(8),
+                          padding: EdgeInsets.all(8),
                           decoration: BoxDecoration(
                             color: AppTheme.pendingAmber.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          child: const Icon(
+                          child: Icon(
                             Icons.copy_rounded,
                             color: AppTheme.pendingAmber,
                             size: 20,
@@ -514,7 +514,7 @@ class _OwnerViewState extends State<OwnerView> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: 12),
                 Text(
                   'Share this ID with your staff so they can join your workspace.',
                   style: TextStyle(
@@ -526,13 +526,13 @@ class _OwnerViewState extends State<OwnerView> {
             ),
           ),
 
-          const SizedBox(height: 24),
+          SizedBox(height: 24),
 
           // QUICK LOCATION SHARE CARD
           InkWell(
             onTap: _shareLocationToMiddleman,
             child: Container(
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
@@ -546,19 +546,19 @@ class _OwnerViewState extends State<OwnerView> {
               child: Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(12),
+                    padding: EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: AppTheme.activeEmerald.withOpacity(0.1),
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(
+                    child: Icon(
                       Icons.share_location,
                       color: AppTheme.activeEmerald,
                       size: 24,
                     ),
                   ),
-                  const SizedBox(width: 16),
-                  const Expanded(
+                  SizedBox(width: 16),
+                  Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -577,7 +577,7 @@ class _OwnerViewState extends State<OwnerView> {
                       ],
                     ),
                   ),
-                  const Icon(
+                  Icon(
                     Icons.arrow_forward_ios_rounded,
                     color: AppTheme.borderColor,
                     size: 16,
@@ -587,7 +587,7 @@ class _OwnerViewState extends State<OwnerView> {
             ),
           ),
 
-          const SizedBox(height: 30),
+          SizedBox(height: 30),
 
           // Inventory Action
           InkWell(
@@ -605,7 +605,7 @@ class _OwnerViewState extends State<OwnerView> {
               }
             },
             child: Container(
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
@@ -621,19 +621,19 @@ class _OwnerViewState extends State<OwnerView> {
               child: Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(12),
+                    padding: EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: AppTheme.primaryAction.withOpacity(0.1),
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(
+                    child: Icon(
                       Icons.inventory_2_outlined,
                       color: AppTheme.primaryAction,
                       size: 24,
                     ),
                   ),
-                  const SizedBox(width: 16),
-                  const Expanded(
+                  SizedBox(width: 16),
+                  Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -655,7 +655,7 @@ class _OwnerViewState extends State<OwnerView> {
                       ],
                     ),
                   ),
-                  const Icon(
+                  Icon(
                     Icons.arrow_forward_ios_rounded,
                     color: AppTheme.borderColor,
                     size: 16,
@@ -665,13 +665,13 @@ class _OwnerViewState extends State<OwnerView> {
             ),
           ),
 
-          const SizedBox(height: 30),
+          SizedBox(height: 30),
 
-          const SizedBox(height: 30),
+          SizedBox(height: 30),
           // Placeholder for future features
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(40),
+            padding: EdgeInsets.all(40),
             decoration: BoxDecoration(
               color: AppTheme.pendingAmber.withOpacity(0.02),
               borderRadius: BorderRadius.circular(24),
@@ -688,7 +688,7 @@ class _OwnerViewState extends State<OwnerView> {
                     color: AppTheme.pendingAmber.withOpacity(0.2),
                     size: 48,
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16),
                   Text(
                     'Revenue & Orders overview will appear here soon.',
                     textAlign: TextAlign.center,
@@ -705,7 +705,7 @@ class _OwnerViewState extends State<OwnerView> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return const Scaffold(
+      return Scaffold(
         backgroundColor: AppTheme.background,
         body: Center(
           child: CircularProgressIndicator(color: AppTheme.pendingAmber),
@@ -718,7 +718,7 @@ class _OwnerViewState extends State<OwnerView> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Text(
+        title: Text(
           'Owner Dashboard',
           style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.titleColor),
         ),
@@ -736,10 +736,11 @@ class _OwnerViewState extends State<OwnerView> {
                 } catch (_) {}
               }
               await Supabase.instance.client.auth.signOut();
-              if (context.mounted)
+              if (context.mounted) {
                 Navigator.pushReplacementNamed(context, '/login');
+              }
             },
-            icon: const Icon(Icons.logout, color: AppTheme.labelColor),
+            icon: Icon(Icons.logout, color: AppTheme.labelColor),
           ),
         ],
       ),
@@ -748,7 +749,7 @@ class _OwnerViewState extends State<OwnerView> {
           : _selectedIndex == 1
               ? OrdersTab(companyId: _companyId ?? '')
               : _selectedIndex == 2
-                  ? const JoinRequestsScreen()
+                  ? JoinRequestsScreen()
                   : StaffManagementScreen(companyId: _companyId ?? ''),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: AppTheme.background,
@@ -758,12 +759,12 @@ class _OwnerViewState extends State<OwnerView> {
         onTap: (index) => setState(() => _selectedIndex = index),
         type: BottomNavigationBarType.fixed,
         items: [
-          const BottomNavigationBarItem(
+          BottomNavigationBarItem(
             icon: Icon(Icons.dashboard_outlined),
             activeIcon: Icon(Icons.dashboard),
             label: 'Dashboard',
           ),
-          const BottomNavigationBarItem(
+          BottomNavigationBarItem(
             icon: Icon(Icons.assignment_outlined),
             activeIcon: Icon(Icons.assignment),
             label: 'Orders',
@@ -773,17 +774,17 @@ class _OwnerViewState extends State<OwnerView> {
               isLabelVisible: _pendingCount > 0,
               label: Text('$_pendingCount'),
               backgroundColor: AppTheme.errorRed,
-              child: const Icon(Icons.person_add_outlined),
+              child: Icon(Icons.person_add_outlined),
             ),
             activeIcon: Badge(
               isLabelVisible: _pendingCount > 0,
               label: Text('$_pendingCount'),
               backgroundColor: AppTheme.errorRed,
-              child: const Icon(Icons.person_add),
+              child: Icon(Icons.person_add),
             ),
             label: 'Requests',
           ),
-          const BottomNavigationBarItem(
+          BottomNavigationBarItem(
             icon: Icon(Icons.people_alt_outlined),
             activeIcon: Icon(Icons.people_alt),
             label: 'Staff',

@@ -4,7 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'co_developers_screen.dart';
 
 class MeetOurDevelopersScreen extends StatefulWidget {
-  const MeetOurDevelopersScreen({super.key});
+  MeetOurDevelopersScreen({super.key});
 
   @override
   State<MeetOurDevelopersScreen> createState() => _MeetOurDevelopersScreenState();
@@ -20,29 +20,29 @@ class _MeetOurDevelopersScreenState extends State<MeetOurDevelopersScreen> with 
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 1500),
+      duration: Duration(milliseconds: 1500),
       vsync: this,
     );
 
     _fadeAnimation = CurvedAnimation(
       parent: _controller,
-      curve: const Interval(0.0, 0.8, curve: Curves.easeIn),
+      curve: Interval(0.0, 0.8, curve: Curves.easeIn),
     );
 
     _sivajiSlide = Tween<Offset>(
-      begin: const Offset(0, 0.3),
+      begin: Offset(0, 0.3),
       end: Offset.zero,
     ).animate(CurvedAnimation(
       parent: _controller,
-      curve: const Interval(0.2, 0.7, curve: Curves.easeOutCubic),
+      curve: Interval(0.2, 0.7, curve: Curves.easeOutCubic),
     ));
 
     _pranaySlide = Tween<Offset>(
-      begin: const Offset(0, 0.3),
+      begin: Offset(0, 0.3),
       end: Offset.zero,
     ).animate(CurvedAnimation(
       parent: _controller,
-      curve: const Interval(0.4, 0.9, curve: Curves.easeOutCubic),
+      curve: Interval(0.4, 0.9, curve: Curves.easeOutCubic),
     ));
 
     _controller.forward();
@@ -66,7 +66,7 @@ class _MeetOurDevelopersScreenState extends State<MeetOurDevelopersScreen> with 
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -108,7 +108,7 @@ class _MeetOurDevelopersScreenState extends State<MeetOurDevelopersScreen> with 
             SafeArea(
               child: Column(
                 children: [
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20),
                   FadeTransition(
                     opacity: _fadeAnimation,
                     child: Column(
@@ -122,8 +122,8 @@ class _MeetOurDevelopersScreenState extends State<MeetOurDevelopersScreen> with 
                             letterSpacing: 4,
                           ),
                         ),
-                        const SizedBox(height: 12),
-                        const Text(
+                        SizedBox(height: 12),
+                        Text(
                           'Catering Ops',
                           style: TextStyle(
                             color: AppTheme.titleColor,
@@ -133,11 +133,11 @@ class _MeetOurDevelopersScreenState extends State<MeetOurDevelopersScreen> with 
                           ),
                         ),
                         Container(
-                          margin: const EdgeInsets.only(top: 8),
+                          margin: EdgeInsets.only(top: 8),
                           width: 40,
                           height: 3,
                           decoration: BoxDecoration(
-                            gradient: const LinearGradient(
+                            gradient: LinearGradient(
                               colors: [Colors.purpleAccent, AppTheme.primaryAction],
                             ),
                             borderRadius: BorderRadius.circular(2),
@@ -146,9 +146,9 @@ class _MeetOurDevelopersScreenState extends State<MeetOurDevelopersScreen> with 
                       ],
                     ),
                   ),
-                  const Spacer(),
+                  Spacer(),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    padding: EdgeInsets.symmetric(horizontal: 24),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -168,7 +168,7 @@ class _MeetOurDevelopersScreenState extends State<MeetOurDevelopersScreen> with 
                             ),
                           ),
                         ),
-                        const SizedBox(width: 24),
+                        SizedBox(width: 24),
                         // Pranay
                         Expanded(
                           child: SlideTransition(
@@ -188,14 +188,14 @@ class _MeetOurDevelopersScreenState extends State<MeetOurDevelopersScreen> with 
                       ],
                     ),
                   ),
-                  const SizedBox(height: 48), // Moved up from Spacer(flex: 2)
+                  SizedBox(height: 48), // Moved up from Spacer(flex: 2)
                   
                   // Glowing Line Across
                   FadeTransition(
                     opacity: _fadeAnimation,
                     child: Center(
                       child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 40),
+                        margin: EdgeInsets.symmetric(horizontal: 40),
                         height: 1,
                         width: double.infinity,
                         decoration: BoxDecoration(
@@ -220,12 +220,12 @@ class _MeetOurDevelopersScreenState extends State<MeetOurDevelopersScreen> with 
                     ),
                   ),
                   
-                  const SizedBox(height: 32),
+                  SizedBox(height: 32),
                   
                   FadeTransition(
                     opacity: _fadeAnimation,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      padding: EdgeInsets.symmetric(horizontal: 24),
                       child: Column(
                         children: [
                           Text(
@@ -238,7 +238,7 @@ class _MeetOurDevelopersScreenState extends State<MeetOurDevelopersScreen> with 
                             ),
                           ),
                           // Premium Co-developers Button
-                          const SizedBox(height: 20),
+                          SizedBox(height: 20),
                           Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(30),
@@ -254,7 +254,7 @@ class _MeetOurDevelopersScreenState extends State<MeetOurDevelopersScreen> with 
                               onPressed: () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => const CoDevelopersScreen()),
+                                  MaterialPageRoute(builder: (context) => CoDevelopersScreen()),
                                 );
                               },
                               style: ElevatedButton.styleFrom(
@@ -267,10 +267,10 @@ class _MeetOurDevelopersScreenState extends State<MeetOurDevelopersScreen> with 
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30),
                                 ),
-                                padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 18),
+                                padding: EdgeInsets.symmetric(horizontal: 48, vertical: 18),
                                 elevation: 0,
                               ),
-                              child: const Text(
+                              child: Text(
                                 'Meet our co-developers',
                                 style: TextStyle(
                                   fontSize: 16,
@@ -280,7 +280,7 @@ class _MeetOurDevelopersScreenState extends State<MeetOurDevelopersScreen> with 
                               ),
                             ),
                           ),
-                          const SizedBox(height: 60), // Space at bottom
+                          SizedBox(height: 60), // Space at bottom
                         ],
                       ),
                     ),
@@ -304,7 +304,7 @@ class _DeveloperProfile extends StatelessWidget {
   final String slogan;
   final String githubUrl;
 
-  const _DeveloperProfile({
+  _DeveloperProfile({
     required this.name,
     required this.imagePath,
     required this.role,
@@ -338,23 +338,23 @@ class _DeveloperProfile extends StatelessWidget {
                   color: AppTheme.titleColor.withOpacity(0.05),
                   borderRadius: BorderRadius.circular(24),
                 ),
-                child: const Icon(Icons.person, color: AppTheme.borderColor, size: 60),
+                child: Icon(Icons.person, color: AppTheme.borderColor, size: 60),
               ),
             ),
           ),
         ),
-        const SizedBox(height: 20),
+        SizedBox(height: 20),
         // Name below
         Text(
           name,
-          style: const TextStyle(
+          style: TextStyle(
             color: AppTheme.titleColor,
             fontSize: 22,
             fontWeight: FontWeight.bold,
             letterSpacing: 0.5,
           ),
         ),
-        const SizedBox(height: 4),
+        SizedBox(height: 4),
         Text(
           role.toUpperCase(),
           style: TextStyle(
@@ -364,7 +364,7 @@ class _DeveloperProfile extends StatelessWidget {
             letterSpacing: 1.5,
           ),
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: 12),
         Text(
           slogan,
           textAlign: TextAlign.center,
@@ -374,7 +374,7 @@ class _DeveloperProfile extends StatelessWidget {
             fontStyle: FontStyle.italic,
           ),
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: 16),
         // GitHub Button
         Material(
           color: Colors.transparent,
@@ -382,7 +382,7 @@ class _DeveloperProfile extends StatelessWidget {
             onTap: _launchUrl,
             borderRadius: BorderRadius.circular(30),
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
                 border: Border.all(color: AppTheme.borderColor),
                 borderRadius: BorderRadius.circular(30),
@@ -396,8 +396,8 @@ class _DeveloperProfile extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(Icons.link, color: AppTheme.labelColor, size: 16),
-                  const SizedBox(width: 8),
+                  Icon(Icons.link, color: AppTheme.labelColor, size: 16),
+                  SizedBox(width: 8),
                   Text(
                     'GitHub',
                     style: TextStyle(

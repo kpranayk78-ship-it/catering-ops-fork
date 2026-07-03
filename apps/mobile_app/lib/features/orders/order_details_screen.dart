@@ -9,7 +9,7 @@ class OrderDetailsScreen extends StatelessWidget {
   final Map<String, dynamic> order;
   final String companyId;
 
-  const OrderDetailsScreen({super.key, required this.order, required this.companyId});
+  OrderDetailsScreen({super.key, required this.order, required this.companyId});
 
   String _formatDate(String? dateStr) {
     if (dateStr == null) return 'No Date';
@@ -55,14 +55,14 @@ Assigned Staff: $staffName
 
   Widget _buildSectionHeader(String title, IconData icon) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16.0),
+      padding: EdgeInsets.symmetric(vertical: 16.0),
       child: Row(
         children: [
           Icon(icon, color: AppTheme.primaryAction, size: 20),
-          const SizedBox(width: 8),
+          SizedBox(width: 8),
           Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               color: AppTheme.primaryAction,
               fontSize: 16,
               fontWeight: FontWeight.bold,
@@ -76,7 +76,7 @@ Assigned Staff: $staffName
 
   Widget _buildDetailRow(String label, String value, {bool highlight = false}) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12.0),
+      padding: EdgeInsets.only(bottom: 12.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -84,7 +84,7 @@ Assigned Staff: $staffName
             width: 120,
             child: Text(
               label,
-              style: const TextStyle(
+              style: TextStyle(
                 color: AppTheme.labelColor,
                 fontSize: 14,
               ),
@@ -128,13 +128,13 @@ Assigned Staff: $staffName
     return Scaffold(
       backgroundColor: AppTheme.background,
       appBar: AppBar(
-        title: const Text('Order Details'),
+        title: Text('Order Details'),
         backgroundColor: AppTheme.cardColor,
         foregroundColor: AppTheme.titleColor,
         elevation: 0,
         actions: [
           IconButton(
-            icon: const Icon(Icons.edit, color: AppTheme.primaryAction),
+            icon: Icon(Icons.edit, color: AppTheme.primaryAction),
             onPressed: () {
               Navigator.push(
                 context,
@@ -149,7 +149,7 @@ Assigned Staff: $staffName
           ),
         ],
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1.0),
+          preferredSize: Size.fromHeight(1.0),
           child: Container(
             color: AppTheme.borderColor,
             height: 1.0,
@@ -157,13 +157,13 @@ Assigned Staff: $staffName
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24.0),
+        padding: EdgeInsets.all(24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Client Header Card
             Container(
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: AppTheme.cardColor,
                 borderRadius: BorderRadius.circular(16),
@@ -172,7 +172,7 @@ Assigned Staff: $staffName
                   BoxShadow(
                     color: AppTheme.titleColor.withOpacity(0.02),
                     blurRadius: 10,
-                    offset: const Offset(0, 4),
+                    offset: Offset(0, 4),
                   ),
                 ],
               ),
@@ -181,13 +181,13 @@ Assigned Staff: $staffName
                 children: [
                   Text(
                     clientName,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: AppTheme.titleColor,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
                   _buildDetailRow('Event Date', _formatDate(order['event_date'])),
                   if (order['venue_address'] != null && order['venue_address'].toString().isNotEmpty)
                     _buildDetailRow('Venue', order['venue_address']),
@@ -197,11 +197,11 @@ Assigned Staff: $staffName
               ),
             ),
             
-            const SizedBox(height: 12),
+            SizedBox(height: 12),
 
             _buildSectionHeader('Staff & Logistics', Icons.local_shipping),
             Container(
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: AppTheme.cardColor,
                 borderRadius: BorderRadius.circular(16),
@@ -224,16 +224,16 @@ Assigned Staff: $staffName
                     onTap: () => _shareToWhatsApp(context),
                     child: Container(
                       width: double.infinity,
-                      margin: const EdgeInsets.only(top: 16),
-                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      margin: EdgeInsets.only(top: 16),
+                      padding: EdgeInsets.symmetric(vertical: 12),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFE8F5E9),
+                        color: Color(0xFFE8F5E9),
                         borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: const Color(0xFFA5D6A7)),
+                        border: Border.all(color: Color(0xFFA5D6A7)),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
+                        children: [
                           Icon(Icons.message, color: Color(0xFF2E7D32), size: 18),
                           SizedBox(width: 8),
                           Text(
@@ -249,7 +249,7 @@ Assigned Staff: $staffName
             ),
 
             if (menuItems.isNotEmpty) ...[
-              const SizedBox(height: 12),
+              SizedBox(height: 12),
               _buildSectionHeader('Menu Items', Icons.restaurant_menu),
               Container(
                 decoration: BoxDecoration(
@@ -259,21 +259,21 @@ Assigned Staff: $staffName
                 ),
                 child: ListView.separated(
                   shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
+                  physics: NeverScrollableScrollPhysics(),
                   itemCount: menuItems.length,
-                  separatorBuilder: (context, index) => const Divider(height: 1, color: AppTheme.borderColor),
+                  separatorBuilder: (context, index) => Divider(height: 1, color: AppTheme.borderColor),
                   itemBuilder: (context, index) {
                     final item = menuItems[index];
                     final qtyType = item['quantity_type'] == 'kg' ? 'kg' : 'units';
                     return Padding(
-                      padding: const EdgeInsets.all(16.0),
+                      padding: EdgeInsets.all(16.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Expanded(
                             child: Text(
                               item['name'] ?? 'Unknown Item',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
                                 color: AppTheme.titleColor,
@@ -281,14 +281,14 @@ Assigned Staff: $staffName
                             ),
                           ),
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                             decoration: BoxDecoration(
                               color: AppTheme.primaryAction.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Text(
                               '${item['quantity']} $qtyType',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: AppTheme.primaryAction,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 14,
@@ -304,11 +304,11 @@ Assigned Staff: $staffName
             ],
 
             if (order['special_instructions'] != null && order['special_instructions'].toString().isNotEmpty) ...[
-              const SizedBox(height: 12),
+              SizedBox(height: 12),
               _buildSectionHeader('Special Instructions', Icons.info_outline),
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(20),
+                padding: EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   color: AppTheme.pendingAmber.withOpacity(0.05),
                   borderRadius: BorderRadius.circular(16),
@@ -316,7 +316,7 @@ Assigned Staff: $staffName
                 ),
                 child: Text(
                   order['special_instructions'],
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 15,
                     color: AppTheme.titleColor,
                     height: 1.5,
@@ -325,7 +325,7 @@ Assigned Staff: $staffName
               ),
             ],
 
-            const SizedBox(height: 40),
+            SizedBox(height: 40),
           ],
         ),
       ),

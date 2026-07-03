@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../services/notification_service.dart';
+import '../../services/theme_service.dart';
 
 class SettingsScreen extends StatefulWidget {
   final String? companyId;
@@ -10,7 +11,7 @@ class SettingsScreen extends StatefulWidget {
   final String role; // 'owner' or 'staff'
   final String? fullName;
 
-  const SettingsScreen({
+  SettingsScreen({
     super.key,
     this.companyId,
     this.companyName,
@@ -33,7 +34,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         await Clipboard.setData(ClipboardData(text: widget.companyId!));
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
+            SnackBar(
               content: Text('Company ID copied to clipboard!'),
               backgroundColor: AppTheme.pendingAmber,
             ),
@@ -42,7 +43,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       } catch (e) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
+            SnackBar(
               content: Text(
                 'Browser blocked auto-copy. Please long-press the ID to copy!',
               ),
@@ -75,20 +76,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: AppTheme.background,
-        title: const Text('Leave Company', style: TextStyle(color: AppTheme.titleColor)),
-        content: const Text(
+        title: Text('Leave Company', style: TextStyle(color: AppTheme.titleColor)),
+        content: Text(
           'Are you sure you want to leave this company? You will need a new invite code to join again.',
           style: TextStyle(color: AppTheme.labelColor),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel', style: TextStyle(color: AppTheme.labelColor)),
+            child: Text('Cancel', style: TextStyle(color: AppTheme.labelColor)),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
             style: ElevatedButton.styleFrom(backgroundColor: AppTheme.errorRed),
-            child: const Text('Leave', style: TextStyle(color: AppTheme.titleColor)),
+            child: Text('Leave', style: TextStyle(color: AppTheme.titleColor)),
           ),
         ],
       ),
@@ -131,7 +132,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Left company successfully'), backgroundColor: AppTheme.activeEmerald),
+          SnackBar(content: Text('Left company successfully'), backgroundColor: AppTheme.activeEmerald),
         );
         Navigator.pushReplacementNamed(context, '/dashboard');
       }
@@ -153,18 +154,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Text('Settings', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text('Settings', style: TextStyle(fontWeight: FontWeight.bold)),
       ),
       body: _isLoading 
-        ? const Center(child: CircularProgressIndicator(color: AppTheme.pendingAmber))
+        ? Center(child: CircularProgressIndicator(color: AppTheme.pendingAmber))
         : SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
+            padding: EdgeInsets.all(24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Profile Section
                 Container(
-                  padding: const EdgeInsets.all(20),
+                  padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: AppTheme.titleColor.withOpacity(0.05),
                     borderRadius: BorderRadius.circular(20),
@@ -177,17 +178,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         backgroundColor: AppTheme.pendingAmber.withOpacity(0.2),
                         child: Text(
                           (widget.fullName ?? 'U')[0].toUpperCase(),
-                          style: const TextStyle(color: AppTheme.pendingAmber, fontSize: 24, fontWeight: FontWeight.bold),
+                          style: TextStyle(color: AppTheme.pendingAmber, fontSize: 24, fontWeight: FontWeight.bold),
                         ),
                       ),
-                      const SizedBox(width: 16),
+                      SizedBox(width: 16),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               widget.fullName ?? 'User',
-                              style: const TextStyle(color: AppTheme.titleColor, fontSize: 18, fontWeight: FontWeight.bold),
+                              style: TextStyle(color: AppTheme.titleColor, fontSize: 18, fontWeight: FontWeight.bold),
                             ),
                             Text(
                               widget.role.toUpperCase(),
@@ -199,12 +200,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 32),
+                SizedBox(height: 32),
                 
                 // Company ID Card (Only for owner)
                 if (widget.role == 'owner' && widget.companyId != null) ...[
                   Container(
-                    padding: const EdgeInsets.all(24),
+                    padding: EdgeInsets.all(24),
                     decoration: BoxDecoration(
                       color: AppTheme.titleColor.withOpacity(0.05),
                       borderRadius: BorderRadius.circular(24),
@@ -215,12 +216,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       children: [
                         Row(
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.business,
                               color: AppTheme.pendingAmber,
                               size: 20,
                             ),
-                            const SizedBox(width: 8),
+                            SizedBox(width: 8),
                             Text(
                               'MY COMPANY ID',
                               style: TextStyle(
@@ -232,9 +233,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 16),
+                        SizedBox(height: 16),
                         Container(
-                          padding: const EdgeInsets.symmetric(
+                          padding: EdgeInsets.symmetric(
                             horizontal: 16,
                             vertical: 16,
                           ),
@@ -249,7 +250,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   !_showId && widget.companyId != null
                                       ? '•' * 12
                                       : (widget.companyId ?? 'Generating...'),
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: AppTheme.labelColor,
                                     fontFamily: 'monospace',
                                     fontSize: 14,
@@ -258,7 +259,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   maxLines: 1,
                                 ),
                               ),
-                              const SizedBox(width: 10),
+                              SizedBox(width: 10),
                               IconButton(
                                 icon: Icon(
                                   _showId
@@ -269,18 +270,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 ),
                                 onPressed: () => setState(() => _showId = !_showId),
                                 padding: EdgeInsets.zero,
-                                constraints: const BoxConstraints(),
+                                constraints: BoxConstraints(),
                               ),
-                              const SizedBox(width: 15),
+                              SizedBox(width: 15),
                               InkWell(
                                 onTap: _copyCompanyId,
                                 child: Container(
-                                  padding: const EdgeInsets.all(8),
+                                  padding: EdgeInsets.all(8),
                                   decoration: BoxDecoration(
                                     color: AppTheme.pendingAmber.withOpacity(0.1),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
-                                  child: const Icon(
+                                  child: Icon(
                                     Icons.copy_rounded,
                                     color: AppTheme.pendingAmber,
                                     size: 20,
@@ -290,7 +291,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             ],
                           ),
                         ),
-                        const SizedBox(height: 12),
+                        SizedBox(height: 12),
                         Text(
                           'Share this ID with your staff so they can join your workspace.',
                           style: TextStyle(
@@ -301,15 +302,48 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 32),
+                  SizedBox(height: 32),
                 ],
                 
+                // Appearance
+                Text(
+                  'Appearance',
+                  style: TextStyle(color: AppTheme.labelColor, fontSize: 14, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 16),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: AppTheme.primaryAction.withOpacity(0.05),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: AppTheme.primaryAction.withOpacity(0.1)),
+                  ),
+                  child: SwitchListTile(
+                    title: Text(
+                      'Legacy Glowing Theme',
+                      style: TextStyle(color: AppTheme.titleColor, fontWeight: FontWeight.bold, fontSize: 16),
+                    ),
+                    subtitle: Text(
+                      'Restore the original neon UI effects',
+                      style: TextStyle(color: AppTheme.titleColor.withOpacity(0.5), fontSize: 13),
+                    ),
+                    value: ThemeService.isLegacy,
+                    onChanged: (val) {
+                      ThemeService.toggleTheme(val);
+                      setState(() {});
+                    },
+                    activeColor: AppTheme.primaryAction,
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                ),
+                SizedBox(height: 32),
+                
                 // Account Actions
-                const Text(
+                Text(
                   'Account Actions',
                   style: TextStyle(color: AppTheme.labelColor, fontSize: 14, fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
 
                 // Leave Company (Only for Staff who are in a company)
                 if (widget.role == 'staff' && widget.companyId != null)
@@ -321,7 +355,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     onTap: _leaveCompany,
                   ),
 
-                const SizedBox(height: 12),
+                SizedBox(height: 12),
 
                 // Logout
                 _buildSettingTile(
@@ -332,16 +366,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   onTap: _logout,
                 ),
 
-                const SizedBox(height: 32),
-                const Divider(color: AppTheme.borderColor),
-                const SizedBox(height: 24),
+                SizedBox(height: 32),
+                Divider(color: AppTheme.borderColor),
+                SizedBox(height: 24),
                 
                 // Troubleshooting
-                const Text(
+                Text(
                   'Troubleshooting',
                   style: TextStyle(color: AppTheme.labelColor, fontSize: 14, fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 _buildSettingTile(
                   icon: Icons.notifications_active_outlined,
                   title: 'Test Notification',
@@ -352,13 +386,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     if (user == null) return;
                     
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Triggering test...'), duration: Duration(seconds: 1)),
+                      SnackBar(content: Text('Triggering test...'), duration: Duration(seconds: 1)),
                     );
                     
                     final result = await NotificationService.sendToSelf(user.id);
                     if (result == null) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('✅ Test triggered successfully!'), backgroundColor: AppTheme.activeEmerald),
+                        SnackBar(content: Text('✅ Test triggered successfully!'), backgroundColor: AppTheme.activeEmerald),
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -368,7 +402,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   },
                 ),
 
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 _buildSettingTile(
                   icon: Icons.code_rounded,
                   title: 'Meet Our Developers',
@@ -377,7 +411,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   onTap: () => Navigator.pushNamed(context, '/meet-developers'),
                 ),
 
-                const SizedBox(height: 40),
+                SizedBox(height: 40),
                 Center(
                   child: Text(
                     'Catering Ops v1.0.0',
@@ -401,7 +435,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       onTap: onTap,
       borderRadius: BorderRadius.circular(16),
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: color.withOpacity(0.05),
           borderRadius: BorderRadius.circular(16),
@@ -410,21 +444,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child: Row(
           children: [
             Container(
-              padding: const EdgeInsets.all(10),
+              padding: EdgeInsets.all(10),
               decoration: BoxDecoration(
                 color: color.withOpacity(0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(icon, color: color, size: 24),
             ),
-            const SizedBox(width: 16),
+            SizedBox(width: 16),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(color: AppTheme.titleColor, fontWeight: FontWeight.bold, fontSize: 16),
+                    style: TextStyle(color: AppTheme.titleColor, fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                   Text(
                     subtitle,
@@ -433,7 +467,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ],
               ),
             ),
-            const Icon(Icons.arrow_forward_ios_rounded, color: AppTheme.borderColor, size: 16),
+            Icon(Icons.arrow_forward_ios_rounded, color: AppTheme.borderColor, size: 16),
           ],
         ),
       ),

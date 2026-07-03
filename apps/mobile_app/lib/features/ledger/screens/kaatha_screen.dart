@@ -10,7 +10,7 @@ import 'add_middle_man_dialog.dart';
 class KaathaScreen extends StatefulWidget {
   final String companyId;
 
-  const KaathaScreen({super.key, required this.companyId});
+  KaathaScreen({super.key, required this.companyId});
 
   @override
   State<KaathaScreen> createState() => _KaathaScreenState();
@@ -30,7 +30,7 @@ class _KaathaScreenState extends State<KaathaScreen> {
   void initState() {
     super.initState();
     _confettiController = ConfettiController(
-      duration: const Duration(seconds: 3),
+      duration: Duration(seconds: 3),
     );
     _fetchMiddleMen();
     _setupRealtime();
@@ -91,7 +91,7 @@ class _KaathaScreenState extends State<KaathaScreen> {
     } else {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Could not open phone dialer')),
+          SnackBar(content: Text('Could not open phone dialer')),
         );
       }
     }
@@ -102,11 +102,11 @@ class _KaathaScreenState extends State<KaathaScreen> {
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: AppTheme.background,
-        title: const Text(
+        title: Text(
           'Remove Middle Man',
           style: TextStyle(color: AppTheme.titleColor),
         ),
-        content: const Text(
+        content: Text(
           'Are you sure you want to remove this person?',
           style: TextStyle(color: AppTheme.labelColor),
         ),
@@ -145,7 +145,7 @@ class _KaathaScreenState extends State<KaathaScreen> {
               }
             },
             style: ElevatedButton.styleFrom(backgroundColor: AppTheme.errorRed),
-            child: const Text('Remove', style: TextStyle(color: AppTheme.titleColor)),
+            child: Text('Remove', style: TextStyle(color: AppTheme.titleColor)),
           ),
         ],
       ),
@@ -273,7 +273,7 @@ class _KaathaScreenState extends State<KaathaScreen> {
             ),
             title: Text(
               'Record Payment: ${man['name']}',
-              style: const TextStyle(color: AppTheme.titleColor, fontSize: 18),
+              style: TextStyle(color: AppTheme.titleColor, fontSize: 18),
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
@@ -281,7 +281,7 @@ class _KaathaScreenState extends State<KaathaScreen> {
               children: [
                 DropdownButtonFormField<Map<String, dynamic>>(
                   dropdownColor: AppTheme.background,
-                  style: const TextStyle(color: AppTheme.titleColor),
+                  style: TextStyle(color: AppTheme.titleColor),
                   decoration: InputDecoration(
                     labelText: 'Select Order',
                     labelStyle: TextStyle(color: AppTheme.titleColor.withOpacity(0.5)),
@@ -301,7 +301,7 @@ class _KaathaScreenState extends State<KaathaScreen> {
                       value: o,
                       child: Text(
                         '${o['client_name']}$dateStr',
-                        style: const TextStyle(fontSize: 14),
+                        style: TextStyle(fontSize: 14),
                       ),
                     );
                   }).toList(),
@@ -309,9 +309,9 @@ class _KaathaScreenState extends State<KaathaScreen> {
                       setDialogState(() => selectedOrder = val),
                 ),
                 if (selectedOrder != null) ...[
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16),
                   Container(
-                    padding: const EdgeInsets.all(12),
+                    padding: EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: AppTheme.pendingAmber.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(12),
@@ -321,38 +321,38 @@ class _KaathaScreenState extends State<KaathaScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
+                            Text(
                               'Total Value:',
                               style: TextStyle(color: AppTheme.labelColor, fontSize: 12),
                             ),
                             Text(
                               '₹${(selectedOrder!['total_value'] as num).toStringAsFixed(2)}',
-                              style: const TextStyle(color: AppTheme.titleColor, fontWeight: FontWeight.bold),
+                              style: TextStyle(color: AppTheme.titleColor, fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 4),
+                        SizedBox(height: 4),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
+                            Text(
                               'Outstanding:',
                               style: TextStyle(color: AppTheme.pendingAmber, fontSize: 12),
                             ),
                             Text(
                               '₹${remaining.toStringAsFixed(2)}',
-                              style: const TextStyle(color: AppTheme.pendingAmber, fontWeight: FontWeight.bold),
+                              style: TextStyle(color: AppTheme.pendingAmber, fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16),
                   TextField(
                     controller: amountController,
                     keyboardType: TextInputType.number,
-                    style: const TextStyle(color: AppTheme.titleColor),
+                    style: TextStyle(color: AppTheme.titleColor),
                     decoration: InputDecoration(
                       labelText: 'Amount Paid (₹)',
                       labelStyle: TextStyle(color: AppTheme.titleColor.withOpacity(0.5)),
@@ -363,7 +363,7 @@ class _KaathaScreenState extends State<KaathaScreen> {
                         borderSide: BorderSide.none,
                       ),
                       hintText: 'Max: ₹${remaining.toStringAsFixed(0)}',
-                      hintStyle: const TextStyle(color: AppTheme.borderColor),
+                      hintStyle: TextStyle(color: AppTheme.borderColor),
                     ),
                   ),
                 ],
@@ -384,7 +384,7 @@ class _KaathaScreenState extends State<KaathaScreen> {
                         final val = double.tryParse(amountController.text);
                         if (val == null || val <= 0) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Please enter a valid amount')),
+                            SnackBar(content: Text('Please enter a valid amount')),
                           );
                           return;
                         }
@@ -401,7 +401,7 @@ class _KaathaScreenState extends State<KaathaScreen> {
                   backgroundColor: AppTheme.activeEmerald,
                   disabledBackgroundColor: AppTheme.titleColor.withOpacity(0.05),
                 ),
-                child: const Text(
+                child: Text(
                   'Confirm',
                   style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
                 ),
@@ -476,10 +476,10 @@ class _KaathaScreenState extends State<KaathaScreen> {
             backgroundColor: Colors.transparent,
             elevation: 0,
             leading: IconButton(
-              icon: const Icon(Icons.arrow_back_ios_new, color: AppTheme.titleColor),
+              icon: Icon(Icons.arrow_back_ios_new, color: AppTheme.titleColor),
               onPressed: () => Navigator.pop(context),
             ),
-            title: const Text(
+            title: Text(
               'Kaatha (Ledger)',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -488,7 +488,7 @@ class _KaathaScreenState extends State<KaathaScreen> {
             ),
           ),
           body: _isLoading
-              ? const Center(
+              ? Center(
                   child: CircularProgressIndicator(color: AppTheme.pendingAmber),
                 )
               : _middleMen.isEmpty
@@ -515,8 +515,8 @@ class _KaathaScreenState extends State<KaathaScreen> {
               }
             },
             backgroundColor: AppTheme.pendingAmber,
-            icon: const Icon(Icons.add, color: AppTheme.titleColor),
-            label: const Text(
+            icon: Icon(Icons.add, color: AppTheme.titleColor),
+            label: Text(
               'Add Middle Man',
               style: TextStyle(
                 color: AppTheme.titleColor,
@@ -531,7 +531,7 @@ class _KaathaScreenState extends State<KaathaScreen> {
             confettiController: _confettiController,
             blastDirectionality: BlastDirectionality.explosive,
             shouldLoop: false,
-            colors: const [
+            colors: [
               AppTheme.activeEmerald,
               Colors.blue,
               Colors.pink,
@@ -549,7 +549,7 @@ class _KaathaScreenState extends State<KaathaScreen> {
     // Method to draw a star shape for confetti particles
     double degToRad(double deg) => deg * (math.pi / 180.0);
 
-    const numberOfPoints = 5;
+    int numberOfPoints = 5;
     final halfWidth = size.width / 2;
     final externalRadius = halfWidth;
     final internalRadius = halfWidth / 2.5;
@@ -583,8 +583,8 @@ class _KaathaScreenState extends State<KaathaScreen> {
             size: 80,
             color: AppTheme.pendingAmber.withOpacity(0.3),
           ),
-          const SizedBox(height: 24),
-          const Text(
+          SizedBox(height: 24),
+          Text(
             'No Middle Men Yet',
             style: TextStyle(
               color: AppTheme.titleColor,
@@ -592,7 +592,7 @@ class _KaathaScreenState extends State<KaathaScreen> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: 12),
           Text(
             'Keep track of your middle men by adding them here.',
             textAlign: TextAlign.center,
@@ -608,7 +608,7 @@ class _KaathaScreenState extends State<KaathaScreen> {
 
   Widget _buildMiddleMenList() {
     return ListView.builder(
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(24),
       itemCount: _middleMen.length,
       itemBuilder: (context, index) {
         final man = _middleMen[index];
@@ -624,11 +624,11 @@ class _KaathaScreenState extends State<KaathaScreen> {
               context: context,
               builder: (context) => AlertDialog(
                 backgroundColor: AppTheme.background,
-                title: const Text(
+                title: Text(
                   'Delete Middle Man',
                   style: TextStyle(color: AppTheme.titleColor),
                 ),
-                content: const Text(
+                content: Text(
                   'Are you sure you want to delete this person?',
                   style: TextStyle(color: AppTheme.labelColor),
                 ),
@@ -645,7 +645,7 @@ class _KaathaScreenState extends State<KaathaScreen> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppTheme.errorRed,
                     ),
-                    child: const Text(
+                    child: Text(
                       'Delete',
                       style: TextStyle(color: AppTheme.titleColor),
                     ),
@@ -659,13 +659,13 @@ class _KaathaScreenState extends State<KaathaScreen> {
           },
           background: Container(
             alignment: Alignment.centerRight,
-            padding: const EdgeInsets.only(right: 20),
-            margin: const EdgeInsets.only(bottom: 24),
+            padding: EdgeInsets.only(right: 20),
+            margin: EdgeInsets.only(bottom: 24),
             decoration: BoxDecoration(
               color: AppTheme.errorRed.withOpacity(0.8),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Icon(Icons.delete, color: AppTheme.titleColor, size: 32),
+            child: Icon(Icons.delete, color: AppTheme.titleColor, size: 32),
           ),
           child: GestureDetector(
             onTap: () {
@@ -674,8 +674,8 @@ class _KaathaScreenState extends State<KaathaScreen> {
               });
             },
             child: Container(
-              margin: const EdgeInsets.only(bottom: 24),
-              padding: const EdgeInsets.all(20),
+              margin: EdgeInsets.only(bottom: 24),
+              padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: isSettled
                     ? AppTheme.activeEmerald.withOpacity(0.07)
@@ -710,21 +710,21 @@ class _KaathaScreenState extends State<KaathaScreen> {
                         backgroundColor: AppTheme.pendingAmber.withOpacity(0.1),
                         child: Text(
                           (man['name'] as String?)?[0].toUpperCase() ?? 'M',
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: AppTheme.pendingAmber,
                             fontWeight: FontWeight.bold,
                             fontSize: 24,
                           ),
                         ),
                       ),
-                      const SizedBox(width: 16),
+                      SizedBox(width: 16),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               man['name'] ?? 'Unknown',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: AppTheme.titleColor,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
@@ -748,10 +748,10 @@ class _KaathaScreenState extends State<KaathaScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20),
                   // Balance Box
                   Container(
-                    padding: const EdgeInsets.all(16),
+                    padding: EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       color: AppTheme.activeEmerald.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(12),
@@ -759,7 +759,7 @@ class _KaathaScreenState extends State<KaathaScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Flexible(
+                        Flexible(
                           child: Text(
                             'AMOUNT TO COLLECT:',
                             style: TextStyle(
@@ -770,11 +770,11 @@ class _KaathaScreenState extends State<KaathaScreen> {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        const SizedBox(width: 8),
+                        SizedBox(width: 8),
                         Flexible(
                           child: Text(
                             '₹${(man['total_balance'] as num?)?.toStringAsFixed(2) ?? '0.00'}',
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: AppTheme.activeEmerald,
                               fontWeight: FontWeight.bold,
                               fontSize: 24,
@@ -788,71 +788,71 @@ class _KaathaScreenState extends State<KaathaScreen> {
 
                   // Expandable Section
                   AnimatedCrossFade(
-                    firstChild: const SizedBox.shrink(),
+                    firstChild: SizedBox.shrink(),
                     secondChild: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        const SizedBox(height: 20),
+                        SizedBox(height: 20),
                         // PRIMARY ACTION
                         ElevatedButton.icon(
                           onPressed: () => _recordPayment(index),
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.add_circle,
                             color: Colors.black,
                           ),
-                          label: const Text(
+                          label: Text(
                             'RECEIVED PAYMENT (CASH)',
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppTheme.activeEmerald,
                             foregroundColor: Colors.black,
-                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            padding: EdgeInsets.symmetric(vertical: 16),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
                           ),
                         ),
-                        const SizedBox(height: 12),
+                        SizedBox(height: 12),
                         OutlinedButton.icon(
                           onPressed: () {
                             if (man['phone_number'] != null) {
                               _callMiddleMan(man['phone_number']);
                             }
                           },
-                          icon: const Icon(Icons.phone),
-                          label: const Text('CALL NOW'),
+                          icon: Icon(Icons.phone),
+                          label: Text('CALL NOW'),
                           style: OutlinedButton.styleFrom(
                             foregroundColor: AppTheme.titleColor,
-                            side: const BorderSide(color: AppTheme.borderColor),
-                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            side: BorderSide(color: AppTheme.borderColor),
+                            padding: EdgeInsets.symmetric(vertical: 14),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
                           ),
                         ),
-                        const SizedBox(height: 12),
+                        SizedBox(height: 12),
                         Row(
                           children: [
                             Expanded(
                               child: TextButton.icon(
                                 onPressed: () => _editMiddleMan(index),
-                                icon: const Icon(Icons.edit, size: 18),
-                                label: const Text('EDIT'),
+                                icon: Icon(Icons.edit, size: 18),
+                                label: Text('EDIT'),
                                 style: TextButton.styleFrom(
                                   foregroundColor: AppTheme.pendingAmber,
                                 ),
                               ),
                             ),
-                            const SizedBox(width: 8),
+                            SizedBox(width: 8),
                             Expanded(
                               child: TextButton.icon(
                                 onPressed: () => _deleteMiddleMan(index),
-                                icon: const Icon(
+                                icon: Icon(
                                   Icons.delete_outline,
                                   size: 18,
                                 ),
-                                label: const Text('DELETE'),
+                                label: Text('DELETE'),
                                 style: TextButton.styleFrom(
                                   foregroundColor: AppTheme.errorRed,
                                 ),
@@ -860,7 +860,7 @@ class _KaathaScreenState extends State<KaathaScreen> {
                             ),
                           ],
                         ),
-                        const Divider(color: AppTheme.borderColor, height: 28),
+                        Divider(color: AppTheme.borderColor, height: 28),
                         // Orders belonging to this middleman
                         FutureBuilder<List<Map<String, dynamic>>>(
                           future: () async {
@@ -882,7 +882,7 @@ class _KaathaScreenState extends State<KaathaScreen> {
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return const Center(
+                              return Center(
                                 child: CircularProgressIndicator(
                                   color: AppTheme.pendingAmber,
                                   strokeWidth: 2,
@@ -911,7 +911,7 @@ class _KaathaScreenState extends State<KaathaScreen> {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
+                                Text(
                                   'Orders',
                                   style: TextStyle(
                                     color: AppTheme.labelColor,
@@ -919,7 +919,7 @@ class _KaathaScreenState extends State<KaathaScreen> {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                const SizedBox(height: 8),
+                                SizedBox(height: 8),
                                 ...sortedOrders.map((order) {
                                   final isPending =
                                       order['payment_status'] != 'paid';
@@ -934,8 +934,8 @@ class _KaathaScreenState extends State<KaathaScreen> {
                                       ? '${date.day}/${date.month}/${date.year}'
                                       : '';
                                   return Container(
-                                    margin: const EdgeInsets.only(bottom: 8),
-                                    padding: const EdgeInsets.symmetric(
+                                    margin: EdgeInsets.only(bottom: 8),
+                                    padding: EdgeInsets.symmetric(
                                       horizontal: 12,
                                       vertical: 10,
                                     ),
@@ -963,7 +963,7 @@ class _KaathaScreenState extends State<KaathaScreen> {
                                               : AppTheme.activeEmerald,
                                           size: 16,
                                         ),
-                                        const SizedBox(width: 8),
+                                        SizedBox(width: 8),
                                         Expanded(
                                           child: Column(
                                             crossAxisAlignment:
@@ -972,7 +972,7 @@ class _KaathaScreenState extends State<KaathaScreen> {
                                               Text(
                                                 order['client_name'] ??
                                                     'Unknown',
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                   color: AppTheme.titleColor,
                                                   fontSize: 13,
                                                   fontWeight: FontWeight.bold,
@@ -981,7 +981,7 @@ class _KaathaScreenState extends State<KaathaScreen> {
                                               if (dateStr.isNotEmpty)
                                                 Text(
                                                   dateStr,
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                     color: AppTheme.labelColor,
                                                     fontSize: 11,
                                                   ),
@@ -1012,7 +1012,7 @@ class _KaathaScreenState extends State<KaathaScreen> {
                     crossFadeState: isExpanded
                         ? CrossFadeState.showSecond
                         : CrossFadeState.showFirst,
-                    duration: const Duration(milliseconds: 200),
+                    duration: Duration(milliseconds: 200),
                   ),
                 ],
               ),

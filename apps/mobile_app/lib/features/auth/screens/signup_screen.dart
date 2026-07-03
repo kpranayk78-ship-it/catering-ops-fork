@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+  SignUpScreen({super.key});
 
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
@@ -182,27 +182,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           color: AppTheme.background,
         ),
         child: SafeArea(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
+            padding: EdgeInsets.symmetric(horizontal: 30),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 20),
+                SizedBox(height: 20),
                 IconButton(
                   onPressed: () => Navigator.pop(context),
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.arrow_back_ios_new,
                     color: AppTheme.titleColor,
                   ),
                   padding: EdgeInsets.zero,
                   alignment: Alignment.centerLeft,
                 ),
-                const SizedBox(height: 30),
-                const Text(
+                SizedBox(height: 30),
+                Text(
                   'Create Account',
                   style: TextStyle(
                     color: AppTheme.titleColor,
@@ -210,16 +210,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 8),
-                const Text(
+                SizedBox(height: 8),
+                Text(
                   'Join our catering management network',
                   style: TextStyle(color: AppTheme.labelColor, fontSize: 14),
                 ),
-                const SizedBox(height: 40),
+                SizedBox(height: 40),
 
                 // Form Container
                 Container(
-                  padding: const EdgeInsets.all(24),
+                  padding: EdgeInsets.all(24),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(24),
@@ -235,7 +235,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         icon: Icons.person_outline,
                         errorText: _nameError,
                       ),
-                      const SizedBox(height: 16),
+                      SizedBox(height: 16),
                       _buildTextField(
                         controller: _phoneCtrl,
                         label: 'Phone Number',
@@ -243,7 +243,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         keyboardType: TextInputType.phone,
                         errorText: _phoneError,
                       ),
-                      const SizedBox(height: 24),
+                      SizedBox(height: 24),
 
                       if (_role == 'owner') ...[
                         _buildTextField(
@@ -252,10 +252,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           icon: Icons.business_outlined,
                           errorText: _companyError,
                         ),
-                        const SizedBox(height: 24),
+                        SizedBox(height: 24),
                       ],
 
-                      const Text(
+                      Text(
                         'Select Your Role',
                         style: TextStyle(
                           color: AppTheme.labelColor,
@@ -263,7 +263,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      SizedBox(height: 12),
                       Row(
                         children: [
                           Expanded(
@@ -273,7 +273,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               onTap: () => setState(() => _role = 'staff'),
                             ),
                           ),
-                          const SizedBox(width: 12),
+                          SizedBox(width: 12),
                           Expanded(
                             child: _RoleCard(
                               title: 'Business Owner',
@@ -284,7 +284,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ],
                       ),
 
-                      const SizedBox(height: 24),
+                      SizedBox(height: 24),
                       _buildTextField(
                         controller: _emailCtrl,
                         label: 'Email Address (Optional)',
@@ -292,7 +292,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         keyboardType: TextInputType.emailAddress,
                         errorText: _emailError,
                       ),
-                      const SizedBox(height: 16),
+                      SizedBox(height: 16),
                       _buildTextField(
                         controller: _passwordCtrl,
                         label: 'Password',
@@ -300,12 +300,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         obscureText: true,
                         errorText: _passwordError,
                       ),
-                      const SizedBox(height: 32),
+                      SizedBox(height: 32),
                       _buildSignUpButton(),
                     ],
                   ),
                 ),
-                const SizedBox(height: 40),
+                SizedBox(height: 40),
               ],
             ),
           ),
@@ -326,24 +326,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
       controller: controller,
       obscureText: obscureText,
       keyboardType: keyboardType,
-      style: const TextStyle(color: AppTheme.titleColor),
+      style: TextStyle(color: AppTheme.titleColor),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: const TextStyle(color: AppTheme.labelColor, fontSize: 13),
+        labelStyle: TextStyle(color: AppTheme.labelColor, fontSize: 13),
         errorText: errorText,
-        errorStyle: const TextStyle(color: AppTheme.errorRed),
+        errorStyle: TextStyle(color: AppTheme.errorRed),
         prefixIcon: Icon(icon, color: AppTheme.labelColor, size: 20),
         filled: true,
         fillColor: AppTheme.background,
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: AppTheme.borderColor),
+          borderSide: BorderSide(color: AppTheme.borderColor),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: AppTheme.pendingAmber, width: 2),
+          borderSide: BorderSide(color: AppTheme.pendingAmber, width: 2),
         ),
-        contentPadding: const EdgeInsets.symmetric(
+        contentPadding: EdgeInsets.symmetric(
           horizontal: 20,
           vertical: 16,
         ),
@@ -367,7 +367,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           shadowColor: AppTheme.titleColor.withOpacity(0.2),
         ),
         child: _loading
-            ? const SizedBox(
+            ? SizedBox(
                 height: 24,
                 width: 24,
                 child: CircularProgressIndicator(
@@ -375,7 +375,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   color: Colors.white,
                 ),
               )
-            : const Text(
+            : Text(
                 'CREATE ACCOUNT',
                 style: TextStyle(
                   fontSize: 14,
@@ -393,7 +393,7 @@ class _RoleCard extends StatelessWidget {
   final bool isSelected;
   final VoidCallback onTap;
 
-  const _RoleCard({
+  _RoleCard({
     required this.title,
     required this.isSelected,
     required this.onTap,
@@ -404,8 +404,8 @@ class _RoleCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(vertical: 12),
+        duration: Duration(milliseconds: 200),
+        padding: EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
           color: isSelected
               ? AppTheme.primaryAction.withOpacity(0.08)

@@ -182,20 +182,20 @@ class NotificationService {
         SnackBar(
           content: Row(
             children: [
-              const Icon(Icons.notifications_active, color: AppTheme.pendingAmber),
-              const SizedBox(width: 12),
+              Icon(Icons.notifications_active, color: AppTheme.pendingAmber),
+              SizedBox(width: 12),
               Expanded(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'Notification Sent',
                       style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.titleColor),
                     ),
                     Text(
                       title,
-                      style: const TextStyle(fontSize: 12, color: AppTheme.labelColor),
+                      style: TextStyle(fontSize: 12, color: AppTheme.labelColor),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -206,10 +206,10 @@ class NotificationService {
           ),
           backgroundColor: AppTheme.background,
           behavior: SnackBarBehavior.floating,
-          duration: const Duration(seconds: 3),
+          duration: Duration(seconds: 3),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
-            side: const BorderSide(color: AppTheme.pendingAmber, width: 0.5),
+            side: BorderSide(color: AppTheme.pendingAmber, width: 0.5),
           ),
         ),
       );

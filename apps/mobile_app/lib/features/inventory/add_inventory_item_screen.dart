@@ -5,7 +5,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class AddInventoryItemScreen extends StatefulWidget {
   final String companyId;
 
-  const AddInventoryItemScreen({super.key, required this.companyId});
+  AddInventoryItemScreen({super.key, required this.companyId});
 
   @override
   State<AddInventoryItemScreen> createState() => _AddInventoryItemScreenState();
@@ -68,15 +68,15 @@ class _AddInventoryItemScreenState extends State<AddInventoryItemScreen> {
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: AppTheme.background,
-        title: const Text(
+        title: Text(
           'Add New Unit',
           style: TextStyle(color: AppTheme.titleColor),
         ),
         content: TextField(
           controller: ctrl,
           autofocus: true,
-          style: const TextStyle(color: AppTheme.titleColor),
-          decoration: const InputDecoration(
+          style: TextStyle(color: AppTheme.titleColor),
+          decoration: InputDecoration(
             labelText: 'Unit Name (e.g. Plates, Packets)',
             labelStyle: TextStyle(color: AppTheme.labelColor),
           ),
@@ -84,11 +84,11 @@ class _AddInventoryItemScreenState extends State<AddInventoryItemScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text('Cancel'),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, ctrl.text.trim()),
-            child: const Text('Add'),
+            child: Text('Add'),
           ),
         ],
       ),
@@ -133,7 +133,7 @@ class _AddInventoryItemScreenState extends State<AddInventoryItemScreen> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
+          SnackBar(
             content: Text('Item added to inventory!'),
             backgroundColor: AppTheme.activeEmerald,
           ),
@@ -161,21 +161,21 @@ class _AddInventoryItemScreenState extends State<AddInventoryItemScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Text(
+        title: Text(
           'Add New Item',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         leading: IconButton(
-          icon: const Icon(Icons.close),
+          icon: Icon(Icons.close),
           onPressed: () => Navigator.pop(context),
         ),
       ),
       body: _isLoadingUnits
-          ? const Center(
+          ? Center(
               child: CircularProgressIndicator(color: AppTheme.pendingAmber),
             )
           : SingleChildScrollView(
-              padding: const EdgeInsets.all(24),
+              padding: EdgeInsets.all(24),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -186,12 +186,13 @@ class _AddInventoryItemScreenState extends State<AddInventoryItemScreen> {
                       label: 'Item Name',
                       icon: Icons.fastfood_outlined,
                       validator: (val) {
-                        if (val == null || val.trim().isEmpty)
+                        if (val == null || val.trim().isEmpty) {
                           return 'Item name is required';
+                        }
                         return null;
                       },
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20),
 
                     Row(
                       children: [
@@ -201,19 +202,21 @@ class _AddInventoryItemScreenState extends State<AddInventoryItemScreen> {
                             controller: _qtyCtrl,
                             label: 'Quantity',
                             icon: Icons.numbers_outlined,
-                            keyboardType: const TextInputType.numberWithOptions(
+                            keyboardType: TextInputType.numberWithOptions(
                               decimal: true,
                             ),
                             validator: (val) {
-                              if (val == null || val.trim().isEmpty)
+                              if (val == null || val.trim().isEmpty) {
                                 return 'Required';
-                              if (double.tryParse(val.trim()) == null)
+                              }
+                              if (double.tryParse(val.trim()) == null) {
                                 return 'Invalid';
+                              }
                               return null;
                             },
                           ),
                         ),
-                        const SizedBox(width: 16),
+                        SizedBox(width: 16),
                         Expanded(
                           flex: 1,
                           child: Column(
@@ -230,9 +233,9 @@ class _AddInventoryItemScreenState extends State<AddInventoryItemScreen> {
                                 onPressed: _addNewUnitDialog,
                                 style: TextButton.styleFrom(
                                   padding: EdgeInsets.zero,
-                                  minimumSize: const Size(0, 30),
+                                  minimumSize: Size(0, 30),
                                 ),
-                                child: const Text(
+                                child: Text(
                                   '+ Add Unit',
                                   style: TextStyle(
                                     color: AppTheme.pendingAmber,
@@ -245,7 +248,7 @@ class _AddInventoryItemScreenState extends State<AddInventoryItemScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20),
 
                     _buildDropdown(
                       label: 'Category',
@@ -255,7 +258,7 @@ class _AddInventoryItemScreenState extends State<AddInventoryItemScreen> {
                           setState(() => _selectedCategory = val!),
                       isFullWidth: true,
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20),
 
                     _buildTextField(
                       controller: _imgCtrl,
@@ -263,7 +266,7 @@ class _AddInventoryItemScreenState extends State<AddInventoryItemScreen> {
                       icon: Icons.image_outlined,
                       keyboardType: TextInputType.url,
                     ),
-                    const SizedBox(height: 48),
+                    SizedBox(height: 48),
 
                     SizedBox(
                       width: double.infinity,
@@ -277,10 +280,10 @@ class _AddInventoryItemScreenState extends State<AddInventoryItemScreen> {
                           ),
                         ),
                         child: _isSubmitting
-                            ? const CircularProgressIndicator(
+                            ? CircularProgressIndicator(
                                 color: AppTheme.titleColor,
                               )
-                            : const Text(
+                            : Text(
                                 'SAVE ITEM',
                                 style: TextStyle(
                                   color: AppTheme.titleColor,
@@ -306,12 +309,12 @@ class _AddInventoryItemScreenState extends State<AddInventoryItemScreen> {
   }) {
     return TextFormField(
       controller: controller,
-      style: const TextStyle(color: AppTheme.titleColor),
+      style: TextStyle(color: AppTheme.titleColor),
       keyboardType: keyboardType,
       validator: validator,
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: const TextStyle(color: AppTheme.labelColor),
+        labelStyle: TextStyle(color: AppTheme.labelColor),
         filled: true,
         fillColor: AppTheme.titleColor.withOpacity(0.05),
         prefixIcon: Icon(icon, color: AppTheme.pendingAmber),
@@ -321,7 +324,7 @@ class _AddInventoryItemScreenState extends State<AddInventoryItemScreen> {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: AppTheme.pendingAmber),
+          borderSide: BorderSide(color: AppTheme.pendingAmber),
         ),
       ),
     );
@@ -335,16 +338,16 @@ class _AddInventoryItemScreenState extends State<AddInventoryItemScreen> {
     bool isFullWidth = false,
   }) {
     return DropdownButtonFormField<String>(
-      value: value,
+      initialValue: value,
       items: items
           .map((i) => DropdownMenuItem(value: i, child: Text(i)))
           .toList(),
       onChanged: onChanged,
-      dropdownColor: const Color(0xFF1F1F3A),
-      style: const TextStyle(color: AppTheme.titleColor),
+      dropdownColor: Color(0xFF1F1F3A),
+      style: TextStyle(color: AppTheme.titleColor),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: const TextStyle(color: AppTheme.labelColor),
+        labelStyle: TextStyle(color: AppTheme.labelColor),
         filled: true,
         fillColor: AppTheme.titleColor.withOpacity(0.05),
         border: OutlineInputBorder(

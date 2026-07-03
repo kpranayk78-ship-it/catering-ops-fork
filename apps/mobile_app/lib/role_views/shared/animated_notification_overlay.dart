@@ -9,8 +9,9 @@ class AnimatedNotificationOverlay {
     required String title,
     required String message,
     IconData icon = Icons.notifications_active,
-    Color color = AppTheme.pendingAmber,
+    Color? color,
   }) {
+    color ??= AppTheme.pendingAmber;
     _currentEntry?.remove();
     _currentEntry = null;
 
@@ -40,7 +41,7 @@ class _NotificationToast extends StatefulWidget {
   final Color color;
   final VoidCallback onDismiss;
 
-  const _NotificationToast({
+  _NotificationToast({
     required this.title,
     required this.message,
     required this.icon,
@@ -62,11 +63,11 @@ class _NotificationToastState extends State<_NotificationToast> with SingleTicke
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 800),
+      duration: Duration(milliseconds: 800),
     );
 
     _offsetAnimation = Tween<Offset>(
-      begin: const Offset(0, -1.5),
+      begin: Offset(0, -1.5),
       end: Offset.zero,
     ).animate(CurvedAnimation(
       parent: _controller,
@@ -78,13 +79,13 @@ class _NotificationToastState extends State<_NotificationToast> with SingleTicke
       end: 1.0,
     ).animate(CurvedAnimation(
       parent: _controller,
-      curve: const Interval(0.0, 0.5, curve: Curves.easeIn),
+      curve: Interval(0.0, 0.5, curve: Curves.easeIn),
     ));
 
     _controller.forward();
 
     // Auto dismiss after 6 seconds
-    Future.delayed(const Duration(seconds: 6), () {
+    Future.delayed(Duration(seconds: 6), () {
       if (mounted) {
         _controller.reverse().then((_) => widget.onDismiss());
       }
@@ -110,7 +111,7 @@ class _NotificationToastState extends State<_NotificationToast> with SingleTicke
           child: Material(
             color: Colors.transparent,
             child: Container(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: AppTheme.background, // Matches app theme
                 borderRadius: BorderRadius.circular(16),
@@ -126,14 +127,14 @@ class _NotificationToastState extends State<_NotificationToast> with SingleTicke
               child: Row(
                 children: [
                    Container(
-                    padding: const EdgeInsets.all(10),
+                    padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       color: widget.color.withOpacity(0.1),
                       shape: BoxShape.circle,
                     ),
                     child: Icon(widget.icon, color: widget.color, size: 24),
                   ),
-                  const SizedBox(width: 16),
+                  SizedBox(width: 16),
                   Expanded(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -141,13 +142,13 @@ class _NotificationToastState extends State<_NotificationToast> with SingleTicke
                       children: [
                         Text(
                           widget.title,
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: AppTheme.titleColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 14,
                           ),
                         ),
-                        const SizedBox(height: 4),
+                        SizedBox(height: 4),
                         Text(
                           widget.message,
                           style: TextStyle(
@@ -161,7 +162,7 @@ class _NotificationToastState extends State<_NotificationToast> with SingleTicke
                     ),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.close, color: AppTheme.borderColor, size: 18),
+                    icon: Icon(Icons.close, color: AppTheme.borderColor, size: 18),
                     onPressed: () {
                       _controller.reverse().then((_) => widget.onDismiss());
                     },

@@ -1,3 +1,4 @@
+import 'services/theme_service.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -24,12 +25,14 @@ void main() async {
     // Initialize Local Cache for Offline-First behavior
     await CacheService.init();
 
+    await ThemeService.init();
+
     await Supabase.initialize(
       url: Env.supabaseUrl,
       anonKey: Env.supabaseAnonKey,
     );
 
-    runApp(const MyApp());
+    runApp(MyApp());
   } catch (e, stack) {
     debugPrint('FATAL STARTUP ERROR: $e');
     debugPrint(stack.toString());
@@ -46,30 +49,35 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      navigatorKey: navigatorKey,
-      debugShowCheckedModeBanner: false,
-      title: 'Catering Ops',
-      theme: AppTheme.lightTheme,
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const AuthGate(),
-        '/login': (context) => const LoginScreen(),
-        '/signup': (context) => const SignUpScreen(),
-        '/dashboard': (context) => const DashboardScreen(),
-        '/join_requests': (context) => const JoinRequestsScreen(),
-        '/meet-developers': (context) => const MeetOurDevelopersScreen(),
-      },
+    return AnimatedBuilder(
+      animation: ThemeNotifier.instance,
+      builder: (context, _) {
+        return MaterialApp(
+          navigatorKey: navigatorKey,
+          debugShowCheckedModeBanner: false,
+          title: 'Catering Ops',
+          theme: AppTheme.lightTheme,
+          initialRoute: '/',
+          routes: {
+            '/': (context) => AuthGate(),
+            '/login': (context) => LoginScreen(),
+            '/signup': (context) => SignUpScreen(),
+            '/dashboard': (context) => DashboardScreen(),
+            '/join_requests': (context) => JoinRequestsScreen(),
+            '/meet-developers': (context) => MeetOurDevelopersScreen(),
+          },
+        );
+      }
     );
   }
 }
 
 class AuthGate extends StatelessWidget {
-  const AuthGate({super.key});
+  AuthGate({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -77,8 +85,8 @@ class AuthGate extends StatelessWidget {
       stream: Supabase.instance.client.auth.onAuthStateChange,
       builder: (context, snapshot) {
         final session = Supabase.instance.client.auth.currentSession;
-        if (session == null) return const LoginScreen();
-        return const DashboardScreen();
+        if (session == null) return LoginScreen();
+        return DashboardScreen();
       },
     );
   }

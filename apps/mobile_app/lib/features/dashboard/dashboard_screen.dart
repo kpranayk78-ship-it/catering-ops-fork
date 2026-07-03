@@ -4,7 +4,7 @@ import '../../role_views/staff/staff_view.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({super.key});
+  DashboardScreen({super.key});
 
   @override
   State<DashboardScreen> createState() => _DashboardScreenState();
@@ -95,23 +95,23 @@ class _DashboardScreenState extends State<DashboardScreen>
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+      return Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     if (_role == 'owner') {
-      return const OwnerView();
+      return OwnerView();
     } else if (_role == 'staff') {
-      return const StaffView();
+      return StaffView();
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Dashboard')),
+      appBar: AppBar(title: Text('Dashboard')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(_errorMessage ?? 'Unknown role or no access.'),
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 setState(() {
@@ -120,16 +120,17 @@ class _DashboardScreenState extends State<DashboardScreen>
                 });
                 _fetchUserRole();
               },
-              child: const Text('Retry'),
+              child: Text('Retry'),
             ),
             TextButton(
               onPressed: () async {
                 await _setOnlineStatus(false);
                 await Supabase.instance.client.auth.signOut();
-                if (context.mounted)
+                if (context.mounted) {
                   Navigator.pushReplacementNamed(context, '/login');
+                }
               },
-              child: const Text('Back to Login'),
+              child: Text('Back to Login'),
             ),
           ],
         ),

@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 class ExpandableNotificationItem extends StatefulWidget {
   final Map<String, dynamic> notification;
 
-  const ExpandableNotificationItem({super.key, required this.notification});
+  ExpandableNotificationItem({super.key, required this.notification});
 
   @override
   State<ExpandableNotificationItem> createState() => _ExpandableNotificationItemState();
@@ -24,7 +24,7 @@ class _ExpandableNotificationItemState extends State<ExpandableNotificationItem>
         : DateTime.now();
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
         color: AppTheme.titleColor.withOpacity(0.03),
         borderRadius: BorderRadius.circular(16),
@@ -36,7 +36,7 @@ class _ExpandableNotificationItemState extends State<ExpandableNotificationItem>
         onTap: () => setState(() => _isExpanded = !_isExpanded),
         borderRadius: BorderRadius.circular(16),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -46,25 +46,25 @@ class _ExpandableNotificationItemState extends State<ExpandableNotificationItem>
                   CircleAvatar(
                     backgroundColor: AppTheme.primaryAction.withOpacity(0.1),
                     radius: 18,
-                    child: const Icon(Icons.notifications_outlined, color: AppTheme.primaryAction, size: 20),
+                    child: Icon(Icons.notifications_outlined, color: AppTheme.primaryAction, size: 20),
                   ),
-                  const SizedBox(width: 12),
+                  SizedBox(width: 12),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           title,
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: AppTheme.titleColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 14,
                           ),
                         ),
-                        const SizedBox(height: 4),
+                        SizedBox(height: 4),
                         Text(
                           DateFormat('MMM dd, hh:mm a').format(createdAt),
-                          style: const TextStyle(color: AppTheme.labelColor, fontSize: 10),
+                          style: TextStyle(color: AppTheme.labelColor, fontSize: 10),
                         ),
                       ],
                     ),
@@ -77,22 +77,22 @@ class _ExpandableNotificationItemState extends State<ExpandableNotificationItem>
                 ],
               ),
               if (_isExpanded) ...[
-                const SizedBox(height: 12),
-                const Divider(color: AppTheme.borderColor, height: 1),
-                const SizedBox(height: 12),
+                SizedBox(height: 12),
+                Divider(color: AppTheme.borderColor, height: 1),
+                SizedBox(height: 12),
                 Text(
                   message,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: AppTheme.labelColor,
                     fontSize: 13,
                     height: 1.5,
                   ),
                 ),
               ] else ...[
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
                 Text(
                   message,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: AppTheme.labelColor,
                     fontSize: 12,
                   ),

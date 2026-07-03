@@ -4,7 +4,7 @@ import 'package:video_player/video_player.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+  SplashScreen({super.key});
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -34,7 +34,7 @@ class _SplashScreenState extends State<SplashScreen> {
       debugPrint("Video initialization error: $e");
       setState(() => _error = true);
       // If video fails, wait 2 seconds then navigate
-      Future.delayed(const Duration(seconds: 2), _handleNavigation);
+      Future.delayed(Duration(seconds: 2), _handleNavigation);
       return;
     }
 
@@ -74,7 +74,7 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: AppTheme.background, // Match login theme
       body: Center(
         child: _error
-            ? const Icon(
+            ? Icon(
                 Icons.restaurant_menu,
                 size: 100,
                 color: AppTheme.pendingAmber,
@@ -90,7 +90,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   ),
                 ),
               )
-            : const CircularProgressIndicator(color: AppTheme.pendingAmber),
+            : CircularProgressIndicator(color: AppTheme.pendingAmber),
       ),
     );
   }

@@ -8,7 +8,7 @@ class BidsScreen extends StatefulWidget {
   final double baseFare;
   final DateTime? biddingEndsAt;
 
-  const BidsScreen({
+  BidsScreen({
     super.key,
     required this.orderId,
     required this.clientName,
@@ -95,7 +95,7 @@ class _BidsScreenState extends State<BidsScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: AppTheme.titleColor),
+          icon: Icon(Icons.arrow_back_ios_new, color: AppTheme.titleColor),
           onPressed: () => Navigator.pop(context),
         ),
         title: Column(
@@ -103,7 +103,7 @@ class _BidsScreenState extends State<BidsScreen> {
           children: [
             Text(
               'Live Bids',
-              style: const TextStyle(
+              style: TextStyle(
                 color: AppTheme.titleColor,
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
@@ -111,22 +111,22 @@ class _BidsScreenState extends State<BidsScreen> {
             ),
             Text(
               widget.clientName,
-              style: const TextStyle(color: AppTheme.labelColor, fontSize: 13),
+              style: TextStyle(color: AppTheme.labelColor, fontSize: 13),
             ),
           ],
         ),
         actions: [
           if (widget.biddingEndsAt != null)
             Padding(
-              padding: const EdgeInsets.only(right: 16),
+              padding: EdgeInsets.only(right: 16),
               child: StatefulBuilder(
                 builder: (context, setTimer) {
                   // Refresh countdown every second
-                  Future.delayed(const Duration(seconds: 1), () {
+                  Future.delayed(Duration(seconds: 1), () {
                     if (mounted) setTimer(() {});
                   });
                   return Container(
-                    padding: const EdgeInsets.symmetric(
+                    padding: EdgeInsets.symmetric(
                       horizontal: 12,
                       vertical: 6,
                     ),
@@ -156,7 +156,7 @@ class _BidsScreenState extends State<BidsScreen> {
               ),
             ),
           IconButton(
-            icon: const Icon(Icons.refresh, color: AppTheme.labelColor),
+            icon: Icon(Icons.refresh, color: AppTheme.labelColor),
             onPressed: _fetchBids,
           ),
         ],
@@ -165,8 +165,8 @@ class _BidsScreenState extends State<BidsScreen> {
         children: [
           // Base Fare Banner
           Container(
-            margin: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            margin: EdgeInsets.fromLTRB(16, 8, 16, 0),
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
@@ -182,13 +182,13 @@ class _BidsScreenState extends State<BidsScreen> {
               children: [
                 Row(
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.gavel,
                       color: Colors.purpleAccent,
                       size: 18,
                     ),
-                    const SizedBox(width: 10),
-                    const Text(
+                    SizedBox(width: 10),
+                    Text(
                       'Base Fare:',
                       style: TextStyle(color: AppTheme.labelColor, fontSize: 14),
                     ),
@@ -196,7 +196,7 @@ class _BidsScreenState extends State<BidsScreen> {
                 ),
                 Text(
                   '₹${widget.baseFare.toStringAsFixed(0)}',
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.purpleAccent,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -206,11 +206,11 @@ class _BidsScreenState extends State<BidsScreen> {
             ),
           ),
 
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
 
           // Bids Count Header
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(horizontal: 16),
             child: Row(
               children: [
                 Text(
@@ -219,16 +219,16 @@ class _BidsScreenState extends State<BidsScreen> {
                       : _bids.isEmpty
                       ? 'No bids yet'
                       : '${_bids.length} bid${_bids.length > 1 ? 's' : ''} placed',
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: AppTheme.labelColor,
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const Spacer(),
+                Spacer(),
                 if (_bids.isNotEmpty)
                   Container(
-                    padding: const EdgeInsets.symmetric(
+                    padding: EdgeInsets.symmetric(
                       horizontal: 10,
                       vertical: 4,
                     ),
@@ -238,7 +238,7 @@ class _BidsScreenState extends State<BidsScreen> {
                     ),
                     child: Text(
                       'Lowest: ₹${(_bids.first['bid_amount'] as num).toStringAsFixed(0)}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: AppTheme.activeEmerald,
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
@@ -249,12 +249,12 @@ class _BidsScreenState extends State<BidsScreen> {
             ),
           ),
 
-          const SizedBox(height: 12),
+          SizedBox(height: 12),
 
           // Bids List
           Expanded(
             child: _isLoading
-                ? const Center(
+                ? Center(
                     child: CircularProgressIndicator(
                       color: Colors.purpleAccent,
                     ),
@@ -269,7 +269,7 @@ class _BidsScreenState extends State<BidsScreen> {
                           size: 64,
                           color: AppTheme.titleColor.withOpacity(0.1),
                         ),
-                        const SizedBox(height: 16),
+                        SizedBox(height: 16),
                         Text(
                           'No bids yet',
                           style: TextStyle(
@@ -277,7 +277,7 @@ class _BidsScreenState extends State<BidsScreen> {
                             fontSize: 16,
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        SizedBox(height: 8),
                         Text(
                           'Staff members will appear here when they bid',
                           style: TextStyle(
@@ -289,7 +289,7 @@ class _BidsScreenState extends State<BidsScreen> {
                     ),
                   )
                 : ListView.builder(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: EdgeInsets.symmetric(horizontal: 16),
                     itemCount: _bids.length,
                     itemBuilder: (context, index) {
                       final bid = _bids[index];
@@ -301,8 +301,8 @@ class _BidsScreenState extends State<BidsScreen> {
                       final isWinning = index == 0;
 
                       return Container(
-                        margin: const EdgeInsets.only(bottom: 12),
-                        padding: const EdgeInsets.all(16),
+                        margin: EdgeInsets.only(bottom: 12),
+                        padding: EdgeInsets.all(16),
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             colors: isWinning
@@ -337,14 +337,14 @@ class _BidsScreenState extends State<BidsScreen> {
                               ),
                               child: Center(
                                 child: isWinning
-                                    ? const Icon(
+                                    ? Icon(
                                         Icons.star,
                                         color: Colors.amber,
                                         size: 20,
                                       )
                                     : Text(
                                         '#${index + 1}',
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           color: AppTheme.labelColor,
                                           fontSize: 12,
                                           fontWeight: FontWeight.bold,
@@ -352,7 +352,7 @@ class _BidsScreenState extends State<BidsScreen> {
                                       ),
                               ),
                             ),
-                            const SizedBox(width: 14),
+                            SizedBox(width: 14),
                             // Name
                             Expanded(
                               child: Column(
@@ -369,7 +369,7 @@ class _BidsScreenState extends State<BidsScreen> {
                                     ),
                                   ),
                                   if (isWinning)
-                                    const Text(
+                                    Text(
                                       '🏆 Lowest Bid',
                                       style: TextStyle(
                                         color: Colors.amber,

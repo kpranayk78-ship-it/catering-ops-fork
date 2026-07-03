@@ -6,7 +6,7 @@ import '../../dashboard/dashboard_screen.dart';
 import 'signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -68,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text("Login successful"),
           backgroundColor: AppTheme.activeEmerald,
         ),
@@ -76,7 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const DashboardScreen()),
+        MaterialPageRoute(builder: (context) => DashboardScreen()),
       );
     } on AuthException catch (e) {
       setState(() {
@@ -110,33 +110,33 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           color: AppTheme.background,
         ),
         child: SafeArea(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
+            padding: EdgeInsets.symmetric(horizontal: 30),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 80),
+                SizedBox(height: 80),
                 // Logo or Icon
                 Container(
-                  padding: const EdgeInsets.all(20),
+                  padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     shape: BoxShape.circle,
                     boxShadow: AppTheme.softShadow,
                     border: Border.all(color: AppTheme.borderColor),
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.restaurant_menu,
                     size: 80,
                     color: AppTheme.pendingAmber,
                   ),
                 ),
-                const SizedBox(height: 30),
-                const Text(
+                SizedBox(height: 30),
+                Text(
                   'Catering Ops',
                   style: TextStyle(
                     color: AppTheme.titleColor,
@@ -145,15 +145,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     letterSpacing: 1.5,
                   ),
                 ),
-                const Text(
+                Text(
                   'Premium Management Suite',
                   style: TextStyle(color: AppTheme.labelColor, fontSize: 16),
                 ),
-                const SizedBox(height: 60),
+                SizedBox(height: 60),
 
                 // Form Container
                 Container(
-                  padding: const EdgeInsets.all(24),
+                  padding: EdgeInsets.all(24),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(24),
@@ -168,7 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         icon: Icons.person_outline,
                         keyboardType: TextInputType.emailAddress,
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20),
                       _buildTextField(
                         controller: _password,
                         label: 'Password',
@@ -176,34 +176,34 @@ class _LoginScreenState extends State<LoginScreen> {
                         obscureText: true,
                       ),
                       if (_error != null) ...[
-                        const SizedBox(height: 20),
+                        SizedBox(height: 20),
                         Text(
                           _error!,
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: AppTheme.errorRed,
                             fontSize: 13,
                           ),
                           textAlign: TextAlign.center,
                         ),
                       ],
-                      const SizedBox(height: 30),
+                      SizedBox(height: 30),
                       _buildLoginButton(),
                     ],
                   ),
                 ),
 
-                const SizedBox(height: 30),
+                SizedBox(height: 30),
                 TextButton(
                   onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const SignUpScreen(),
+                        builder: (context) => SignUpScreen(),
                       ),
                     );
                   },
                   child: RichText(
-                    text: const TextSpan(
+                    text: TextSpan(
                       text: "Don't have an account? ",
                       style: TextStyle(color: AppTheme.labelColor),
                       children: [
@@ -218,7 +218,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 40),
+                SizedBox(height: 40),
               ],
             ),
           ),
@@ -238,22 +238,22 @@ class _LoginScreenState extends State<LoginScreen> {
       controller: controller,
       obscureText: obscureText,
       keyboardType: keyboardType,
-      style: const TextStyle(color: AppTheme.titleColor),
+      style: TextStyle(color: AppTheme.titleColor),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: const TextStyle(color: AppTheme.labelColor),
+        labelStyle: TextStyle(color: AppTheme.labelColor),
         prefixIcon: Icon(icon, color: AppTheme.labelColor),
         filled: true,
         fillColor: AppTheme.background,
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: AppTheme.borderColor),
+          borderSide: BorderSide(color: AppTheme.borderColor),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: AppTheme.pendingAmber, width: 2),
+          borderSide: BorderSide(color: AppTheme.pendingAmber, width: 2),
         ),
-        contentPadding: const EdgeInsets.symmetric(
+        contentPadding: EdgeInsets.symmetric(
           horizontal: 20,
           vertical: 18,
         ),
@@ -277,7 +277,7 @@ class _LoginScreenState extends State<LoginScreen> {
           shadowColor: AppTheme.titleColor.withOpacity(0.2),
         ),
         child: _loading
-            ? const SizedBox(
+            ? SizedBox(
                 height: 24,
                 width: 24,
                 child: CircularProgressIndicator(
@@ -285,7 +285,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: Colors.white,
                 ),
               )
-            : const Text(
+            : Text(
                 'LOGIN',
                 style: TextStyle(
                   fontSize: 16,

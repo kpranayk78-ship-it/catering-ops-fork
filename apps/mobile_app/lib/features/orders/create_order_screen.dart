@@ -11,7 +11,7 @@ class CreateOrderScreen extends StatefulWidget {
   final String companyId;
   final Map<String, dynamic>? orderToEdit;
 
-  const CreateOrderScreen({super.key, required this.companyId, this.orderToEdit});
+  CreateOrderScreen({super.key, required this.companyId, this.orderToEdit});
 
   @override
   State<CreateOrderScreen> createState() => _CreateOrderScreenState();
@@ -161,11 +161,11 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime.now(),
-      lastDate: DateTime.now().add(const Duration(days: 365 * 2)),
+      lastDate: DateTime.now().add(Duration(days: 365 * 2)),
       builder: (context, child) {
         return Theme(
           data: ThemeData.dark().copyWith(
-            colorScheme: const ColorScheme.dark(
+            colorScheme: ColorScheme.dark(
               primary: AppTheme.pendingAmber,
               onPrimary: Colors.black,
               surface: AppTheme.background,
@@ -184,7 +184,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
         builder: (context, child) {
           return Theme(
             data: ThemeData.dark().copyWith(
-              colorScheme: const ColorScheme.dark(
+              colorScheme: ColorScheme.dark(
                 primary: AppTheme.pendingAmber,
                 onPrimary: Colors.black,
                 surface: AppTheme.background,
@@ -227,7 +227,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
       builder: (context) => StatefulBuilder(
         builder: (context, setDialogState) => AlertDialog(
           backgroundColor: AppTheme.background,
-          title: const Text(
+          title: Text(
             'Quick Add Item',
             style: TextStyle(color: AppTheme.titleColor),
           ),
@@ -237,25 +237,25 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
               children: [
                 TextField(
                   controller: nameCtrl,
-                  style: const TextStyle(color: AppTheme.titleColor),
-                  decoration: const InputDecoration(
+                  style: TextStyle(color: AppTheme.titleColor),
+                  decoration: InputDecoration(
                     labelText: 'Item Name',
                     labelStyle: TextStyle(color: AppTheme.labelColor),
                   ),
                 ),
                 TextField(
                   controller: qtyCtrl,
-                  keyboardType: const TextInputType.numberWithOptions(
+                  keyboardType: TextInputType.numberWithOptions(
                     decimal: true,
                   ),
-                  style: const TextStyle(color: AppTheme.titleColor),
-                  decoration: const InputDecoration(
+                  style: TextStyle(color: AppTheme.titleColor),
+                  decoration: InputDecoration(
                     labelText: 'Initial Quantity',
                     labelStyle: TextStyle(color: AppTheme.labelColor),
                   ),
                 ),
                 DropdownButtonFormField<String>(
-                  value: selectedCategory,
+                  initialValue: selectedCategory,
                   dropdownColor: AppTheme.background,
                   items: categories
                       .map(
@@ -263,20 +263,20 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                           value: c,
                           child: Text(
                             c,
-                            style: const TextStyle(color: AppTheme.titleColor),
+                            style: TextStyle(color: AppTheme.titleColor),
                           ),
                         ),
                       )
                       .toList(),
                   onChanged: (val) =>
                       setDialogState(() => selectedCategory = val!),
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Category',
                     labelStyle: TextStyle(color: AppTheme.labelColor),
                   ),
                 ),
                 DropdownButtonFormField<String>(
-                  value: selectedUnit,
+                  initialValue: selectedUnit,
                   dropdownColor: AppTheme.background,
                   items: _units
                       .map(
@@ -284,13 +284,13 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                           value: u,
                           child: Text(
                             u,
-                            style: const TextStyle(color: AppTheme.titleColor),
+                            style: TextStyle(color: AppTheme.titleColor),
                           ),
                         ),
                       )
                       .toList(),
                   onChanged: (val) => setDialogState(() => selectedUnit = val!),
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Unit',
                     labelStyle: TextStyle(color: AppTheme.labelColor),
                   ),
@@ -301,7 +301,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel'),
+              child: Text('Cancel'),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -337,7 +337,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                   debugPrint('Error quick adding item: $e');
                 }
               },
-              child: const Text('Save & Select'),
+              child: Text('Save & Select'),
             ),
           ],
         ),
@@ -358,7 +358,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-          title: const Text(
+          title: Text(
             'Add New Middleman',
             style: TextStyle(color: AppTheme.titleColor, fontWeight: FontWeight.bold),
           ),
@@ -369,7 +369,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                 onPressed: () async {
                   if (kIsWeb) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
+                      SnackBar(
                         content: Text(
                           'Contact import is only available on mobile devices.',
                         ),
@@ -411,7 +411,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                     } else {
                       if (mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
+                          SnackBar(
                             content: Text(
                               'Contact permission denied. Please enable it in settings.',
                             ),
@@ -429,58 +429,58 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                     }
                   }
                 },
-                icon: const Icon(Icons.contact_phone, size: 18),
-                label: const Text('Import from Contacts'),
+                icon: Icon(Icons.contact_phone, size: 18),
+                label: Text('Import from Contacts'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppTheme.pendingAmber.withOpacity(0.1),
                   foregroundColor: AppTheme.pendingAmber,
                   elevation: 0,
-                  minimumSize: const Size(double.infinity, 45),
+                  minimumSize: Size(double.infinity, 45),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
               TextField(
                 controller: nameCtrl,
-                style: const TextStyle(color: AppTheme.titleColor),
+                style: TextStyle(color: AppTheme.titleColor),
                 decoration: InputDecoration(
                   labelText: 'Middleman Name',
-                  labelStyle: const TextStyle(color: AppTheme.labelColor),
-                  prefixIcon: const Icon(
+                  labelStyle: TextStyle(color: AppTheme.labelColor),
+                  prefixIcon: Icon(
                     Icons.person,
                     color: AppTheme.pendingAmber,
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: AppTheme.borderColor),
+                    borderSide: BorderSide(color: AppTheme.borderColor),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: AppTheme.pendingAmber),
+                    borderSide: BorderSide(color: AppTheme.pendingAmber),
                   ),
                 ),
               ),
-              const SizedBox(height: 12),
+              SizedBox(height: 12),
               TextField(
                 controller: phoneCtrl,
-                style: const TextStyle(color: AppTheme.titleColor),
+                style: TextStyle(color: AppTheme.titleColor),
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
                   labelText: 'Phone Number',
-                  labelStyle: const TextStyle(color: AppTheme.labelColor),
-                  prefixIcon: const Icon(
+                  labelStyle: TextStyle(color: AppTheme.labelColor),
+                  prefixIcon: Icon(
                     Icons.phone,
                     color: AppTheme.pendingAmber,
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: AppTheme.borderColor),
+                    borderSide: BorderSide(color: AppTheme.borderColor),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: AppTheme.pendingAmber),
+                    borderSide: BorderSide(color: AppTheme.pendingAmber),
                   ),
                 ),
               ),
@@ -489,7 +489,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text(
+              child: Text(
                 'Cancel',
                 style: TextStyle(color: AppTheme.labelColor),
               ),
@@ -500,7 +500,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                   : () async {
                       if (nameCtrl.text.isEmpty || phoneCtrl.text.isEmpty) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
+                          SnackBar(
                             content: Text('Please fill all fields'),
                           ),
                         );
@@ -533,7 +533,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                           });
                           Navigator.pop(context);
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
+                            SnackBar(
                               content: Text('Middleman added successfully'),
                               backgroundColor: AppTheme.activeEmerald,
                             ),
@@ -558,7 +558,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                 ),
               ),
               child: isSaving
-                  ? const SizedBox(
+                  ? SizedBox(
                       width: 20,
                       height: 20,
                       child: CircularProgressIndicator(
@@ -566,7 +566,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                         color: Colors.black,
                       ),
                     )
-                  : const Text('Save & Select'),
+                  : Text('Save & Select'),
             ),
           ],
         ),
@@ -579,7 +579,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
       context: context,
       backgroundColor: AppTheme.background,
       isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (context) {
@@ -588,13 +588,13 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
             return FractionallySizedBox(
               heightFactor: 0.8,
               child: Padding(
-                padding: const EdgeInsets.all(20),
+                padding: EdgeInsets.all(20),
                 child: Column(
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           'Select Menu Items',
                           style: TextStyle(
                             fontSize: 20,
@@ -605,21 +605,21 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                         TextButton.icon(
                           onPressed: () =>
                               _showQuickAddItemDialog(setSheetState),
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.add_circle_outline,
                             color: AppTheme.pendingAmber,
                           ),
-                          label: const Text(
+                          label: Text(
                             'Create New',
                             style: TextStyle(color: AppTheme.pendingAmber),
                           ),
                         ),
                       ],
                     ),
-                    const Divider(color: AppTheme.borderColor),
+                    Divider(color: AppTheme.borderColor),
                     Expanded(
                       child: _availableMenuItems.isEmpty
-                          ? const Center(
+                          ? Center(
                               child: Text(
                                 "No items configured yet.",
                                 style: TextStyle(color: AppTheme.labelColor),
@@ -636,14 +636,14 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                                 return ListTile(
                                   title: Text(
                                     item['name'],
-                                    style: const TextStyle(color: AppTheme.titleColor),
+                                    style: TextStyle(color: AppTheme.titleColor),
                                   ),
                                   trailing: isSelected
-                                      ? const Icon(
+                                      ? Icon(
                                           Icons.check_circle,
                                           color: AppTheme.pendingAmber,
                                         )
-                                      : const Icon(
+                                      : Icon(
                                           Icons.circle_outlined,
                                           color: AppTheme.borderColor,
                                         ),
@@ -668,7 +668,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                               },
                             ),
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16),
                     SizedBox(
                       width: double.infinity,
                       height: 50,
@@ -680,7 +680,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                           ),
                         ),
                         onPressed: () => Navigator.pop(context),
-                        child: const Text(
+                        child: Text(
                           'Done',
                           style: TextStyle(
                             color: Colors.black,
@@ -785,7 +785,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
           final formattedTime = DateFormat('h:mm a').format(eventDate.toLocal());
 
           // 1. Standard Reminder (6 hours before)
-          final reminder6h = eventDate.subtract(const Duration(hours: 6));
+          final reminder6h = eventDate.subtract(Duration(hours: 6));
           if (reminder6h.isAfter(now)) {
             NotificationService.sendNotification(
               playerIds: [user.id], // Owner/Creator
@@ -798,7 +798,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
           }
 
           // 2. Emergency Reminder (2 hours before)
-          final reminder2h = eventDate.subtract(const Duration(hours: 2));
+          final reminder2h = eventDate.subtract(Duration(hours: 2));
           if (reminder2h.isAfter(now)) {
             NotificationService.sendNotification(
               playerIds: [user.id],
@@ -867,8 +867,9 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
   }
 
   String get _formattedDateTime {
-    if (_selectedDate == null || _selectedTime == null)
+    if (_selectedDate == null || _selectedTime == null) {
       return 'Select Date & Time';
+    }
     final dt = DateTime(
       _selectedDate!.year,
       _selectedDate!.month,
@@ -886,42 +887,42 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
       appBar: AppBar(
         title: Text(
           widget.orderToEdit != null ? 'Edit Order' : 'Create Order',
-          style: const TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.close),
+          icon: Icon(Icons.close),
           onPressed: () => Navigator.pop(context),
         ),
       ),
       body: _isFetchingMenu
-          ? const Center(
+          ? Center(
               child: CircularProgressIndicator(color: AppTheme.pendingAmber),
             )
           : Form(
               key: _formKey,
               child: ListView(
-                padding: const EdgeInsets.all(24),
+                padding: EdgeInsets.all(24),
                 children: [
                   // Client Name
                   TextFormField(
                     controller: _clientNameController,
-                    style: const TextStyle(color: AppTheme.titleColor),
+                    style: TextStyle(color: AppTheme.titleColor),
                     decoration: InputDecoration(
                       labelText: 'Client / Event Name',
-                      labelStyle: const TextStyle(color: AppTheme.labelColor),
-                      prefixIcon: const Icon(
+                      labelStyle: TextStyle(color: AppTheme.labelColor),
+                      prefixIcon: Icon(
                         Icons.person_outline,
                         color: AppTheme.pendingAmber,
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
-                        borderSide: const BorderSide(color: AppTheme.borderColor),
+                        borderSide: BorderSide(color: AppTheme.borderColor),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
-                        borderSide: const BorderSide(
+                        borderSide: BorderSide(
                           color: AppTheme.pendingAmber,
                         ),
                       ),
@@ -930,39 +931,39 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                         ? 'Client name is required'
                         : null,
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20),
 
                   // Venue Address
                   TextFormField(
                     controller: _venueAddressController,
-                    style: const TextStyle(color: AppTheme.titleColor),
+                    style: TextStyle(color: AppTheme.titleColor),
                     decoration: InputDecoration(
                       labelText: 'Venue Address (for Maps)',
-                      labelStyle: const TextStyle(color: AppTheme.labelColor),
-                      prefixIcon: const Icon(
+                      labelStyle: TextStyle(color: AppTheme.labelColor),
+                      prefixIcon: Icon(
                         Icons.location_on_outlined,
                         color: AppTheme.pendingAmber,
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
-                        borderSide: const BorderSide(color: AppTheme.borderColor),
+                        borderSide: BorderSide(color: AppTheme.borderColor),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
-                        borderSide: const BorderSide(
+                        borderSide: BorderSide(
                           color: AppTheme.pendingAmber,
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20),
 
                   // Date & Time Picker
                   InkWell(
                     onTap: _pickDateAndTime,
                     borderRadius: BorderRadius.circular(16),
                     child: Container(
-                      padding: const EdgeInsets.symmetric(
+                      padding: EdgeInsets.symmetric(
                         horizontal: 16,
                         vertical: 20,
                       ),
@@ -973,11 +974,11 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                       ),
                       child: Row(
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.calendar_today,
                             color: AppTheme.pendingAmber,
                           ),
-                          const SizedBox(width: 16),
+                          SizedBox(width: 16),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -989,10 +990,10 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                                     fontSize: 12,
                                   ),
                                 ),
-                                const SizedBox(height: 4),
+                                SizedBox(height: 4),
                                 Text(
                                   _formattedDateTime,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: AppTheme.titleColor,
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
@@ -1001,7 +1002,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                               ],
                             ),
                           ),
-                          const Icon(
+                          Icon(
                             Icons.arrow_forward_ios,
                             color: AppTheme.borderColor,
                             size: 16,
@@ -1010,11 +1011,11 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24),
 
                   // Menu Items Section
                   // Menu Items Section header
-                  const Text(
+                  Text(
                     'Menu Items',
                     style: TextStyle(
                       color: AppTheme.titleColor,
@@ -1022,7 +1023,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
 
                   // Big tap target to select items
                   if (_selectedItems.isEmpty)
@@ -1030,7 +1031,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                       onTap: _showItemSelectorBottomSheet,
                       child: Container(
                         width: double.infinity,
-                        padding: const EdgeInsets.symmetric(vertical: 24),
+                        padding: EdgeInsets.symmetric(vertical: 24),
                         decoration: BoxDecoration(
                           color: AppTheme.pendingAmber.withOpacity(0.07),
                           borderRadius: BorderRadius.circular(16),
@@ -1039,7 +1040,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                             width: 1.5,
                           ),
                         ),
-                        child: const Column(
+                        child: Column(
                           children: [
                             Icon(
                               Icons.restaurant_menu,
@@ -1071,7 +1072,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                     Column(
                       children: [
                         Container(
-                          padding: const EdgeInsets.all(16),
+                          padding: EdgeInsets.all(16),
                           decoration: BoxDecoration(
                             color: AppTheme.titleColor.withOpacity(0.04),
                             borderRadius: BorderRadius.circular(16),
@@ -1082,8 +1083,8 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                           child: Column(
                             children: _selectedItems.map((item) {
                               return Container(
-                                margin: const EdgeInsets.only(bottom: 12),
-                                padding: const EdgeInsets.all(12),
+                                margin: EdgeInsets.only(bottom: 12),
+                                padding: EdgeInsets.all(12),
                                 decoration: BoxDecoration(
                                   color: AppTheme.titleColor.withOpacity(0.05),
                                   borderRadius: BorderRadius.circular(12),
@@ -1094,16 +1095,16 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                                   children: [
                                     Row(
                                       children: [
-                                        const Icon(
+                                        Icon(
                                           Icons.restaurant_menu,
                                           color: AppTheme.pendingAmber,
                                           size: 16,
                                         ),
-                                        const SizedBox(width: 10),
+                                        SizedBox(width: 10),
                                         Expanded(
                                           child: Text(
                                             item['name'],
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               color: AppTheme.titleColor,
                                               fontSize: 15,
                                               fontWeight: FontWeight.bold,
@@ -1111,7 +1112,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                                           ),
                                         ),
                                         IconButton(
-                                          icon: const Icon(
+                                          icon: Icon(
                                             Icons.close,
                                             color: AppTheme.borderColor,
                                             size: 18,
@@ -1124,7 +1125,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                                         ),
                                       ],
                                     ),
-                                    const SizedBox(height: 8),
+                                    SizedBox(height: 8),
                                     Row(
                                       children: [
                                         // Toggle
@@ -1150,11 +1151,11 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                                           fillColor: AppTheme.pendingAmber.withOpacity(0.2),
                                           selectedColor: AppTheme.pendingAmber,
                                           color: AppTheme.labelColor,
-                                          constraints: const BoxConstraints(
+                                          constraints: BoxConstraints(
                                             minHeight: 32,
                                             minWidth: 60,
                                           ),
-                                          children: const [
+                                          children: [
                                             Text(
                                               'Qty',
                                               style: TextStyle(fontSize: 12),
@@ -1165,7 +1166,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                                             ),
                                           ],
                                         ),
-                                        const SizedBox(width: 12),
+                                        SizedBox(width: 12),
                                         // Text Input for Value
                                         Expanded(
                                           child: SizedBox(
@@ -1174,21 +1175,21 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                                               initialValue: item['quantity']
                                                   .toString(),
                                               keyboardType:
-                                                  const TextInputType.numberWithOptions(
+                                                  TextInputType.numberWithOptions(
                                                     decimal: true,
                                                   ),
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 color: AppTheme.titleColor,
                                                 fontSize: 14,
                                               ),
                                               decoration: InputDecoration(
                                                 hintText: 'Enter amount...',
-                                                hintStyle: const TextStyle(
+                                                hintStyle: TextStyle(
                                                   color: AppTheme.borderColor,
                                                   fontSize: 12,
                                                 ),
                                                 contentPadding:
-                                                    const EdgeInsets.symmetric(
+                                                    EdgeInsets.symmetric(
                                                       horizontal: 12,
                                                       vertical: 0,
                                                     ),
@@ -1219,22 +1220,22 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                             }).toList(),
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        SizedBox(height: 8),
                         SizedBox(
                           width: double.infinity,
                           child: OutlinedButton.icon(
                             onPressed: _showItemSelectorBottomSheet,
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.add,
                               color: AppTheme.pendingAmber,
                               size: 16,
                             ),
-                            label: const Text(
+                            label: Text(
                               'Add More Items',
                               style: TextStyle(color: AppTheme.pendingAmber),
                             ),
                             style: OutlinedButton.styleFrom(
-                              side: const BorderSide(
+                              side: BorderSide(
                                 color: AppTheme.pendingAmber,
                               ),
                               shape: RoundedRectangleBorder(
@@ -1245,13 +1246,13 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                         ),
                       ],
                     ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24),
 
                   // Order Type — Direct or Middleman segmented bar
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
+                      Text(
                         'Order Type',
                         style: TextStyle(
                           color: AppTheme.labelColor,
@@ -1259,7 +1260,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 10),
+                      SizedBox(height: 10),
                       Container(
                         decoration: BoxDecoration(
                           color: AppTheme.titleColor.withOpacity(0.05),
@@ -1274,15 +1275,15 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                                 onTap: () =>
                                     setState(() => _orderType = 'direct'),
                                 child: AnimatedContainer(
-                                  duration: const Duration(milliseconds: 200),
-                                  padding: const EdgeInsets.symmetric(
+                                  duration: Duration(milliseconds: 200),
+                                  padding: EdgeInsets.symmetric(
                                     vertical: 14,
                                   ),
                                   decoration: BoxDecoration(
                                     color: _orderType == 'direct'
                                         ? AppTheme.pendingAmber.withOpacity(0.18)
                                         : Colors.transparent,
-                                    borderRadius: const BorderRadius.horizontal(
+                                    borderRadius: BorderRadius.horizontal(
                                       left: Radius.circular(13),
                                     ),
                                     border: _orderType == 'direct'
@@ -1302,7 +1303,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                                             : AppTheme.borderColor,
                                         size: 18,
                                       ),
-                                      const SizedBox(width: 8),
+                                      SizedBox(width: 8),
                                       Flexible(
                                         child: Text(
                                           'Direct Customer',
@@ -1327,22 +1328,22 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                                 onTap: () =>
                                     setState(() => _orderType = 'middleman'),
                                 child: AnimatedContainer(
-                                  duration: const Duration(milliseconds: 200),
-                                  padding: const EdgeInsets.symmetric(
+                                  duration: Duration(milliseconds: 200),
+                                  padding: EdgeInsets.symmetric(
                                     vertical: 14,
                                   ),
                                   decoration: BoxDecoration(
                                     color: _orderType == 'middleman'
-                                        ? const Color(
+                                        ? Color(
                                             0xFFD4A237,
                                           ).withOpacity(0.15)
                                         : Colors.transparent,
-                                    borderRadius: const BorderRadius.horizontal(
+                                    borderRadius: BorderRadius.horizontal(
                                       right: Radius.circular(13),
                                     ),
                                     border: _orderType == 'middleman'
                                         ? Border.all(
-                                            color: const Color(0xFFD4A237),
+                                            color: Color(0xFFD4A237),
                                             width: 1.5,
                                           )
                                         : null,
@@ -1353,17 +1354,17 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                                       Icon(
                                         Icons.people,
                                         color: _orderType == 'middleman'
-                                            ? const Color(0xFFD4A237)
+                                            ? Color(0xFFD4A237)
                                             : AppTheme.borderColor,
                                         size: 18,
                                       ),
-                                      const SizedBox(width: 8),
+                                      SizedBox(width: 8),
                                       Flexible(
                                         child: Text(
                                           'Middleman',
                                           style: TextStyle(
                                             color: _orderType == 'middleman'
-                                                ? const Color(0xFFD4A237)
+                                                ? Color(0xFFD4A237)
                                                 : AppTheme.labelColor,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 14,
@@ -1381,13 +1382,13 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20),
 
                   // Middleman fields — only shown when Middleman is selected
                   if (_orderType == 'middleman') ...[
                     _middleMen.isEmpty
                         ? Container(
-                            padding: const EdgeInsets.all(16),
+                            padding: EdgeInsets.all(16),
                             decoration: BoxDecoration(
                               color: AppTheme.pendingAmber.withOpacity(0.08),
                               borderRadius: BorderRadius.circular(12),
@@ -1399,13 +1400,13 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                               children: [
                                 Row(
                                   children: [
-                                    const Icon(
+                                    Icon(
                                       Icons.warning_amber_rounded,
                                       color: AppTheme.pendingAmber,
                                       size: 18,
                                     ),
-                                    const SizedBox(width: 10),
-                                    const Expanded(
+                                    SizedBox(width: 10),
+                                    Expanded(
                                       child: Text(
                                         'No middlemen added yet.',
                                         style: TextStyle(
@@ -1416,13 +1417,13 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                                     ),
                                   ],
                                 ),
-                                const SizedBox(height: 12),
+                                SizedBox(height: 12),
                                 SizedBox(
                                   width: double.infinity,
                                   child: ElevatedButton.icon(
                                     onPressed: _showAddMiddleManDialog,
-                                    icon: const Icon(Icons.add, size: 16),
-                                    label: const Text(
+                                    icon: Icon(Icons.add, size: 16),
+                                    label: Text(
                                       'Add Your First Middleman',
                                     ),
                                     style: ElevatedButton.styleFrom(
@@ -1445,8 +1446,8 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                                       Map<String, dynamic>
                                     >(
                                       dropdownColor: AppTheme.background,
-                                      value: _selectedMiddleMan,
-                                      hint: const Text(
+                                      initialValue: _selectedMiddleMan,
+                                      hint: Text(
                                         'Select Middleman',
                                         style: TextStyle(color: AppTheme.labelColor),
                                       ),
@@ -1455,7 +1456,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                                           value: man,
                                           child: Text(
                                             '${man['name']} (${man['phone_number']})',
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               color: AppTheme.titleColor,
                                             ),
                                           ),
@@ -1465,7 +1466,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                                         () => _selectedMiddleMan = val,
                                       ),
                                       decoration: InputDecoration(
-                                        prefixIcon: const Icon(
+                                        prefixIcon: Icon(
                                           Icons.person_outline,
                                           color: Color(0xFFD4A237),
                                         ),
@@ -1473,7 +1474,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                                           borderRadius: BorderRadius.circular(
                                             16,
                                           ),
-                                          borderSide: const BorderSide(
+                                          borderSide: BorderSide(
                                             color: Color(0xFFD4A237),
                                             width: 1.2,
                                           ),
@@ -1482,7 +1483,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                                           borderRadius: BorderRadius.circular(
                                             16,
                                           ),
-                                          borderSide: const BorderSide(
+                                          borderSide: BorderSide(
                                             color: Color(0xFFD4A237),
                                             width: 2,
                                           ),
@@ -1495,18 +1496,18 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                                           : null,
                                     ),
                               ),
-                              const SizedBox(width: 8),
+                              SizedBox(width: 8),
                               SizedBox(
                                 height: 56,
                                 child: ElevatedButton(
                                   onPressed: _showAddMiddleManDialog,
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(
+                                    backgroundColor: Color(
                                       0xFFD4A237,
                                     ).withOpacity(0.1),
-                                    foregroundColor: const Color(0xFFD4A237),
+                                    foregroundColor: Color(0xFFD4A237),
                                     elevation: 0,
-                                    side: const BorderSide(
+                                    side: BorderSide(
                                       color: Color(0xFFD4A237),
                                       width: 1.2,
                                     ),
@@ -1514,16 +1515,16 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                                       borderRadius: BorderRadius.circular(16),
                                     ),
                                   ),
-                                  child: const Icon(Icons.add),
+                                  child: Icon(Icons.add),
                                 ),
                               ),
                             ],
                           ),
                     if (_selectedMiddleMan != null)
                       Padding(
-                        padding: const EdgeInsets.only(top: 8),
+                        padding: EdgeInsets.only(top: 8),
                         child: Container(
-                          padding: const EdgeInsets.symmetric(
+                          padding: EdgeInsets.symmetric(
                             horizontal: 12,
                             vertical: 8,
                           ),
@@ -1533,15 +1534,15 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                           ),
                           child: Row(
                             children: [
-                              const Icon(
+                              Icon(
                                 Icons.account_balance_wallet_outlined,
                                 color: Colors.amber,
                                 size: 16,
                               ),
-                              const SizedBox(width: 8),
+                              SizedBox(width: 8),
                               Text(
                                 'Current Khata: ₹${(_selectedMiddleMan?['total_balance'] as num?)?.toStringAsFixed(0) ?? '0'}',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: Colors.amber,
                                   fontSize: 13,
                                 ),
@@ -1550,11 +1551,11 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                           ),
                         ),
                       ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: 8),
                     if (_paymentStatus == 'pending' &&
                         _selectedMiddleMan != null)
                       Container(
-                        padding: const EdgeInsets.symmetric(
+                        padding: EdgeInsets.symmetric(
                           horizontal: 12,
                           vertical: 8,
                         ),
@@ -1565,7 +1566,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                             color: AppTheme.activeEmerald.withOpacity(0.3),
                           ),
                         ),
-                        child: const Row(
+                        child: Row(
                           children: [
                             Icon(
                               Icons.auto_awesome,
@@ -1586,12 +1587,12 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                         ),
                       ),
                   ],
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20),
 
                   // Total Value
                   TextFormField(
                     controller: _totalController,
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: AppTheme.titleColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
@@ -1599,32 +1600,32 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       labelText: 'Total Order Value',
-                      labelStyle: const TextStyle(color: AppTheme.labelColor),
+                      labelStyle: TextStyle(color: AppTheme.labelColor),
                       prefixText: '₹ ',
-                      prefixStyle: const TextStyle(
+                      prefixStyle: TextStyle(
                         color: AppTheme.activeEmerald,
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
-                        borderSide: const BorderSide(color: AppTheme.borderColor),
+                        borderSide: BorderSide(color: AppTheme.borderColor),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
-                        borderSide: const BorderSide(color: AppTheme.activeEmerald),
+                        borderSide: BorderSide(color: AppTheme.activeEmerald),
                       ),
                     ),
                     validator: (v) =>
                         v == null || v.isEmpty ? 'Total is required' : null,
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24),
 
                   // Payment Status — segmented bar
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
+                      Text(
                         'Payment Status',
                         style: TextStyle(
                           color: AppTheme.labelColor,
@@ -1632,7 +1633,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 10),
+                      SizedBox(height: 10),
                       Container(
                         decoration: BoxDecoration(
                           color: AppTheme.titleColor.withOpacity(0.05),
@@ -1647,15 +1648,15 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                                 onTap: () =>
                                     setState(() => _paymentStatus = 'paid'),
                                 child: AnimatedContainer(
-                                  duration: const Duration(milliseconds: 200),
-                                  padding: const EdgeInsets.symmetric(
+                                  duration: Duration(milliseconds: 200),
+                                  padding: EdgeInsets.symmetric(
                                     vertical: 14,
                                   ),
                                   decoration: BoxDecoration(
                                     color: _paymentStatus == 'paid'
                                         ? AppTheme.activeEmerald.withOpacity(0.2)
                                         : Colors.transparent,
-                                    borderRadius: const BorderRadius.horizontal(
+                                    borderRadius: BorderRadius.horizontal(
                                       left: Radius.circular(13),
                                     ),
                                     border: _paymentStatus == 'paid'
@@ -1675,7 +1676,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                                             : AppTheme.borderColor,
                                         size: 18,
                                       ),
-                                      const SizedBox(width: 8),
+                                      SizedBox(width: 8),
                                       Text(
                                         'Paid',
                                         style: TextStyle(
@@ -1697,15 +1698,15 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                                 onTap: () =>
                                     setState(() => _paymentStatus = 'pending'),
                                 child: AnimatedContainer(
-                                  duration: const Duration(milliseconds: 200),
-                                  padding: const EdgeInsets.symmetric(
+                                  duration: Duration(milliseconds: 200),
+                                  padding: EdgeInsets.symmetric(
                                     vertical: 14,
                                   ),
                                   decoration: BoxDecoration(
                                     color: _paymentStatus == 'pending'
                                         ? AppTheme.pendingAmber.withOpacity(0.15)
                                         : Colors.transparent,
-                                    borderRadius: const BorderRadius.horizontal(
+                                    borderRadius: BorderRadius.horizontal(
                                       right: Radius.circular(13),
                                     ),
                                     border: _paymentStatus == 'pending'
@@ -1725,7 +1726,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                                             : AppTheme.borderColor,
                                         size: 18,
                                       ),
-                                      const SizedBox(width: 8),
+                                      SizedBox(width: 8),
                                       Text(
                                         'Pending',
                                         style: TextStyle(
@@ -1747,7 +1748,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                     ],
                   ),
 
-                  const SizedBox(height: 40),
+                  SizedBox(height: 40),
 
                   // Submit Button
                   SizedBox(
@@ -1761,10 +1762,10 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                       ),
                       onPressed: _isLoading ? null : _submitOrder,
                       child: _isLoading
-                          ? const CircularProgressIndicator(color: Colors.black)
+                          ? CircularProgressIndicator(color: Colors.black)
                           : Text(
                               widget.orderToEdit != null ? 'Save Changes' : 'Create Order',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -1772,7 +1773,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                             ),
                     ),
                   ),
-                  const SizedBox(height: 40),
+                  SizedBox(height: 40),
                 ],
               ),
             ),

@@ -6,7 +6,7 @@ import 'package:flutter/rendering.dart';
 
 class SignaturePadDialog extends StatefulWidget {
   final String clientName;
-  const SignaturePadDialog({super.key, required this.clientName});
+  SignaturePadDialog({super.key, required this.clientName});
 
   @override
   State<SignaturePadDialog> createState() => _SignaturePadDialogState();
@@ -63,7 +63,7 @@ class _SignaturePadDialogState extends State<SignaturePadDialog> {
       backgroundColor: AppTheme.background,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: EdgeInsets.all(24),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -71,17 +71,17 @@ class _SignaturePadDialogState extends State<SignaturePadDialog> {
             // Header
             Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.draw_outlined,
                   color: AppTheme.pendingAmber,
                   size: 22,
                 ),
-                const SizedBox(width: 10),
+                SizedBox(width: 10),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
+                      Text(
                         'Delivery Confirmation',
                         style: TextStyle(
                           color: AppTheme.titleColor,
@@ -91,7 +91,7 @@ class _SignaturePadDialogState extends State<SignaturePadDialog> {
                       ),
                       Text(
                         'Customer: ${widget.clientName}',
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: AppTheme.labelColor,
                           fontSize: 12,
                         ),
@@ -101,12 +101,12 @@ class _SignaturePadDialogState extends State<SignaturePadDialog> {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
-            const Text(
+            SizedBox(height: 16),
+            Text(
               'Please ask the customer to sign below:',
               style: TextStyle(color: AppTheme.labelColor, fontSize: 13),
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: 12),
 
             // Signature canvas
             Container(
@@ -145,7 +145,7 @@ class _SignaturePadDialogState extends State<SignaturePadDialog> {
             ),
 
             if (_isEmpty)
-              const Padding(
+              Padding(
                 padding: EdgeInsets.only(top: 6),
                 child: Text(
                   '↑ Draw signature here',
@@ -154,7 +154,7 @@ class _SignaturePadDialogState extends State<SignaturePadDialog> {
                 ),
               ),
 
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
 
             Wrap(
               alignment: WrapAlignment.end,
@@ -165,12 +165,12 @@ class _SignaturePadDialogState extends State<SignaturePadDialog> {
                 // Clear
                 OutlinedButton.icon(
                   onPressed: _clear,
-                  icon: const Icon(Icons.refresh, size: 16),
-                  label: const Text('Clear'),
+                  icon: Icon(Icons.refresh, size: 16),
+                  label: Text('Clear'),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppTheme.labelColor,
-                    side: const BorderSide(color: AppTheme.borderColor),
-                    padding: const EdgeInsets.symmetric(
+                    side: BorderSide(color: AppTheme.borderColor),
+                    padding: EdgeInsets.symmetric(
                       horizontal: 12,
                       vertical: 8,
                     ),
@@ -182,7 +182,7 @@ class _SignaturePadDialogState extends State<SignaturePadDialog> {
                 // Cancel
                 TextButton(
                   onPressed: () => Navigator.pop(context, null),
-                  child: const Text(
+                  child: Text(
                     'Cancel',
                     style: TextStyle(color: AppTheme.labelColor),
                   ),
@@ -197,13 +197,13 @@ class _SignaturePadDialogState extends State<SignaturePadDialog> {
                             Navigator.pop(context, bytes);
                           }
                         },
-                  icon: const Icon(Icons.check, size: 16),
-                  label: const Text('Order Delivered'),
+                  icon: Icon(Icons.check, size: 16),
+                  label: Text('Order Delivered'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.activeEmerald,
                     foregroundColor: Colors.black,
                     disabledBackgroundColor: AppTheme.borderColor,
-                    padding: const EdgeInsets.symmetric(
+                    padding: EdgeInsets.symmetric(
                       horizontal: 16,
                       vertical: 8,
                     ),

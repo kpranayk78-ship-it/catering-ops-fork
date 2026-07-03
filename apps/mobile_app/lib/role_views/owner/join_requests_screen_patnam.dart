@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class JoinRequestsScreen extends StatefulWidget {
-  const JoinRequestsScreen({super.key});
+  JoinRequestsScreen({super.key});
 
   @override
   State<JoinRequestsScreen> createState() => _JoinRequestsScreenState();
@@ -89,19 +89,19 @@ class _JoinRequestsScreenState extends State<JoinRequestsScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         automaticallyImplyLeading: false,
-        title: const Text(
+        title: Text(
           'Join Requests',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
       body: _loading
-          ? const Center(
+          ? Center(
               child: CircularProgressIndicator(color: AppTheme.pendingAmber),
             )
           : _requests.isEmpty
           ? _buildEmptyState()
           : ListView.builder(
-              padding: const EdgeInsets.all(24),
+              padding: EdgeInsets.all(24),
               itemCount: _requests.length,
               itemBuilder: (context, index) {
                 final req = _requests[index];
@@ -136,7 +136,7 @@ class _JoinRequestsScreenState extends State<JoinRequestsScreen> {
             size: 64,
             color: AppTheme.titleColor.withOpacity(0.1),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           Text(
             'No pending requests',
             style: TextStyle(
@@ -151,8 +151,8 @@ class _JoinRequestsScreenState extends State<JoinRequestsScreen> {
 
   Widget _buildRequestCard(String requestId, Map<String, dynamic> profile) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(20),
+      margin: EdgeInsets.only(bottom: 16),
+      padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: AppTheme.titleColor.withOpacity(0.05),
         borderRadius: BorderRadius.circular(24),
@@ -167,20 +167,20 @@ class _JoinRequestsScreenState extends State<JoinRequestsScreen> {
                 backgroundColor: AppTheme.pendingAmber.withOpacity(0.1),
                 child: Text(
                   (profile['full_name'] as String?)?[0].toUpperCase() ?? 'S',
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: AppTheme.pendingAmber,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-              const SizedBox(width: 16),
+              SizedBox(width: 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       profile['full_name'] ?? 'Unknown',
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: AppTheme.titleColor,
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -198,11 +198,11 @@ class _JoinRequestsScreenState extends State<JoinRequestsScreen> {
               ),
             ],
           ),
-          const SizedBox(height: 24),
+          SizedBox(height: 24),
           _buildInfoRow(Icons.phone_outlined, profile['phone'] ?? 'No phone'),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           _buildInfoRow(Icons.email_outlined, profile['email'] ?? 'No email'),
-          const SizedBox(height: 32),
+          SizedBox(height: 32),
           Row(
             children: [
               Expanded(
@@ -210,19 +210,19 @@ class _JoinRequestsScreenState extends State<JoinRequestsScreen> {
                   onPressed: () => _handleRequest(requestId, 'rejected'),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppTheme.errorRed,
-                    side: const BorderSide(color: AppTheme.errorRed),
+                    side: BorderSide(color: AppTheme.errorRed),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    padding: EdgeInsets.symmetric(vertical: 12),
                   ),
-                  child: const Text(
+                  child: Text(
                     'REJECT',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
-              const SizedBox(width: 16),
+              SizedBox(width: 16),
               Expanded(
                 child: ElevatedButton(
                   onPressed: () => _handleRequest(requestId, 'accepted'),
@@ -232,9 +232,9 @@ class _JoinRequestsScreenState extends State<JoinRequestsScreen> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    padding: EdgeInsets.symmetric(vertical: 12),
                   ),
-                  child: const Text(
+                  child: Text(
                     'ACCEPT',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
@@ -251,8 +251,8 @@ class _JoinRequestsScreenState extends State<JoinRequestsScreen> {
     return Row(
       children: [
         Icon(icon, size: 16, color: Colors.white30),
-        const SizedBox(width: 12),
-        Text(text, style: const TextStyle(color: AppTheme.labelColor, fontSize: 14)),
+        SizedBox(width: 12),
+        Text(text, style: TextStyle(color: AppTheme.labelColor, fontSize: 14)),
       ],
     );
   }

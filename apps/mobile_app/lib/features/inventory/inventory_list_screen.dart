@@ -10,7 +10,7 @@ class InventoryListScreen extends StatefulWidget {
   final String companyId;
   final bool isOwner;
 
-  const InventoryListScreen({
+  InventoryListScreen({
     super.key,
     required this.companyId,
     required this.isOwner,
@@ -145,7 +145,7 @@ class _InventoryListScreenState extends State<InventoryListScreen> {
           _items.removeWhere((item) => item['id'] == id);
         });
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
+          SnackBar(
             content: Text('Item deleted'),
             backgroundColor: AppTheme.pendingAmber,
           ),
@@ -170,12 +170,12 @@ class _InventoryListScreenState extends State<InventoryListScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Text(
+        title: Text(
           'Menu',
           style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.titleColor),
         ),
         leading: IconButton(
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios_new,
             size: 20,
             color: AppTheme.titleColor,
@@ -195,8 +195,8 @@ class _InventoryListScreenState extends State<InventoryListScreen> {
                 );
               },
               backgroundColor: AppTheme.pendingAmber,
-              icon: const Icon(Icons.add, color: AppTheme.titleColor),
-              label: const Text(
+              icon: Icon(Icons.add, color: AppTheme.titleColor),
+              label: Text(
                 'Add Item',
                 style: TextStyle(
                   color: AppTheme.titleColor,
@@ -206,14 +206,14 @@ class _InventoryListScreenState extends State<InventoryListScreen> {
             )
           : null,
       body: _loading
-          ? const Center(
+          ? Center(
               child: CircularProgressIndicator(color: AppTheme.pendingAmber),
             )
           : _items.isEmpty
           ? _buildEmptyState()
           : GridView.builder(
-              padding: const EdgeInsets.all(24),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              padding: EdgeInsets.all(24),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 childAspectRatio: 0.65,
                 crossAxisSpacing: 16,
@@ -238,7 +238,7 @@ class _InventoryListScreenState extends State<InventoryListScreen> {
             color: AppTheme.titleColor.withOpacity(0.1),
             size: 80,
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           Text(
             'Menu is empty',
             style: TextStyle(
@@ -246,7 +246,7 @@ class _InventoryListScreenState extends State<InventoryListScreen> {
               fontSize: 18,
             ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           if (widget.isOwner)
             Text(
               'Tap "Add Item" to start adding menu items.',
@@ -305,7 +305,7 @@ class _InventoryListScreenState extends State<InventoryListScreen> {
                       ? CachedNetworkImage(
                           imageUrl: imageUrl,
                           fit: BoxFit.cover,
-                          placeholder: (context, url) => const Center(
+                          placeholder: (context, url) => Center(
                             child: CircularProgressIndicator(
                               color: AppTheme.pendingAmber,
                               strokeWidth: 2,
@@ -324,7 +324,7 @@ class _InventoryListScreenState extends State<InventoryListScreen> {
               Expanded(
                 flex: 4,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
+                  padding: EdgeInsets.symmetric(
                     horizontal: 16,
                     vertical: 12,
                   ),
@@ -341,16 +341,16 @@ class _InventoryListScreenState extends State<InventoryListScreen> {
                               item['name'] ?? 'Unknown Item',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: AppTheme.titleColor,
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                                 letterSpacing: 0.3,
                               ),
                             ),
-                            const SizedBox(height: 4),
+                            SizedBox(height: 4),
                             Container(
-                              padding: const EdgeInsets.symmetric(
+                              padding: EdgeInsets.symmetric(
                                 horizontal: 6,
                                 vertical: 2,
                               ),
@@ -363,7 +363,7 @@ class _InventoryListScreenState extends State<InventoryListScreen> {
                                     'UNCATEGORIZED',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: AppTheme.primaryAction,
                                   fontSize: 9,
                                   fontWeight: FontWeight.bold,
@@ -383,13 +383,13 @@ class _InventoryListScreenState extends State<InventoryListScreen> {
                             children: [
                               Text(
                                 '${requiredQty == requiredQty.toInt() ? requiredQty.toInt() : requiredQty} ${item['unit']}',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: AppTheme.pendingAmber,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w800,
                                 ),
                               ),
-                              const Text(
+                              Text(
                                 'Required',
                                 style: TextStyle(
                                   color: AppTheme.labelColor,
@@ -419,18 +419,18 @@ class _InventoryListScreenState extends State<InventoryListScreen> {
                     context: context,
                     builder: (ctx) => AlertDialog(
                       backgroundColor: AppTheme.background,
-                      title: const Text(
+                      title: Text(
                         'Delete Item?',
                         style: TextStyle(color: AppTheme.titleColor),
                       ),
                       content: Text(
                         'Are you sure you want to remove ${item['name']} from inventory?',
-                        style: const TextStyle(color: AppTheme.labelColor),
+                        style: TextStyle(color: AppTheme.labelColor),
                       ),
                       actions: [
                         TextButton(
                           onPressed: () => Navigator.pop(ctx),
-                          child: const Text(
+                          child: Text(
                             'CANCEL',
                             style: TextStyle(color: AppTheme.labelColor),
                           ),
@@ -440,7 +440,7 @@ class _InventoryListScreenState extends State<InventoryListScreen> {
                             Navigator.pop(ctx);
                             _deleteItem(item['id']);
                           },
-                          child: const Text(
+                          child: Text(
                             'DELETE',
                             style: TextStyle(color: AppTheme.errorRed),
                           ),
@@ -450,12 +450,12 @@ class _InventoryListScreenState extends State<InventoryListScreen> {
                   );
                 },
                 child: Container(
-                  padding: const EdgeInsets.all(6),
+                  padding: EdgeInsets.all(6),
                   decoration: BoxDecoration(
                     color: Colors.black.withOpacity(0.5),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.delete_outline,
                     color: AppTheme.labelColor,
                     size: 18,

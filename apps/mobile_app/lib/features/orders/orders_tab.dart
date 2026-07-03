@@ -10,12 +10,11 @@ import 'package:geolocator/geolocator.dart';
 import 'create_order_screen.dart';
 import 'bids_screen.dart';
 import '../../services/cache_service.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 
 class OrdersTab extends StatefulWidget {
   final String companyId;
 
-  const OrdersTab({super.key, required this.companyId});
+  OrdersTab({super.key, required this.companyId});
 
   @override
   State<OrdersTab> createState() => _OrdersTabState();
@@ -266,7 +265,7 @@ Please ensure timely delivery!
     _fetchOrders();
     _setupRealtime();
     // Initialize the countdown timer
-    _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    _countdownTimer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (mounted) setState(() {});
     });
   }
@@ -324,8 +323,9 @@ Please ensure timely delivery!
                 ? payload.newRecord
                 : payload.oldRecord;
             if (record['company_id'] != null &&
-                record['company_id'] != widget.companyId)
+                record['company_id'] != widget.companyId) {
               return;
+            }
             _fetchOrders();
           },
         )
@@ -382,12 +382,15 @@ Please ensure timely delivery!
       orders = List.from(_allOrders);
     } else {
       orders = _allOrders.where((order) {
-        if (_currentFilter == 'upcoming')
+        if (_currentFilter == 'upcoming') {
           return order['order_status'] == 'upcoming';
-        if (_currentFilter == 'completed')
+        }
+        if (_currentFilter == 'completed') {
           return order['order_status'] == 'completed';
-        if (_currentFilter == 'pending_payment')
+        }
+        if (_currentFilter == 'pending_payment') {
           return order['payment_status'] == 'pending';
+        }
         return true;
       }).toList();
     }
@@ -521,7 +524,7 @@ Please ensure timely delivery!
   Widget _buildFilterChip(String label, String value) {
     final isSelected = _currentFilter == value;
     return Padding(
-      padding: const EdgeInsets.only(right: 8),
+      padding: EdgeInsets.only(right: 8),
       child: FilterChip(
         label: Text(label),
         selected: isSelected,
@@ -581,11 +584,11 @@ Please ensure timely delivery!
           context: context,
           builder: (context) => AlertDialog(
             backgroundColor: AppTheme.background,
-            title: const Text(
+            title: Text(
               'Delete Order',
               style: TextStyle(color: AppTheme.titleColor),
             ),
-            content: const Text(
+            content: Text(
               'Are you sure you want to delete this order?',
               style: TextStyle(color: AppTheme.labelColor),
             ),
@@ -602,7 +605,7 @@ Please ensure timely delivery!
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppTheme.errorRed,
                 ),
-                child: const Text(
+                child: Text(
                   'Delete',
                   style: TextStyle(color: AppTheme.titleColor),
                 ),
@@ -624,8 +627,8 @@ Please ensure timely delivery!
       },
       background: Container(
         alignment: Alignment.centerRight,
-        padding: const EdgeInsets.only(right: 20),
-        margin: const EdgeInsets.only(bottom: 16),
+        padding: EdgeInsets.only(right: 20),
+        margin: EdgeInsets.only(bottom: 16),
         decoration: BoxDecoration(
           color: AppTheme.errorRed,
           borderRadius: BorderRadius.circular(20),
@@ -639,12 +642,25 @@ Please ensure timely delivery!
           });
         },
         child: Container(
-          margin: const EdgeInsets.only(bottom: 16),
+          margin: EdgeInsets.only(bottom: 16),
           decoration: BoxDecoration(
             color: AppTheme.cardColor,
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: AppTheme.borderColor),
-            boxShadow: AppTheme.softShadow,
+            border: Border.all(
+              color: AppTheme.isLegacyTheme 
+                  ? (isDelivered ? AppTheme.activeEmerald : (deliveryStaffId == null && !isDeliveryOpen) ? AppTheme.errorRed : AppTheme.borderColor)
+                  : AppTheme.borderColor,
+              width: AppTheme.isLegacyTheme ? 1.5 : 1.0,
+            ),
+            boxShadow: AppTheme.isLegacyTheme 
+                ? [
+                    BoxShadow(
+                      color: (isDelivered ? AppTheme.activeEmerald : (deliveryStaffId == null && !isDeliveryOpen) ? AppTheme.errorRed : AppTheme.primaryAction).withOpacity(0.3),
+                      blurRadius: 20,
+                      spreadRadius: 2,
+                    )
+                  ]
+                : AppTheme.softShadow,
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(20),
@@ -669,10 +685,10 @@ Please ensure timely delivery!
                       child: LayoutBuilder(
                         builder: (context, constraints) {
                           return AnimatedContainer(
-                            duration: const Duration(milliseconds: 400),
+                            duration: Duration(milliseconds: 400),
                             curve: Curves.easeOutCubic,
                             margin: isExpanded
-                                ? const EdgeInsets.only(top: 10, left: 16, right: 16)
+                                ? EdgeInsets.only(top: 10, left: 16, right: 16)
                                 : EdgeInsets.zero,
                             height: isExpanded ? 4.0 : constraints.maxHeight,
                             width: isExpanded
@@ -683,10 +699,10 @@ Please ensure timely delivery!
                               borderRadius: isExpanded
                                   ? BorderRadius.circular(4)
                                   : BorderRadius.only(
-                                      topLeft: const Radius.circular(20),
-                                      topRight: progressPercentage >= 1.0 ? const Radius.circular(20) : Radius.zero,
-                                      bottomLeft: const Radius.circular(20),
-                                      bottomRight: progressPercentage >= 1.0 ? const Radius.circular(20) : Radius.zero,
+                                      topLeft: Radius.circular(20),
+                                      topRight: progressPercentage >= 1.0 ? Radius.circular(20) : Radius.zero,
+                                      bottomLeft: Radius.circular(20),
+                                      bottomRight: progressPercentage >= 1.0 ? Radius.circular(20) : Radius.zero,
                                     ),
                             ),
                           );
@@ -699,16 +715,16 @@ Please ensure timely delivery!
                     children: [
               // Header Section (Always Visible)
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: Colors.transparent,
                   borderRadius: BorderRadius.vertical(
-                    top: const Radius.circular(20),
+                    top: Radius.circular(20),
                     bottom: isExpanded
                         ? Radius.zero
-                        : const Radius.circular(20),
+                        : Radius.circular(20),
                   ),
-                  border: const Border(
+                  border: Border(
                     bottom: BorderSide(color: AppTheme.borderColor),
                   ),
                 ),
@@ -716,11 +732,11 @@ Please ensure timely delivery!
                   children: [
                     if (isNextUp)
                       Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
+                        padding: EdgeInsets.only(bottom: 10),
                         child: Row(
                           children: [
                             Container(
-                              padding: const EdgeInsets.symmetric(
+                              padding: EdgeInsets.symmetric(
                                 horizontal: 10,
                                 vertical: 4,
                               ),
@@ -735,7 +751,7 @@ Please ensure timely delivery!
                                   ),
                                 ],
                               ),
-                              child: const Row(
+                              child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Icon(
@@ -766,7 +782,7 @@ Please ensure timely delivery!
                         Expanded(
                           child: Text(
                             clientName,
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: AppTheme.titleColor,
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -776,7 +792,7 @@ Please ensure timely delivery!
                         ),
                         Text(
                           '₹${totalValue.toStringAsFixed(2)}',
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: AppTheme.activeEmerald,
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -784,21 +800,21 @@ Please ensure timely delivery!
                         ),
                       ],
                     ),
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Row(
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.calendar_today,
                               color: AppTheme.labelColor,
                               size: 14,
                             ),
-                            const SizedBox(width: 8),
+                            SizedBox(width: 8),
                             Text(
                               formattedDate,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: AppTheme.labelColor,
                                 fontWeight: FontWeight.normal,
                                 fontSize: 13,
@@ -812,7 +828,7 @@ Please ensure timely delivery!
                             isPaid ? 'pending' : 'paid',
                           ),
                           child: Container(
-                            padding: const EdgeInsets.symmetric(
+                            padding: EdgeInsets.symmetric(
                               horizontal: 10,
                               vertical: 4,
                             ),
@@ -847,22 +863,22 @@ Please ensure timely delivery!
 
               // Expandable Section
               AnimatedCrossFade(
-                firstChild: const SizedBox.shrink(),
+                firstChild: SizedBox.shrink(),
                 secondChild: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     if (middlemanTag != null && middlemanTag.isNotEmpty)
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                        padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
                         child: Row(
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.person,
                               color: Color(0xFFD4A237),
                               size: 14,
                             ),
-                            const SizedBox(width: 8),
-                            const Text(
+                            SizedBox(width: 8),
+                            Text(
                               'Middleman: ',
                               style: TextStyle(
                                 color: AppTheme.labelColor,
@@ -872,7 +888,7 @@ Please ensure timely delivery!
                             Flexible(
                               child: Text(
                                 middlemanTag,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: Color(0xFFD4A237),
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,
@@ -886,7 +902,7 @@ Please ensure timely delivery!
                     // Delivery Assignment Status
                     if (isDeliveryOpen || deliveryStaffId != null || pendingStaffId != null)
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+                        padding: EdgeInsets.fromLTRB(16, 8, 16, 0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -899,10 +915,10 @@ Please ensure timely delivery!
                                       : Colors.lightBlue,
                                   size: 14,
                                 ),
-                                const SizedBox(width: 8),
+                                SizedBox(width: 8),
                                 Text(
                                   isDeliveryOpen ? 'Status: ' : 'Assigned to: ',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: AppTheme.labelColor,
                                     fontSize: 13,
                                   ),
@@ -913,7 +929,7 @@ Please ensure timely delivery!
                                       order['delivery_bidding_ends_at'] == null
                                           ? 'Direct Claim (Open)'
                                           : 'Open for Bidding',
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         color: Colors.purpleAccent,
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold,
@@ -955,7 +971,7 @@ Please ensure timely delivery!
                             ),
                             if (order['delivery_fare'] != null)
                               Padding(
-                                padding: const EdgeInsets.only(
+                                padding: EdgeInsets.only(
                                   top: 4,
                                   left: 22,
                                   bottom: 12,
@@ -964,7 +980,7 @@ Please ensure timely delivery!
                                   isDeliveryOpen
                                       ? 'Base Fare: ₹${order['delivery_fare']}'
                                       : 'Delivery Fare: ₹${order['delivery_fare']}',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: AppTheme.labelColor,
                                     fontSize: 13,
                                   ),
@@ -977,7 +993,7 @@ Please ensure timely delivery!
                                     .trim()
                                     .isNotEmpty)
                               Padding(
-                                padding: const EdgeInsets.only(
+                                padding: EdgeInsets.only(
                                   top: 4,
                                   left: 22,
                                   bottom: 8,
@@ -987,7 +1003,7 @@ Please ensure timely delivery!
                                   onTap: () =>
                                       _openMaps(order['venue_address']),
                                   child: Container(
-                                    padding: const EdgeInsets.symmetric(
+                                    padding: EdgeInsets.symmetric(
                                       vertical: 6,
                                       horizontal: 12,
                                     ),
@@ -999,7 +1015,7 @@ Please ensure timely delivery!
                                             AppTheme.primaryAction.withOpacity(0.3),
                                       ),
                                     ),
-                                    child: const Row(
+                                    child: Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Icon(
@@ -1025,7 +1041,7 @@ Please ensure timely delivery!
                             // Share Location Button
                             if (!isDelivered && middlemanTag != null && middlemanTag.contains('(') && deliveryStaffId != null)
                               Padding(
-                                padding: const EdgeInsets.only(
+                                padding: EdgeInsets.only(
                                   top: 4,
                                   left: 22,
                                   bottom: 8,
@@ -1036,7 +1052,7 @@ Please ensure timely delivery!
                                       middlemanTag,
                                       staffId: deliveryStaffId),
                                   child: Container(
-                                    padding: const EdgeInsets.symmetric(
+                                    padding: EdgeInsets.symmetric(
                                       vertical: 6,
                                       horizontal: 12,
                                     ),
@@ -1052,13 +1068,13 @@ Please ensure timely delivery!
                                     child: Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        const Icon(
+                                        Icon(
                                           Icons.share_location,
                                           color: AppTheme.activeEmerald,
                                           size: 14,
                                         ),
-                                        const SizedBox(width: 8),
-                                        const Text(
+                                        SizedBox(width: 8),
+                                        Text(
                                           'Share Staff Location with Middleman',
                                           style: TextStyle(
                                             color: AppTheme.activeEmerald,
@@ -1090,11 +1106,12 @@ Please ensure timely delivery!
                                         .maybeSingle(),
                                 builder: (context, snapshot) {
                                   final phone = snapshot.data?['phone'];
-                                  if (phone == null)
-                                    return const SizedBox.shrink();
+                                  if (phone == null) {
+                                    return SizedBox.shrink();
+                                  }
 
                                   return Padding(
-                                    padding: const EdgeInsets.only(
+                                    padding: EdgeInsets.only(
                                       top: 4,
                                       left: 22,
                                       bottom: 12,
@@ -1104,7 +1121,7 @@ Please ensure timely delivery!
                                       onTap: () => _shareToWhatsApp(
                                           order, phone.toString()),
                                       child: Container(
-                                        padding: const EdgeInsets.symmetric(
+                                        padding: EdgeInsets.symmetric(
                                           vertical: 8,
                                         ),
                                         decoration: BoxDecoration(
@@ -1116,7 +1133,7 @@ Please ensure timely delivery!
                                                 AppTheme.activeEmerald.withOpacity(0.5),
                                           ),
                                         ),
-                                        child: const Row(
+                                        child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
@@ -1146,7 +1163,7 @@ Please ensure timely delivery!
                                 isDeliveryOpen &&
                                 order['delivery_bidding_ends_at'] != null)
                               Padding(
-                                padding: const EdgeInsets.only(
+                                padding: EdgeInsets.only(
                                   top: 4,
                                   left: 22,
                                 ),
@@ -1180,7 +1197,7 @@ Please ensure timely delivery!
                                         }
                                         _fetchOrders();
                                       });
-                                      return const Text(
+                                      return Text(
                                         'Resolving Auction...',
                                         style: TextStyle(
                                           color: AppTheme.errorRed,
@@ -1193,7 +1210,7 @@ Please ensure timely delivery!
                                       diff.inSeconds < 60
                                           ? 'Bidding Ends in: ${diff.inSeconds}s'
                                           : 'Bidding Ends in: ${diff.inMinutes}m ${diff.inSeconds % 60}s',
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         color: AppTheme.pendingAmber,
                                         fontSize: 12,
                                       ),
@@ -1206,7 +1223,7 @@ Please ensure timely delivery!
                                 isDeliveryOpen &&
                                 order['delivery_bidding_ends_at'] != null)
                               Padding(
-                                padding: const EdgeInsets.only(
+                                padding: EdgeInsets.only(
                                   top: 8,
                                   left: 22,
                                 ),
@@ -1236,7 +1253,7 @@ Please ensure timely delivery!
                                     );
                                   },
                                   child: Container(
-                                    padding: const EdgeInsets.symmetric(
+                                    padding: EdgeInsets.symmetric(
                                       horizontal: 12,
                                       vertical: 6,
                                     ),
@@ -1251,7 +1268,7 @@ Please ensure timely delivery!
                                         ),
                                       ),
                                     ),
-                                    child: const Row(
+                                    child: Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Icon(
@@ -1285,11 +1302,11 @@ Please ensure timely delivery!
 
                     // Menu Items Section
                     Padding(
-                      padding: const EdgeInsets.all(16),
+                      padding: EdgeInsets.all(16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Menu Items:',
                             style: TextStyle(
                               color: AppTheme.labelColor,
@@ -1297,13 +1314,13 @@ Please ensure timely delivery!
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const SizedBox(height: 8),
+                          SizedBox(height: 8),
                           Wrap(
                             spacing: 8,
                             runSpacing: 8,
                             children: menuItems.map((item) {
                               return Container(
-                                padding: const EdgeInsets.symmetric(
+                                padding: EdgeInsets.symmetric(
                                   horizontal: 10,
                                   vertical: 6,
                                 ),
@@ -1318,16 +1335,16 @@ Please ensure timely delivery!
                                       (item['quantity_type'] == 'persons')
                                           ? 'For ${item['quantity']} Persons'
                                           : '${item['quantity']}x',
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         color: AppTheme.pendingAmber,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 12,
                                       ),
                                     ),
-                                    const SizedBox(width: 6),
+                                    SizedBox(width: 6),
                                     Text(
                                       item['name'],
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         color: AppTheme.titleColor,
                                         fontSize: 12,
                                       ),
@@ -1343,11 +1360,11 @@ Please ensure timely delivery!
 
                     // Actions Footer
                     Container(
-                      padding: const EdgeInsets.symmetric(
+                      padding: EdgeInsets.symmetric(
                         horizontal: 16,
                         vertical: 12,
                       ),
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         border: Border(top: BorderSide(color: AppTheme.borderColor)),
                       ),
                       child: Column(
@@ -1359,7 +1376,7 @@ Please ensure timely delivery!
                               // Delivered badge or status label
                               if (isDelivered)
                                 Container(
-                                  padding: const EdgeInsets.symmetric(
+                                  padding: EdgeInsets.symmetric(
                                     horizontal: 10,
                                     vertical: 4,
                                   ),
@@ -1372,7 +1389,7 @@ Please ensure timely delivery!
                                       ),
                                     ),
                                   ),
-                                  child: const Row(
+                                  child: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Icon(
@@ -1410,11 +1427,11 @@ Please ensure timely delivery!
                           // Display Signature Directly
                           if (isDelivered)
                             Padding(
-                              padding: const EdgeInsets.only(top: 14),
+                              padding: EdgeInsets.only(top: 14),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Row(
+                                  Row(
                                     children: [
                                       Icon(
                                         Icons.draw,
@@ -1432,7 +1449,7 @@ Please ensure timely delivery!
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(height: 8),
+                                  SizedBox(height: 8),
                                   Container(
                                     width: double.infinity,
                                     height: 120,
@@ -1447,7 +1464,7 @@ Please ensure timely delivery!
                                         ),
                                       ],
                                     ),
-                                    padding: const EdgeInsets.all(8),
+                                    padding: EdgeInsets.all(8),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(8),
                                       child: Image.memory(
@@ -1462,7 +1479,7 @@ Please ensure timely delivery!
                           if (!isDelivered)
                             // Assign for Delivery — disabled while bidding is active
                             Padding(
-                              padding: const EdgeInsets.only(top: 10),
+                              padding: EdgeInsets.only(top: 10),
                               child: SizedBox(
                                 width: double.infinity,
                                 child: ElevatedButton.icon(
@@ -1494,11 +1511,11 @@ Please ensure timely delivery!
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: isDeliveryOpen
                                         ? AppTheme.titleColor.withOpacity(0.05)
-                                        : const Color(0xFFD4A237),
+                                        : Color(0xFFD4A237),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(12),
                                     ),
-                                    padding: const EdgeInsets.symmetric(
+                                    padding: EdgeInsets.symmetric(
                                       vertical: 12,
                                     ),
                                     elevation: 0,
@@ -1509,7 +1526,7 @@ Please ensure timely delivery!
                           // Edit Order Button - Only if not delivered
                           if (!isDelivered)
                             Padding(
-                              padding: const EdgeInsets.only(top: 8),
+                              padding: EdgeInsets.only(top: 8),
                               child: TextButton.icon(
                                 onPressed: () {
                                   Navigator.push(
@@ -1522,12 +1539,12 @@ Please ensure timely delivery!
                                     ),
                                   ).then((_) => _fetchOrders());
                                 },
-                                icon: const Icon(
+                                icon: Icon(
                                   Icons.edit_outlined,
                                   color: AppTheme.primaryAction,
                                   size: 18,
                                 ),
-                                label: const Text(
+                                label: Text(
                                   'Edit Order',
                                   style: TextStyle(
                                     color: AppTheme.primaryAction,
@@ -1539,18 +1556,18 @@ Please ensure timely delivery!
                           // Delete Order Button - Only if not delivered
                           if (!isDelivered)
                             Padding(
-                              padding: const EdgeInsets.only(top: 8),
+                              padding: EdgeInsets.only(top: 8),
                               child: TextButton.icon(
                                 onPressed: () async {
                                   final confirm = await showDialog<bool>(
                                     context: context,
                                     builder: (context) => AlertDialog(
                                       backgroundColor: AppTheme.background,
-                                      title: const Text(
+                                      title: Text(
                                         'Delete Order',
                                         style: TextStyle(color: AppTheme.titleColor),
                                       ),
-                                      content: const Text(
+                                      content: Text(
                                         'Are you sure you want to delete this order?',
                                         style: TextStyle(color: AppTheme.labelColor),
                                       ),
@@ -1573,7 +1590,7 @@ Please ensure timely delivery!
                                           style: ElevatedButton.styleFrom(
                                             backgroundColor: AppTheme.errorRed,
                                           ),
-                                          child: const Text(
+                                          child: Text(
                                             'Delete',
                                             style: TextStyle(color: AppTheme.titleColor),
                                           ),
@@ -1585,12 +1602,12 @@ Please ensure timely delivery!
                                     _deleteOrder(order['id']);
                                   }
                                 },
-                                icon: const Icon(
+                                icon: Icon(
                                   Icons.delete_outline,
                                   color: AppTheme.errorRed,
                                   size: 18,
                                 ),
-                                label: const Text(
+                                label: Text(
                                   'Delete Order',
                                   style: TextStyle(
                                     color: AppTheme.errorRed,
@@ -1607,7 +1624,7 @@ Please ensure timely delivery!
                 crossFadeState: isExpanded
                     ? CrossFadeState.showSecond
                     : CrossFadeState.showFirst,
-                duration: const Duration(milliseconds: 200),
+                duration: Duration(milliseconds: 200),
               ),
                   ],
                 ), // End Column
@@ -1634,7 +1651,7 @@ Please ensure timely delivery!
     return Scaffold(
       backgroundColor: Colors.transparent, // Background handled by parent View
       floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 96),
+        padding: EdgeInsets.only(bottom: 96),
         child: FloatingActionButton.extended(
           backgroundColor: AppTheme.pendingAmber,
           onPressed: () {
@@ -1646,15 +1663,15 @@ Please ensure timely delivery!
               ),
             );
           },
-          icon: const Icon(Icons.add, color: Colors.black),
-          label: const Text(
+          icon: Icon(Icons.add, color: Colors.black),
+          label: Text(
             'New Order',
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           ),
         ),
       ),
       body: _isLoading
-          ? const Center(
+          ? Center(
               child: CircularProgressIndicator(color: AppTheme.pendingAmber),
             )
           : Column(
@@ -1662,11 +1679,11 @@ Please ensure timely delivery!
               children: [
                 // Header
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
+                  padding: EdgeInsets.fromLTRB(24, 24, 24, 16),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
+                      Text(
                         'Order Notebook',
                         style: TextStyle(
                           color: AppTheme.titleColor,
@@ -1675,7 +1692,7 @@ Please ensure timely delivery!
                         ),
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(
+                        padding: EdgeInsets.symmetric(
                           horizontal: 10,
                           vertical: 4,
                         ),
@@ -1691,13 +1708,13 @@ Please ensure timely delivery!
                             Container(
                               width: 6,
                               height: 6,
-                              decoration: const BoxDecoration(
+                              decoration: BoxDecoration(
                                 color: AppTheme.activeEmerald,
                                 shape: BoxShape.circle,
                               ),
                             ),
-                            const SizedBox(width: 6),
-                            const Text(
+                            SizedBox(width: 6),
+                            Text(
                               'LIVE',
                               style: TextStyle(
                                 color: AppTheme.activeEmerald,
@@ -1715,7 +1732,7 @@ Please ensure timely delivery!
                 // Filters
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  padding: EdgeInsets.symmetric(horizontal: 24),
                   child: Row(
                     children: [
                       _buildFilterChip('All', 'all'),
@@ -1725,7 +1742,7 @@ Please ensure timely delivery!
                     ],
                   ),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
 
                 // List
                 Expanded(
@@ -1739,7 +1756,7 @@ Please ensure timely delivery!
                                 size: 64,
                                 color: AppTheme.titleColor.withOpacity(0.1),
                               ),
-                              const SizedBox(height: 16),
+                              SizedBox(height: 16),
                               Text(
                                 'No orders found',
                                 style: TextStyle(
@@ -1751,7 +1768,7 @@ Please ensure timely delivery!
                           ),
                         )
                       : ListView.builder(
-                          padding: const EdgeInsets.fromLTRB(
+                          padding: EdgeInsets.fromLTRB(
                             24,
                             0,
                             24,
@@ -1783,7 +1800,7 @@ Please ensure timely delivery!
           builder: (context, setDialogState) {
             return AlertDialog(
               backgroundColor: AppTheme.background,
-              title: const Text(
+              title: Text(
                 'Delivery Assignment',
                 style: TextStyle(
                   color: AppTheme.titleColor,
@@ -1795,15 +1812,15 @@ Please ensure timely delivery!
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'Select Assignment Type:',
                       style: TextStyle(color: AppTheme.labelColor, fontSize: 12),
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: 8),
                     DropdownButtonFormField<String>(
                       dropdownColor: AppTheme.background,
-                      value: assignmentType,
-                      items: const [
+                      initialValue: assignmentType,
+                      items: [
                         DropdownMenuItem(
                           value: 'none',
                           child: Text(
@@ -1845,21 +1862,21 @@ Please ensure timely delivery!
                       ),
                     ),
                     if (assignmentType != 'none') ...[
-                      const SizedBox(height: 16),
+                      SizedBox(height: 16),
                       Text(
                         (assignmentType == 'specific' || assignmentType == 'direct_claim')
                             ? 'Delivery Fare (₹):'
                             : 'Base Delivery Fare (₹):',
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: AppTheme.labelColor,
                           fontSize: 12,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: 8),
                       TextField(
                         controller: fareController,
                         keyboardType: TextInputType.number,
-                        style: const TextStyle(color: AppTheme.titleColor),
+                        style: TextStyle(color: AppTheme.titleColor),
                         decoration: InputDecoration(
                           hintText: 'Enter amount',
                           hintStyle: TextStyle(
@@ -1871,7 +1888,7 @@ Please ensure timely delivery!
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide.none,
                           ),
-                          prefixIcon: const Icon(
+                          prefixIcon: Icon(
                             Icons.currency_rupee,
                             color: AppTheme.labelColor,
                           ),
@@ -1879,12 +1896,12 @@ Please ensure timely delivery!
                       ),
                     ],
                     if (assignmentType == 'specific') ...[
-                      const SizedBox(height: 16),
-                      const Text(
+                      SizedBox(height: 16),
+                      Text(
                         'Select Staff Member:',
                         style: TextStyle(color: AppTheme.labelColor, fontSize: 12),
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: 8),
                       FutureBuilder(
                         future: Future.wait([
                           _supabase
@@ -1898,8 +1915,9 @@ Please ensure timely delivery!
                               .eq('company_id', widget.companyId),
                         ]),
                         builder: (context, snapshot) {
-                          if (!snapshot.hasData)
-                            return const CircularProgressIndicator();
+                          if (!snapshot.hasData) {
+                            return CircularProgressIndicator();
+                          }
                           
                           final List<dynamic> results = snapshot.data as List<dynamic>;
                           final staffList = List<Map<String, dynamic>>.from(results[0]);
@@ -1907,7 +1925,7 @@ Please ensure timely delivery!
 
                           return DropdownButtonFormField<String>(
                             dropdownColor: AppTheme.background,
-                            value: selectedStaffId.isEmpty
+                            initialValue: selectedStaffId.isEmpty
                                 ? null
                                 : selectedStaffId,
                             items: [
@@ -1916,7 +1934,7 @@ Please ensure timely delivery!
                                   value: s['id'] as String,
                                   child: Text(
                                     s['full_name'],
-                                    style: const TextStyle(color: AppTheme.titleColor),
+                                    style: TextStyle(color: AppTheme.titleColor),
                                   ),
                                 ),
                               ),
@@ -1925,7 +1943,7 @@ Please ensure timely delivery!
                                   value: 'pending_${s['id']}',
                                   child: Text(
                                     '${s['full_name']} (Pending)',
-                                    style: const TextStyle(color: AppTheme.pendingAmber),
+                                    style: TextStyle(color: AppTheme.pendingAmber),
                                   ),
                                 ),
                               ),
@@ -1950,16 +1968,16 @@ Please ensure timely delivery!
                     ],
 
                     if (assignmentType == 'open') ...[
-                      const SizedBox(height: 16),
-                      const Text(
+                      SizedBox(height: 16),
+                      Text(
                         'Bidding Duration:',
                         style: TextStyle(color: AppTheme.labelColor, fontSize: 12),
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: 8),
                       DropdownButtonFormField<int>(
                         dropdownColor: AppTheme.background,
-                        value: selectedDuration,
-                        items: const [
+                        initialValue: selectedDuration,
+                        items: [
                           DropdownMenuItem(
                             value: -30,
                             child: Text(
@@ -2014,7 +2032,7 @@ Please ensure timely delivery!
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: const Text(
+                  child: Text(
                     'Cancel',
                     style: TextStyle(color: AppTheme.labelColor),
                   ),
@@ -2037,7 +2055,7 @@ Please ensure timely delivery!
                     final biddingEndsAt = assignmentType == 'open'
                         ? (selectedDuration == -30
                             ? DateTime.now()
-                                .add(const Duration(seconds: 30))
+                                .add(Duration(seconds: 30))
                                 .toUtc()
                                 .toIso8601String()
                             : DateTime.now()
@@ -2109,7 +2127,7 @@ Please ensure timely delivery!
                                   final now = DateTime.now().toUtc();
                                   final formattedTimeStr = DateFormat('h:mm a').format(eventDate.toLocal());
   
-                                  final reminder6h = eventDate.subtract(const Duration(hours: 6));
+                                  final reminder6h = eventDate.subtract(Duration(hours: 6));
                                   if (reminder6h.isAfter(now)) {
                                     NotificationService.sendNotification(
                                       playerIds: [selectedStaffId],
@@ -2121,7 +2139,7 @@ Please ensure timely delivery!
                                     );
                                   }
   
-                                  final reminder2h = eventDate.subtract(const Duration(hours: 2));
+                                  final reminder2h = eventDate.subtract(Duration(hours: 2));
                                   if (reminder2h.isAfter(now)) {
                                     NotificationService.sendNotification(
                                       playerIds: [selectedStaffId],
@@ -2187,12 +2205,12 @@ Please ensure timely delivery!
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFD4A237),
+                    backgroundColor: Color(0xFFD4A237),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  child: const Text(
+                  child: Text(
                     'Confirm',
                     style: TextStyle(
                       color: Colors.black,
@@ -2222,7 +2240,7 @@ Please ensure timely delivery!
               child: Align(
                 alignment: Alignment.topCenter,
                 heightFactor: 0.3, // Top 30% is the lid
-                child: const Icon(Icons.delete, color: AppTheme.titleColor, size: 32),
+                child: Icon(Icons.delete, color: AppTheme.titleColor, size: 32),
               ),
             ),
           ),
@@ -2231,7 +2249,7 @@ Please ensure timely delivery!
           child: Align(
             alignment: Alignment.bottomCenter,
             heightFactor: 0.7, // Bottom 70% is the bin body
-            child: const Icon(Icons.delete, color: AppTheme.titleColor, size: 32),
+            child: Icon(Icons.delete, color: AppTheme.titleColor, size: 32),
           ),
         ),
       ],

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CoDevelopersScreen extends StatefulWidget {
-  const CoDevelopersScreen({super.key});
+  CoDevelopersScreen({super.key});
 
   @override
   State<CoDevelopersScreen> createState() => _CoDevelopersScreenState();
@@ -17,12 +17,12 @@ class _CoDevelopersScreenState extends State<CoDevelopersScreen> with SingleTick
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 1200),
+      duration: Duration(milliseconds: 1200),
       vsync: this,
     );
     _fadeAnimation = CurvedAnimation(
       parent: _controller,
-      curve: const Interval(0.2, 1.0, curve: Curves.easeOutCubic),
+      curve: Interval(0.2, 1.0, curve: Curves.easeOutCubic),
     );
     _controller.forward();
   }
@@ -39,7 +39,7 @@ class _CoDevelopersScreenState extends State<CoDevelopersScreen> with SingleTick
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -71,15 +71,15 @@ class _CoDevelopersScreenState extends State<CoDevelopersScreen> with SingleTick
                 children: [
                   // Custom AppBar
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     child: Row(
                       children: [
                         IconButton(
                           onPressed: () => Navigator.pop(context),
-                          icon: const Icon(Icons.arrow_back_ios_new, color: AppTheme.labelColor),
+                          icon: Icon(Icons.arrow_back_ios_new, color: AppTheme.labelColor),
                         ),
-                        const SizedBox(width: 8),
-                        const Text(
+                        SizedBox(width: 8),
+                        Text(
                           'Co-developers',
                           style: TextStyle(
                             color: AppTheme.titleColor,
@@ -94,14 +94,14 @@ class _CoDevelopersScreenState extends State<CoDevelopersScreen> with SingleTick
 
                   Expanded(
                     child: SingleChildScrollView(
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+                      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 40),
                       child: Column(
                         children: [
                           FadeTransition(
                             opacity: _fadeAnimation,
                             child: Column(
                               children: [
-                                const Text(
+                                Text(
                                   'THE TEAM BEHIND THE SCENES',
                                   style: TextStyle(
                                     color: AppTheme.primaryAction,
@@ -110,8 +110,8 @@ class _CoDevelopersScreenState extends State<CoDevelopersScreen> with SingleTick
                                     letterSpacing: 3,
                                   ),
                                 ),
-                                const SizedBox(height: 12),
-                                const Text(
+                                SizedBox(height: 12),
+                                Text(
                                   'Meet Our Partners',
                                   style: TextStyle(
                                     color: AppTheme.titleColor,
@@ -119,7 +119,7 @@ class _CoDevelopersScreenState extends State<CoDevelopersScreen> with SingleTick
                                     fontWeight: FontWeight.w900,
                                   ),
                                 ),
-                                const SizedBox(height: 16),
+                                SizedBox(height: 16),
                                 Container(
                                   width: 40,
                                   height: 3,
@@ -131,7 +131,7 @@ class _CoDevelopersScreenState extends State<CoDevelopersScreen> with SingleTick
                               ],
                             ),
                           ),
-                          const SizedBox(height: 80),
+                          SizedBox(height: 80),
                           
                           // Side-by-Side Layout
                           FadeTransition(
@@ -150,7 +150,7 @@ class _CoDevelopersScreenState extends State<CoDevelopersScreen> with SingleTick
                                     glowColor: AppTheme.primaryAction,
                                   ),
                                 ),
-                                const SizedBox(width: 24),
+                                SizedBox(width: 24),
                                 // Santosh
                                 Expanded(
                                   child: _ColDevProfile(
@@ -166,7 +166,7 @@ class _CoDevelopersScreenState extends State<CoDevelopersScreen> with SingleTick
                             ),
                           ),
                           
-                          const SizedBox(height: 48),
+                          SizedBox(height: 48),
                         ],
                       ),
                     ),
@@ -189,7 +189,7 @@ class _ColDevProfile extends StatelessWidget {
   final String githubUrl;
   final Color glowColor;
 
-  const _ColDevProfile({
+  _ColDevProfile({
     required this.name,
     required this.imagePath,
     required this.role,
@@ -233,24 +233,24 @@ class _ColDevProfile extends StatelessWidget {
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) => Container(
                 color: AppTheme.titleColor.withOpacity(0.05),
-                child: const Icon(Icons.person, color: AppTheme.borderColor, size: 40),
+                child: Icon(Icons.person, color: AppTheme.borderColor, size: 40),
               ),
             ),
           ),
         ),
-        const SizedBox(height: 24),
+        SizedBox(height: 24),
         // Name Under Image
         Text(
           name,
           textAlign: TextAlign.center,
-          style: const TextStyle(
+          style: TextStyle(
             color: AppTheme.titleColor,
             fontSize: 18,
             fontWeight: FontWeight.bold,
             letterSpacing: -0.2,
           ),
         ),
-        const SizedBox(height: 4),
+        SizedBox(height: 4),
         Text(
           role.toUpperCase(),
           style: TextStyle(
@@ -260,10 +260,10 @@ class _ColDevProfile extends StatelessWidget {
             letterSpacing: 1.5,
           ),
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: 16),
         // Slogan
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4),
+          padding: EdgeInsets.symmetric(horizontal: 4),
           child: Text(
             slogan,
             textAlign: TextAlign.center,
@@ -275,7 +275,7 @@ class _ColDevProfile extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 20),
+        SizedBox(height: 20),
         // GitHub Link
         IconButton(
           onPressed: _launchUrl,
@@ -286,7 +286,7 @@ class _ColDevProfile extends StatelessWidget {
           ),
           tooltip: 'GitHub',
           padding: EdgeInsets.zero,
-          constraints: const BoxConstraints(),
+          constraints: BoxConstraints(),
         ),
       ],
     );

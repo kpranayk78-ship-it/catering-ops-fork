@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class CacheService {
-  static const String _boxName = 'app_cache';
+  static String _boxName = 'app_cache';
   static late Box _box;
   static bool _isInitialized = false;
 

@@ -1,7 +1,5 @@
 import 'package:mobile_app/core/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'dart:ui';
-import 'package:flutter/services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -21,7 +19,7 @@ import '../../features/orders/order_details_screen.dart';
 import '../../features/orders/create_order_screen.dart';
 
 class OwnerView extends StatefulWidget {
-  const OwnerView({super.key});
+  OwnerView({super.key});
 
   @override
   State<OwnerView> createState() => _OwnerViewState();
@@ -219,17 +217,17 @@ class _OwnerViewState extends State<OwnerView> {
     showModalBottomSheet(
       context: context,
       backgroundColor: AppTheme.background,
-      shape: const RoundedRectangleBorder(
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (context) => Container(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.all(20),
         child: Column(
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
+                Text(
                   'Notifications',
                   style: TextStyle(
                     color: AppTheme.titleColor,
@@ -239,11 +237,11 @@ class _OwnerViewState extends State<OwnerView> {
                 ),
                 IconButton(
                   onPressed: () => Navigator.pop(context),
-                  icon: const Icon(Icons.close, color: AppTheme.labelColor),
+                  icon: Icon(Icons.close, color: AppTheme.labelColor),
                 ),
               ],
             ),
-            const Divider(color: AppTheme.borderColor),
+            Divider(color: AppTheme.borderColor),
             Expanded(
               child: FutureBuilder<List<Map<String, dynamic>>>(
                 future: supabase
@@ -253,11 +251,11 @@ class _OwnerViewState extends State<OwnerView> {
                     .limit(20),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
+                    return Center(child: CircularProgressIndicator());
                   }
                   final notifications = snapshot.data ?? [];
                   if (notifications.isEmpty) {
-                    return const Center(
+                    return Center(
                       child: Text('No notifications', style: TextStyle(color: AppTheme.labelColor)),
                     );
                   }
@@ -306,7 +304,7 @@ class _OwnerViewState extends State<OwnerView> {
         context: context,
         builder: (context) => AlertDialog(
           backgroundColor: AppTheme.background,
-          title: const Text('Share Location With...', style: TextStyle(color: AppTheme.titleColor)),
+          title: Text('Share Location With...', style: TextStyle(color: AppTheme.titleColor)),
           content: SizedBox(
             width: double.maxFinite,
             child: ListView.builder(
@@ -315,8 +313,8 @@ class _OwnerViewState extends State<OwnerView> {
               itemBuilder: (context, index) {
                 final mid = middleMen[index];
                 return ListTile(
-                  title: Text(mid['name'] ?? '', style: const TextStyle(color: AppTheme.titleColor)),
-                  subtitle: Text(mid['phone_number'] ?? '', style: const TextStyle(color: AppTheme.labelColor)),
+                  title: Text(mid['name'] ?? '', style: TextStyle(color: AppTheme.titleColor)),
+                  subtitle: Text(mid['phone_number'] ?? '', style: TextStyle(color: AppTheme.labelColor)),
                   onTap: () => Navigator.pop(context, mid),
                 );
               },
@@ -422,8 +420,8 @@ class _OwnerViewState extends State<OwnerView> {
      final badgeColor = isOngoing ? AppTheme.activeEmerald : AppTheme.pendingAmber;
      
      return Container(
-        margin: const EdgeInsets.only(bottom: 24),
-        padding: const EdgeInsets.all(16),
+        margin: EdgeInsets.only(bottom: 24),
+        padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: badgeColor.withOpacity(0.03),
           borderRadius: BorderRadius.circular(20),
@@ -437,14 +435,14 @@ class _OwnerViewState extends State<OwnerView> {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: AppTheme.titleColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                     decoration: BoxDecoration(
                       color: badgeColor.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(12),
@@ -460,18 +458,18 @@ class _OwnerViewState extends State<OwnerView> {
                   )
                 ],
               ),
-              const SizedBox(height: 12),
+              SizedBox(height: 12),
               if (orders.isEmpty)
                  Padding(
-                   padding: const EdgeInsets.symmetric(vertical: 20),
-                   child: Center(child: Text('No $title orders.', style: const TextStyle(color: AppTheme.labelColor))),
+                   padding: EdgeInsets.symmetric(vertical: 20),
+                   child: Center(child: Text('No $title orders.', style: TextStyle(color: AppTheme.labelColor))),
                  )
               else
                  Container(
-                   constraints: const BoxConstraints(maxHeight: 280),
+                   constraints: BoxConstraints(maxHeight: 280),
                    child: ListView.builder(
                      shrinkWrap: true,
-                     physics: const BouncingScrollPhysics(),
+                     physics: BouncingScrollPhysics(),
                      itemCount: orders.length,
                      itemBuilder: (context, index) {
                         final order = orders[index];
@@ -483,7 +481,7 @@ class _OwnerViewState extends State<OwnerView> {
                              Navigator.push(context, MaterialPageRoute(builder: (context) => OrderDetailsScreen(order: order, companyId: _companyId!)));
                           },
                           child: Container(
-                             margin: const EdgeInsets.only(bottom: 12),
+                             margin: EdgeInsets.only(bottom: 12),
                              decoration: BoxDecoration(
                                color: AppTheme.cardColor,
                                borderRadius: BorderRadius.circular(16),
@@ -492,7 +490,7 @@ class _OwnerViewState extends State<OwnerView> {
                                  BoxShadow(
                                    color: AppTheme.titleColor.withOpacity(0.03),
                                    blurRadius: 10,
-                                   offset: const Offset(0, 4),
+                                   offset: Offset(0, 4),
                                  ),
                                ]
                              ),
@@ -502,7 +500,7 @@ class _OwnerViewState extends State<OwnerView> {
                                  decoration: BoxDecoration(
                                    border: Border(left: BorderSide(color: badgeColor, width: 6)),
                                  ),
-                                 padding: const EdgeInsets.all(16),
+                                 padding: EdgeInsets.all(16),
                                  child: Column(
                                    crossAxisAlignment: CrossAxisAlignment.start,
                                    children: [
@@ -513,20 +511,20 @@ class _OwnerViewState extends State<OwnerView> {
                                                 width: 8, height: 8,
                                                 decoration: BoxDecoration(color: badgeColor, shape: BoxShape.circle),
                                               ),
-                                              const SizedBox(width: 8),
-                                              Text('ORD-$shortId', style: const TextStyle(color: AppTheme.labelColor, fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: 1.2)),
-                                              const Spacer(),
-                                              const Icon(Icons.expand_more, color: AppTheme.labelColor, size: 20),
+                                              SizedBox(width: 8),
+                                              Text('ORD-$shortId', style: TextStyle(color: AppTheme.labelColor, fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: 1.2)),
+                                              Spacer(),
+                                              Icon(Icons.expand_more, color: AppTheme.labelColor, size: 20),
                                             ]
                                           ),
-                                          const SizedBox(height: 8),
-                                          Text(order['client_name'] ?? 'Unknown Client', style: const TextStyle(color: AppTheme.titleColor, fontWeight: FontWeight.bold, fontSize: 18)),
-                                          const SizedBox(height: 8),
+                                          SizedBox(height: 8),
+                                          Text(order['client_name'] ?? 'Unknown Client', style: TextStyle(color: AppTheme.titleColor, fontWeight: FontWeight.bold, fontSize: 18)),
+                                          SizedBox(height: 8),
                                           Row(
                                             children: [
-                                              const Icon(Icons.badge_outlined, color: AppTheme.labelColor, size: 16),
-                                              const SizedBox(width: 6),
-                                              Text('Staff: ${order['profiles']?['full_name'] ?? 'Assigning...'}', style: const TextStyle(color: AppTheme.labelColor, fontSize: 14)),
+                                              Icon(Icons.badge_outlined, color: AppTheme.labelColor, size: 16),
+                                              SizedBox(width: 6),
+                                              Text('Staff: ${order['profiles']?['full_name'] ?? 'Assigning...'}', style: TextStyle(color: AppTheme.labelColor, fontSize: 14)),
                                             ]
                                           )
                                       ] else ...[
@@ -537,13 +535,13 @@ class _OwnerViewState extends State<OwnerView> {
                                                 child: Column(
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
-                                                    Text('${_formatDate(order['event_date'])}', style: const TextStyle(color: AppTheme.labelColor, fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: 0.5)),
-                                                    const SizedBox(height: 4),
-                                                    Text(order['client_name'] ?? 'Unknown Client', style: const TextStyle(color: AppTheme.titleColor, fontWeight: FontWeight.bold, fontSize: 18)),
+                                                    Text(_formatDate(order['event_date']), style: TextStyle(color: AppTheme.labelColor, fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: 0.5)),
+                                                    SizedBox(height: 4),
+                                                    Text(order['client_name'] ?? 'Unknown Client', style: TextStyle(color: AppTheme.titleColor, fontWeight: FontWeight.bold, fontSize: 18)),
                                                   ]
                                                 ),
                                               ),
-                                              const Icon(Icons.chevron_right, color: AppTheme.labelColor, size: 20),
+                                              Icon(Icons.chevron_right, color: AppTheme.labelColor, size: 20),
                                             ]
                                           )
                                       ]
@@ -569,7 +567,7 @@ class _OwnerViewState extends State<OwnerView> {
     // dropped when a column filter is used unless REPLICA IDENTITY FULL is set.
     // We filter by company_id inside the callback instead.
     _requestSubscription = supabase
-        .channel('owner_requests_${_companyId}')
+        .channel('owner_requests_$_companyId')
         .onPostgresChanges(
           event: PostgresChangeEvent.all,
           schema: 'public',
@@ -580,8 +578,9 @@ class _OwnerViewState extends State<OwnerView> {
                 ? payload.newRecord
                 : payload.oldRecord;
             final recordCompanyId = record['company_id'];
-            if (recordCompanyId != null && recordCompanyId != _companyId)
+            if (recordCompanyId != null && recordCompanyId != _companyId) {
               return;
+            }
 
             if (payload.eventType == PostgresChangeEvent.insert) {
               // Play sound from any tab
@@ -598,15 +597,15 @@ class _OwnerViewState extends State<OwnerView> {
   Widget _buildDashboardTab({Key? key}) {
     return SingleChildScrollView(
       key: key,
-      padding: const EdgeInsets.only(bottom: 120),
+      padding: EdgeInsets.only(bottom: 120),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
-            padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
+            padding: EdgeInsets.fromLTRB(24, 16, 24, 32),
             decoration: BoxDecoration(
               gradient: AppTheme.subtleGradient,
-              borderRadius: const BorderRadius.only(
+              borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(32),
                 bottomRight: Radius.circular(32),
               ),
@@ -633,22 +632,22 @@ class _OwnerViewState extends State<OwnerView> {
                             children: [
                               IconButton(
                                 onPressed: _showNotificationsSheet,
-                                icon: const Icon(Icons.notifications_none, color: AppTheme.titleColor),
+                                icon: Icon(Icons.notifications_none, color: AppTheme.titleColor),
                               ),
                               if (_unreadNotificationsCount > 0)
                                 Positioned(
                                   right: 8,
                                   top: 8,
                                   child: Container(
-                                    padding: const EdgeInsets.all(2),
+                                    padding: EdgeInsets.all(2),
                                     decoration: BoxDecoration(
                                       color: AppTheme.errorRed,
                                       borderRadius: BorderRadius.circular(10),
                                     ),
-                                    constraints: const BoxConstraints(minWidth: 14, minHeight: 14),
+                                    constraints: BoxConstraints(minWidth: 14, minHeight: 14),
                                     child: Text(
                                       '$_unreadNotificationsCount',
-                                      style: const TextStyle(color: AppTheme.titleColor, fontSize: 8, fontWeight: FontWeight.bold),
+                                      style: TextStyle(color: AppTheme.titleColor, fontSize: 8, fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
                                   ),
@@ -659,23 +658,23 @@ class _OwnerViewState extends State<OwnerView> {
                             onPressed: () {
                               Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsScreen(companyId: _companyId, companyName: _companyName, role: 'owner', fullName: _ownerName)));
                             },
-                            icon: const Icon(Icons.settings_outlined, color: AppTheme.labelColor),
+                            icon: Icon(Icons.settings_outlined, color: AppTheme.labelColor),
                           ),
                         ],
                       ),
                     ],
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4),
                   Text(
                     _companyName ?? 'Dashboard',
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: AppTheme.titleColor,
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
                       letterSpacing: -0.5,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8),
                   Text(
                     'Owner: ${_ownerName ?? '...'}',
                     style: TextStyle(
@@ -689,14 +688,14 @@ class _OwnerViewState extends State<OwnerView> {
           ),
           
           Padding(
-            padding: const EdgeInsets.all(24),
+            padding: EdgeInsets.all(24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 _buildOrderList('On-Going', true, _onGoingOrders),
                 _buildOrderList('Up-Coming', false, _upcomingOrders),
                 
-                const SizedBox(height: 10),
+                SizedBox(height: 10),
 
                 // Inventory Action
                 Container(
@@ -720,7 +719,7 @@ class _OwnerViewState extends State<OwnerView> {
                       }
                     },
                     child: Container(
-                      padding: const EdgeInsets.all(20),
+                      padding: EdgeInsets.all(20),
                       decoration: BoxDecoration(
                         color: AppTheme.cardColor,
                         borderRadius: BorderRadius.circular(20),
@@ -729,19 +728,19 @@ class _OwnerViewState extends State<OwnerView> {
                       child: Row(
                         children: [
                           Container(
-                            padding: const EdgeInsets.all(12),
+                            padding: EdgeInsets.all(12),
                             decoration: BoxDecoration(
                               color: AppTheme.primaryAction.withOpacity(0.1),
                               shape: BoxShape.circle,
                             ),
-                            child: const Icon(
+                            child: Icon(
                               Icons.inventory_2_outlined,
                               color: AppTheme.primaryAction,
                               size: 24,
                             ),
                           ),
-                          const SizedBox(width: 16),
-                          const Expanded(
+                          SizedBox(width: 16),
+                          Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -760,7 +759,7 @@ class _OwnerViewState extends State<OwnerView> {
                               ],
                             ),
                           ),
-                          const Icon(
+                          Icon(
                             Icons.arrow_forward_ios_rounded,
                             color: AppTheme.borderColor,
                             size: 16,
@@ -771,7 +770,7 @@ class _OwnerViewState extends State<OwnerView> {
                   ),
                 ),
 
-                const SizedBox(height: 20),
+                SizedBox(height: 20),
 
                 // Manage Middlemen Action
                 Container(
@@ -792,7 +791,7 @@ class _OwnerViewState extends State<OwnerView> {
                       }
                     },
                     child: Container(
-                      padding: const EdgeInsets.all(20),
+                      padding: EdgeInsets.all(20),
                       decoration: BoxDecoration(
                         color: AppTheme.cardColor,
                         borderRadius: BorderRadius.circular(20),
@@ -801,19 +800,19 @@ class _OwnerViewState extends State<OwnerView> {
                       child: Row(
                         children: [
                           Container(
-                            padding: const EdgeInsets.all(12),
+                            padding: EdgeInsets.all(12),
                             decoration: BoxDecoration(
                               color: AppTheme.activeEmerald.withOpacity(0.1),
                               shape: BoxShape.circle,
                             ),
-                            child: const Icon(
+                            child: Icon(
                               Icons.account_balance_wallet_outlined,
                               color: AppTheme.activeEmerald,
                               size: 24,
                             ),
                           ),
-                          const SizedBox(width: 16),
-                          const Expanded(
+                          SizedBox(width: 16),
+                          Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -832,7 +831,7 @@ class _OwnerViewState extends State<OwnerView> {
                               ],
                             ),
                           ),
-                          const Icon(
+                          Icon(
                             Icons.arrow_forward_ios_rounded,
                             color: AppTheme.borderColor,
                             size: 16,
@@ -853,7 +852,7 @@ class _OwnerViewState extends State<OwnerView> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return const Scaffold(
+      return Scaffold(
         backgroundColor: AppTheme.background,
         body: Center(
           child: CircularProgressIndicator(color: AppTheme.pendingAmber),
@@ -867,13 +866,13 @@ class _OwnerViewState extends State<OwnerView> {
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: AnimatedScale(
         scale: _selectedIndex == 0 ? 1.0 : 0.0,
-        duration: const Duration(milliseconds: 250),
+        duration: Duration(milliseconds: 250),
         curve: Curves.easeOutBack,
         child: AnimatedOpacity(
           opacity: _selectedIndex == 0 ? 1.0 : 0.0,
-          duration: const Duration(milliseconds: 200),
+          duration: Duration(milliseconds: 200),
           child: Padding(
-            padding: const EdgeInsets.only(bottom: 96),
+            padding: EdgeInsets.only(bottom: 96),
             child: FloatingActionButton.extended(
               heroTag: 'dashboardCreateOrder',
               backgroundColor: AppTheme.pendingAmber,
@@ -887,8 +886,8 @@ class _OwnerViewState extends State<OwnerView> {
                   );
                 }
               },
-              icon: const Icon(Icons.add, color: Colors.black),
-              label: const Text(
+              icon: Icon(Icons.add, color: Colors.black),
+              label: Text(
                 'New Order',
                 style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
               ),
@@ -901,7 +900,7 @@ class _OwnerViewState extends State<OwnerView> {
         elevation: 0,
         title: Text(
           _selectedIndex == 1 ? 'Orders' : _selectedIndex == 2 ? 'Requests' : 'Staff',
-          style: const TextStyle(fontWeight: FontWeight.bold, color: AppTheme.titleColor),
+          style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.titleColor),
         ),
         automaticallyImplyLeading: false,
       ),
@@ -909,13 +908,13 @@ class _OwnerViewState extends State<OwnerView> {
         children: [
           Positioned.fill(
             child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 300),
+              duration: Duration(milliseconds: 300),
               transitionBuilder: (Widget child, Animation<double> animation) {
                 return FadeTransition(
                   opacity: animation,
                   child: SlideTransition(
                     position: Tween<Offset>(
-                      begin: const Offset(0.0, 0.02),
+                      begin: Offset(0.0, 0.02),
                       end: Offset.zero,
                     ).animate(animation),
                     child: child,
@@ -923,15 +922,15 @@ class _OwnerViewState extends State<OwnerView> {
                 );
               },
               child: _selectedIndex == 0
-                  ? _buildDashboardTab(key: const ValueKey('dashboard'))
+                  ? _buildDashboardTab(key: ValueKey('dashboard'))
                   : _selectedIndex == 1
-                  ? OrdersTab(key: const ValueKey('orders'), companyId: _companyId ?? '')
+                  ? OrdersTab(key: ValueKey('orders'), companyId: _companyId ?? '')
                   : _selectedIndex == 2
                   ? JoinRequestsScreen(
                       key: ValueKey('requests_$_pendingCount'),
                       onRequestHandled: _fetchRequestCount,
                     )
-                  : StaffManagementScreen(key: const ValueKey('staff'), companyId: _companyId ?? ''),
+                  : StaffManagementScreen(key: ValueKey('staff'), companyId: _companyId ?? ''),
             ),
           ),
           Positioned(
@@ -953,7 +952,7 @@ class _OwnerViewState extends State<OwnerView> {
                 alignment: Alignment.center,
                 children: [
                   AnimatedAlign(
-                    duration: const Duration(milliseconds: 300),
+                    duration: Duration(milliseconds: 300),
                     curve: Curves.easeOutCubic,
                     alignment: Alignment(-1.0 + (_selectedIndex * (2.0 / 3.0)), 0),
                     child: FractionallySizedBox(
@@ -961,7 +960,7 @@ class _OwnerViewState extends State<OwnerView> {
                       child: Center(
                         child: Container(
                           height: 52,
-                          margin: const EdgeInsets.symmetric(horizontal: 12),
+                          margin: EdgeInsets.symmetric(horizontal: 12),
                           decoration: BoxDecoration(
                             color: AppTheme.titleColor.withOpacity(0.08),
                             borderRadius: BorderRadius.circular(20),
@@ -1019,21 +1018,21 @@ class _OwnerViewState extends State<OwnerView> {
           alignment: Alignment.center,
           children: [
             AnimatedAlign(
-              duration: const Duration(milliseconds: 300),
+              duration: Duration(milliseconds: 300),
               curve: Curves.easeOutCubic,
-              alignment: isSelected ? const Alignment(0, -0.6) : const Alignment(0, 0.0),
+              alignment: isSelected ? Alignment(0, -0.6) : Alignment(0, 0.0),
               child: buildIcon(),
             ),
             AnimatedAlign(
-              duration: const Duration(milliseconds: 300),
+              duration: Duration(milliseconds: 300),
               curve: Curves.easeOutCubic,
-              alignment: isSelected ? const Alignment(0, 0.8) : const Alignment(0, 1.5),
+              alignment: isSelected ? Alignment(0, 0.8) : Alignment(0, 1.5),
               child: AnimatedOpacity(
-                duration: const Duration(milliseconds: 200),
+                duration: Duration(milliseconds: 200),
                 opacity: isSelected ? 1.0 : 0.0,
                 child: Text(
                   label,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: AppTheme.primaryAction,
                     fontWeight: FontWeight.bold,
                     fontSize: 11,

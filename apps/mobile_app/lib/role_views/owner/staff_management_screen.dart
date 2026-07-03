@@ -8,7 +8,7 @@ import '../../services/cache_service.dart';
 
 class StaffManagementScreen extends StatefulWidget {
   final String companyId;
-  const StaffManagementScreen({super.key, required this.companyId});
+  StaffManagementScreen({super.key, required this.companyId});
 
   @override
   State<StaffManagementScreen> createState() => _StaffManagementScreenState();
@@ -145,22 +145,22 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         automaticallyImplyLeading: false,
-        title: const Text(
+        title: Text(
           'Our Team',
           style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.titleColor),
         ),
       ),
       body: _loading
-          ? const Center(
+          ? Center(
               child: CircularProgressIndicator(color: AppTheme.pendingAmber),
             )
           : (_staffMembers.isEmpty && _pendingInvitations.isEmpty)
           ? _buildEmptyState()
           : ListView(
-              padding: const EdgeInsets.all(24),
+              padding: EdgeInsets.all(24),
               children: [
                 if (_staffMembers.isNotEmpty) ...[
-                  const Text(
+                  Text(
                     'Active Staff',
                     style: TextStyle(
                       color: AppTheme.labelColor,
@@ -168,12 +168,12 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
                   ..._staffMembers.map((staff) => _buildStaffTile(staff)),
                 ],
                 if (_pendingInvitations.isNotEmpty) ...[
-                  const SizedBox(height: 24),
-                  const Text(
+                  SizedBox(height: 24),
+                  Text(
                     'Pending Invitations',
                     style: TextStyle(
                       color: AppTheme.pendingAmber,
@@ -181,18 +181,18 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
                   ..._pendingInvitations.map((invite) => _buildInviteTile(invite)),
                 ],
               ],
             ),
       floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 96),
+        padding: EdgeInsets.only(bottom: 96),
         child: FloatingActionButton.extended(
           onPressed: _showAddStaffDialog,
           backgroundColor: AppTheme.pendingAmber,
-          icon: const Icon(Icons.person_add, color: Colors.black),
-          label: const Text(
+          icon: Icon(Icons.person_add, color: Colors.black),
+          label: Text(
             'Add Staff',
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           ),
@@ -217,7 +217,7 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
                 borderRadius: BorderRadius.circular(16),
                 side: BorderSide(color: AppTheme.titleColor.withOpacity(0.1)),
               ),
-              title: const Text(
+              title: Text(
                 'Add Staff Member',
                 style: TextStyle(color: AppTheme.titleColor, fontWeight: FontWeight.bold),
               ),
@@ -241,12 +241,12 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
                                 });
                               }
                             },
-                      icon: const Icon(Icons.contacts, size: 18),
-                      label: const Text('Select from Contacts'),
+                      icon: Icon(Icons.contacts, size: 18),
+                      label: Text('Select from Contacts'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppTheme.primaryAction.withOpacity(0.2),
                         foregroundColor: AppTheme.primaryAction,
-                        padding: const EdgeInsets.symmetric(
+                        padding: EdgeInsets.symmetric(
                           horizontal: 16,
                           vertical: 12,
                         ),
@@ -255,13 +255,13 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20),
                     TextField(
                       controller: nameController,
-                      style: const TextStyle(color: AppTheme.titleColor),
+                      style: TextStyle(color: AppTheme.titleColor),
                       decoration: InputDecoration(
                         labelText: 'Full Name',
-                        labelStyle: const TextStyle(color: AppTheme.labelColor),
+                        labelStyle: TextStyle(color: AppTheme.labelColor),
                         filled: true,
                         fillColor: AppTheme.titleColor.withOpacity(0.05),
                         border: OutlineInputBorder(
@@ -270,14 +270,14 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12),
                     TextField(
                       controller: phoneController,
-                      style: const TextStyle(color: AppTheme.titleColor),
+                      style: TextStyle(color: AppTheme.titleColor),
                       keyboardType: TextInputType.phone,
                       decoration: InputDecoration(
                         labelText: 'Phone Number',
-                        labelStyle: const TextStyle(color: AppTheme.labelColor),
+                        labelStyle: TextStyle(color: AppTheme.labelColor),
                         filled: true,
                         fillColor: AppTheme.titleColor.withOpacity(0.05),
                         border: OutlineInputBorder(
@@ -294,7 +294,7 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: const Text('Cancel', style: TextStyle(color: AppTheme.labelColor)),
+                  child: Text('Cancel', style: TextStyle(color: AppTheme.labelColor)),
                 ),
                 ElevatedButton(
                   onPressed: isProcessing
@@ -303,7 +303,7 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
                           if (nameController.text.isEmpty ||
                               phoneController.text.isEmpty) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
+                              SnackBar(
                                 content: Text('Please fill all fields'),
                                 backgroundColor: AppTheme.pendingAmber,
                               ),
@@ -324,7 +324,7 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
                     ),
                   ),
                   child: isProcessing
-                      ? const SizedBox(
+                      ? SizedBox(
                           height: 20,
                           width: 20,
                           child: CircularProgressIndicator(
@@ -332,7 +332,7 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
                             color: Colors.black,
                           ),
                         )
-                      : const Text(
+                      : Text(
                           'Add',
                           style: TextStyle(
                             color: Colors.black,
@@ -355,7 +355,7 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
       } else {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
+            SnackBar(
               content: Text('Contacts permission denied'),
               backgroundColor: AppTheme.errorRed,
             ),
@@ -461,12 +461,12 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
             color: AppTheme.titleColor.withOpacity(0.2),
             size: 64,
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           Text(
             'No staff members found.',
             style: TextStyle(color: AppTheme.titleColor.withOpacity(0.5)),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           Text(
             'Share your Company ID to invite them!',
             style: TextStyle(
@@ -481,8 +481,8 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
 
   Widget _buildStaffTile(Map<String, dynamic> staff) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
+      margin: EdgeInsets.only(bottom: 16),
+      padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppTheme.titleColor.withOpacity(0.05),
         borderRadius: BorderRadius.circular(16),
@@ -494,20 +494,20 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
             backgroundColor: AppTheme.pendingAmber.withOpacity(0.1),
             child: Text(
               (staff['full_name'] as String?)?[0].toUpperCase() ?? 'S',
-              style: const TextStyle(
+              style: TextStyle(
                 color: AppTheme.pendingAmber,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   staff['full_name'] ?? 'Unknown Member',
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: AppTheme.titleColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
@@ -527,7 +527,7 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
                   color: (staff['is_online'] == true)
                       ? AppTheme.activeEmerald.withOpacity(0.1)
@@ -545,10 +545,10 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: 8),
               InkWell(
                 onTap: () => _promptRemoveStaff(staff),
-                child: const Text(
+                child: Text(
                   'Remove',
                   style: TextStyle(
                     color: AppTheme.errorRed,
@@ -574,15 +574,15 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
             borderRadius: BorderRadius.circular(16),
             side: BorderSide(color: AppTheme.titleColor.withOpacity(0.1)),
           ),
-          title: const Text('Remove Staff', style: TextStyle(color: AppTheme.titleColor, fontWeight: FontWeight.bold)),
+          title: Text('Remove Staff', style: TextStyle(color: AppTheme.titleColor, fontWeight: FontWeight.bold)),
           content: Text(
             'Are you sure you want to remove ${staff['full_name']} from your company?',
-            style: const TextStyle(color: AppTheme.labelColor),
+            style: TextStyle(color: AppTheme.labelColor),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('Cancel', style: TextStyle(color: AppTheme.labelColor)),
+              child: Text('Cancel', style: TextStyle(color: AppTheme.labelColor)),
             ),
             ElevatedButton(
               onPressed: () => Navigator.of(context).pop(true),
@@ -590,7 +590,7 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
                 backgroundColor: AppTheme.errorRed,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
               ),
-              child: const Text('Remove', style: TextStyle(color: AppTheme.titleColor, fontWeight: FontWeight.bold)),
+              child: Text('Remove', style: TextStyle(color: AppTheme.titleColor, fontWeight: FontWeight.bold)),
             ),
           ],
         );
@@ -661,50 +661,50 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
 
   Widget _buildInviteTile(Map<String, dynamic> invite) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
         color: AppTheme.titleColor.withOpacity(0.05),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: AppTheme.pendingAmber.withOpacity(0.3)),
       ),
       child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+        contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         leading: CircleAvatar(
           backgroundColor: AppTheme.pendingAmber.withOpacity(0.2),
-          child: const Icon(Icons.hourglass_empty, color: AppTheme.pendingAmber),
+          child: Icon(Icons.hourglass_empty, color: AppTheme.pendingAmber),
         ),
         title: Text(
           invite['full_name'] ?? 'Unknown',
-          style: const TextStyle(
+          style: TextStyle(
             color: AppTheme.titleColor,
             fontWeight: FontWeight.bold,
           ),
         ),
         subtitle: Text(
           '📱 ${invite['phone'] ?? ''}\nMissing App Account',
-          style: const TextStyle(color: AppTheme.labelColor, fontSize: 13),
+          style: TextStyle(color: AppTheme.labelColor, fontSize: 13),
         ),
         isThreeLine: true,
         trailing: IconButton(
-          icon: const Icon(Icons.cancel_outlined, color: AppTheme.errorRed),
+          icon: Icon(Icons.cancel_outlined, color: AppTheme.errorRed),
           onPressed: () {
             showDialog(
               context: context,
               builder: (context) => AlertDialog(
                 backgroundColor: AppTheme.background,
-                title: const Text('Cancel Invitation?', style: TextStyle(color: AppTheme.titleColor)),
-                content: Text('Are you sure you want to cancel the invitation for ${invite['full_name']}?', style: const TextStyle(color: AppTheme.labelColor)),
+                title: Text('Cancel Invitation?', style: TextStyle(color: AppTheme.titleColor)),
+                content: Text('Are you sure you want to cancel the invitation for ${invite['full_name']}?', style: TextStyle(color: AppTheme.labelColor)),
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.pop(context),
-                    child: const Text('No', style: TextStyle(color: AppTheme.labelColor)),
+                    child: Text('No', style: TextStyle(color: AppTheme.labelColor)),
                   ),
                   TextButton(
                     onPressed: () {
                       Navigator.pop(context);
                       _cancelInvitation(invite['id'], invite['full_name']);
                     },
-                    child: const Text('Yes, Cancel', style: TextStyle(color: AppTheme.errorRed)),
+                    child: Text('Yes, Cancel', style: TextStyle(color: AppTheme.errorRed)),
                   ),
                 ],
               ),

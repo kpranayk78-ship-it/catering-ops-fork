@@ -8,7 +8,7 @@ class AddMiddleManDialog extends StatefulWidget {
   final String companyId;
   final Map<String, dynamic>? initialData;
 
-  const AddMiddleManDialog({
+  AddMiddleManDialog({
     super.key,
     required this.companyId,
     this.initialData,
@@ -41,7 +41,7 @@ class _AddMiddleManDialogState extends State<AddMiddleManDialog> {
 
     if (name.isEmpty || phone.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill out all fields')),
+        SnackBar(content: Text('Please fill out all fields')),
       );
       return;
     }
@@ -85,25 +85,25 @@ class _AddMiddleManDialogState extends State<AddMiddleManDialog> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       backgroundColor: AppTheme.background,
       child: Padding(
-        padding: const EdgeInsets.all(24.0),
+        padding: EdgeInsets.all(24.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               widget.initialData != null ? 'Edit Middle Man' : 'Add Middle Man',
-              style: const TextStyle(
+              style: TextStyle(
                 color: AppTheme.titleColor,
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
             ElevatedButton.icon(
               onPressed: () async {
                 if (kIsWeb) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
+                    SnackBar(
                       content: Text(
                         'Contact import is only available on mobile devices.',
                       ),
@@ -136,7 +136,7 @@ class _AddMiddleManDialogState extends State<AddMiddleManDialog> {
                   } else {
                     if (mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
+                        SnackBar(
                           content: Text(
                             'Contact permission denied. Please enable it in settings.',
                           ),
@@ -149,27 +149,27 @@ class _AddMiddleManDialogState extends State<AddMiddleManDialog> {
                   debugPrint('Error picking contact: $e');
                 }
               },
-              icon: const Icon(Icons.contact_phone, size: 18),
-              label: const Text('Import from Contacts'),
+              icon: Icon(Icons.contact_phone, size: 18),
+              label: Text('Import from Contacts'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppTheme.pendingAmber.withOpacity(0.1),
                 foregroundColor: AppTheme.pendingAmber,
                 elevation: 0,
-                minimumSize: const Size(double.infinity, 45),
+                minimumSize: Size(double.infinity, 45),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
             ),
-            const SizedBox(height: 16),
-            const SizedBox(height: 24),
+            SizedBox(height: 16),
+            SizedBox(height: 24),
             TextField(
               controller: _nameController,
-              style: const TextStyle(color: AppTheme.titleColor),
+              style: TextStyle(color: AppTheme.titleColor),
               decoration: InputDecoration(
                 labelText: 'Name',
                 labelStyle: TextStyle(color: AppTheme.titleColor.withOpacity(0.5)),
-                prefixIcon: const Icon(
+                prefixIcon: Icon(
                   Icons.person_outline,
                   color: AppTheme.pendingAmber,
                 ),
@@ -181,15 +181,15 @@ class _AddMiddleManDialogState extends State<AddMiddleManDialog> {
                 ),
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
             TextField(
               controller: _phoneController,
               keyboardType: TextInputType.phone,
-              style: const TextStyle(color: AppTheme.titleColor),
+              style: TextStyle(color: AppTheme.titleColor),
               decoration: InputDecoration(
                 labelText: 'Phone Number',
                 labelStyle: TextStyle(color: AppTheme.titleColor.withOpacity(0.5)),
-                prefixIcon: const Icon(
+                prefixIcon: Icon(
                   Icons.phone_outlined,
                   color: AppTheme.pendingAmber,
                 ),
@@ -201,15 +201,15 @@ class _AddMiddleManDialogState extends State<AddMiddleManDialog> {
                 ),
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
             TextField(
               controller: _balanceController,
               keyboardType: TextInputType.number,
-              style: const TextStyle(color: AppTheme.titleColor),
+              style: TextStyle(color: AppTheme.titleColor),
               decoration: InputDecoration(
                 labelText: 'Total Balance (Outstanding)',
                 labelStyle: TextStyle(color: AppTheme.titleColor.withOpacity(0.5)),
-                prefixIcon: const Icon(
+                prefixIcon: Icon(
                   Icons.account_balance_wallet_outlined,
                   color: AppTheme.pendingAmber,
                 ),
@@ -221,7 +221,7 @@ class _AddMiddleManDialogState extends State<AddMiddleManDialog> {
                 ),
               ),
             ),
-            const SizedBox(height: 32),
+            SizedBox(height: 32),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -232,7 +232,7 @@ class _AddMiddleManDialogState extends State<AddMiddleManDialog> {
                     style: TextStyle(color: AppTheme.titleColor.withOpacity(0.6)),
                   ),
                 ),
-                const SizedBox(width: 16),
+                SizedBox(width: 16),
                 ElevatedButton(
                   onPressed: _isLoading ? null : _submit,
                   style: ElevatedButton.styleFrom(
@@ -240,13 +240,13 @@ class _AddMiddleManDialogState extends State<AddMiddleManDialog> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    padding: const EdgeInsets.symmetric(
+                    padding: EdgeInsets.symmetric(
                       horizontal: 24,
                       vertical: 12,
                     ),
                   ),
                   child: _isLoading
-                      ? const SizedBox(
+                      ? SizedBox(
                           height: 20,
                           width: 20,
                           child: CircularProgressIndicator(
@@ -254,7 +254,7 @@ class _AddMiddleManDialogState extends State<AddMiddleManDialog> {
                             strokeWidth: 2,
                           ),
                         )
-                      : const Text(
+                      : Text(
                           'Save',
                           style: TextStyle(
                             color: AppTheme.titleColor,
