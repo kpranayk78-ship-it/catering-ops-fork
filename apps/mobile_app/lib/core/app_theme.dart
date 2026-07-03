@@ -71,11 +71,17 @@ class AppTheme {
         ),
       ];
 
-  static LinearGradient get subtleGradient => LinearGradient(
-        colors: [Color(0xFFF9FAFB), Color(0xFFF3F4F6)],
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      );
+  static LinearGradient get subtleGradient => isLegacyTheme
+      ? LinearGradient(
+          colors: [Color(0xFF1F2937), Color(0xFF111827)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        )
+      : LinearGradient(
+          colors: [Color(0xFFF9FAFB), Color(0xFFF3F4F6)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        );
       
   static LinearGradient get primaryGradient => LinearGradient(
         colors: [Color(0xFF3B82F6), Color(0xFF2563EB)], // Lighter to deeper blue

@@ -312,28 +312,67 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
                 SizedBox(height: 16),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   decoration: BoxDecoration(
                     color: AppTheme.primaryAction.withOpacity(0.05),
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(color: AppTheme.primaryAction.withOpacity(0.1)),
                   ),
-                  child: SwitchListTile(
-                    title: Text(
-                      'Legacy Glowing Theme',
-                      style: TextStyle(color: AppTheme.titleColor, fontWeight: FontWeight.bold, fontSize: 16),
-                    ),
-                    subtitle: Text(
-                      'Restore the original neon UI effects',
-                      style: TextStyle(color: AppTheme.titleColor.withOpacity(0.5), fontSize: 13),
-                    ),
-                    value: ThemeService.isLegacy,
-                    onChanged: (val) {
-                      ThemeService.toggleTheme(val);
-                      setState(() {});
-                    },
-                    activeColor: AppTheme.primaryAction,
-                    contentPadding: EdgeInsets.zero,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'App Theme',
+                              style: TextStyle(color: AppTheme.titleColor, fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
+                            Text(
+                              'Select your preferred visual style',
+                              style: TextStyle(color: AppTheme.titleColor.withOpacity(0.5), fontSize: 13),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: AppTheme.cardColor,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: AppTheme.borderColor),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<bool>(
+                            value: ThemeService.isLegacy,
+                            dropdownColor: AppTheme.cardColor,
+                            icon: Icon(Icons.expand_more, color: AppTheme.primaryAction),
+                            items: [
+                              DropdownMenuItem(
+                                value: false,
+                                child: Text(
+                                  'Modern',
+                                  style: TextStyle(color: AppTheme.titleColor, fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              DropdownMenuItem(
+                                value: true,
+                                child: Text(
+                                  'Legacy',
+                                  style: TextStyle(color: AppTheme.titleColor, fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
+                            onChanged: (val) {
+                              if (val != null) {
+                                ThemeService.toggleTheme(val);
+                                setState(() {});
+                              }
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 SizedBox(height: 32),
