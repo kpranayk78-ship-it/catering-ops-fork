@@ -335,41 +335,103 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ],
                         ),
                       ),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: AppTheme.cardColor,
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: AppTheme.borderColor),
+                      Theme(
+                        data: Theme.of(context).copyWith(
+                          splashColor: AppTheme.primaryAction.withOpacity(0.1),
+                          highlightColor: AppTheme.primaryAction.withOpacity(0.1),
                         ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<bool>(
-                            value: ThemeService.isLegacy,
-                            dropdownColor: AppTheme.cardColor,
-                            icon: Icon(Icons.expand_more, color: AppTheme.primaryAction),
-                            items: [
-                              DropdownMenuItem(
-                                value: false,
-                                child: Text(
-                                  'Modern',
-                                  style: TextStyle(color: AppTheme.titleColor, fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                              DropdownMenuItem(
-                                value: true,
-                                child: Text(
-                                  'Legacy',
-                                  style: TextStyle(color: AppTheme.titleColor, fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ],
-                            onChanged: (val) {
-                              if (val != null) {
-                                ThemeService.toggleTheme(val);
-                                setState(() {});
-                              }
-                            },
+                        child: PopupMenuButton<bool>(
+                          initialValue: ThemeService.isLegacy,
+                          onSelected: (val) {
+                            ThemeService.toggleTheme(val);
+                            setState(() {});
+                          },
+                          color: AppTheme.cardColor,
+                          elevation: 8,
+                          shadowColor: AppTheme.titleColor.withOpacity(0.2),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: BorderSide(color: AppTheme.borderColor),
                           ),
+                          offset: Offset(0, 50),
+                          child: Container(
+                            padding: EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: AppTheme.cardColor,
+                              shape: BoxShape.circle,
+                              border: Border.all(color: AppTheme.borderColor),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: AppTheme.titleColor.withOpacity(0.05),
+                                  blurRadius: 8,
+                                  offset: Offset(0, 2),
+                                )
+                              ]
+                            ),
+                            child: Icon(
+                              Icons.palette_outlined,
+                              color: AppTheme.primaryAction,
+                              size: 22,
+                            ),
+                          ),
+                          itemBuilder: (context) => [
+                            PopupMenuItem(
+                              value: false,
+                              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: !ThemeService.isLegacy ? AppTheme.primaryAction.withOpacity(0.1) : Colors.transparent,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Icon(
+                                      Icons.auto_awesome, 
+                                      color: !ThemeService.isLegacy ? AppTheme.primaryAction : AppTheme.labelColor, 
+                                      size: 20
+                                    ),
+                                  ),
+                                  SizedBox(width: 12),
+                                  Text(
+                                    'Modern', 
+                                    style: TextStyle(
+                                      color: !ThemeService.isLegacy ? AppTheme.primaryAction : AppTheme.titleColor, 
+                                      fontWeight: FontWeight.bold
+                                    )
+                                  ),
+                                ],
+                              ),
+                            ),
+                            PopupMenuItem(
+                              value: true,
+                              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: ThemeService.isLegacy ? AppTheme.primaryAction.withOpacity(0.1) : Colors.transparent,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Icon(
+                                      Icons.token_outlined, 
+                                      color: ThemeService.isLegacy ? AppTheme.primaryAction : AppTheme.labelColor, 
+                                      size: 20
+                                    ),
+                                  ),
+                                  SizedBox(width: 12),
+                                  Text(
+                                    'Legacy', 
+                                    style: TextStyle(
+                                      color: ThemeService.isLegacy ? AppTheme.primaryAction : AppTheme.titleColor, 
+                                      fontWeight: FontWeight.bold
+                                    )
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
