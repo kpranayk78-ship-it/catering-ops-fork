@@ -22,7 +22,7 @@ class AnimatedNotificationOverlay {
         title: title,
         message: message,
         icon: icon,
-        color: color,
+        color: color!,
         onDismiss: () {
           _currentEntry?.remove();
           _currentEntry = null;
